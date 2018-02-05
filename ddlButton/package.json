@@ -1,0 +1,27 @@
+{
+  "name": "ddlbutton",
+  "version": "0.0.1",
+  "description": "Download Button Micro Interactions",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "compile:sass": "node-sass -w styles.scss styles.css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JayBee007/terminal.git"
+  },
+  "keywords": [
+    "Micro",
+    "Interactions"
+  ],
+  "author": "Javed",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JayBee007/terminal/issues"
+  },
+  "homepage": "https://github.com/JayBee007/terminal#readme",
+  "devDependencies": {
+    "node-sass": "^4.7.2"
+  }
+}
