@@ -1,0 +1,57 @@
+body {
+  background-color: #323536; }
+
+.download-button-container {
+  position: fixed;
+  width: 300px;
+  height: 70px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center; }
+  .download-button-container.downloading .download-button {
+    width: 70px; }
+  .download-button-container.downloading .button-text-download {
+    top: 80%;
+    transform: translateY(-50%) scale(1);
+    opacity: 0; }
+  .download-button-container.downloading .button-wave {
+    left: -10px; }
+    .download-button-container.downloading .button-wave::before {
+      background-color: transparent;
+      transform: sclae(1.6); }
+  .download-button-container.downloading .button-icon-svg {
+    transform: rotate(0deg); }
+  .download-button-container.downloading .button-icon-path-square {
+    fill: white; }
+  .download-button-container.progressing .button-icon {
+    left: 50%;
+    transform: translate(-50%, -50%); }
+  .download-button-container.progressing .button-ball {
+    left: -9px;
+    top: -9px;
+    width: 18px;
+    height: 18px; }
+
+.hidden {
+  visibility: hidden;
+  opacity: 0; }
+
+.download-button {
+  position: relative;
+  display: inline-block;
+  width: 300px;
+  height: 70px;
+  background-color: #2c2e2f;
+  border: none;
+  box-shadow: 0 0 0 3px #02d1ff;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: 1s width, 0.3s box-shadow; }
+  .download-button, .download-button:focus {
+    padding: 0;
+    outline: none; }
+  .download-button::-moz-focus-inner {
+    border: 0; }
+  .download-button:hover, .download-button:active, .download-button:focus {
+    box-shadow: 0 0 0 3px #02d1ff, 0 0 20px 3px #007f9b; }
