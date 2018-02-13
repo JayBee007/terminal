@@ -110,11 +110,17 @@ body {
   display: inline-block;
   transition: all .2s;
   border-radius: 4px;
+  position: relative;
 }
 
 .btn:hover{
   transform:translateY(-2px);
   box-shadow: 0 10px 20px rgba(0,0,0,.2);
+}
+
+.btn:hover::after {
+  transform: scaleX(1.2) scaleY(1.4);
+  opacity: 0;
 }
 
 .btn:active {
@@ -125,4 +131,38 @@ body {
 .btn-white {
   background-color: #fff;
   color: #777;
+}
+
+.btn::after {
+  content:'';
+  display: inline-block;
+  height: 100%;
+  width: 100%;
+  border-radius: 4px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  transition: all .2s;
+}
+
+.btn-white::after {
+  background: white;
+}
+
+@keyframes moveFromBottom {
+  0% {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.btn-animated {
+  animation: moveFromBottom 0.5s ease-out 0.75s 1;
+  animation-fill-mode: backwards;
 }
