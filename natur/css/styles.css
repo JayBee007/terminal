@@ -1,140 +1,101 @@
-/*
-Light green: #7ed56f
-Medium green: #55c57a
-Dark green: #28b485
-*/
-
-* {
+*,
+*::after,
+*::before {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-}
+  box-sizing: inherit; }
+
+html {
+  font-size: 62.5%; }
 
 body {
   font-family: 'Lato', 'sans-serif';
   font-weight: 400;
-  font-size: 16px;
   line-height: 1.7;
   color: #777;
-  padding: 30px;
-}
+  padding: 3rem;
+  box-sizing: border-box; }
 
 .header {
   height: 95vh;
-  background-image: linear-gradient(to right bottom,rgba(126,213,111,.8), rgba(40,180,131,.8)),url('../img/hero.jpg');
+  background-image: linear-gradient(to right bottom, rgba(126, 213, 111, 0.8), rgba(40, 180, 133, 0.8)), url("../img/hero.jpg");
   background-size: cover;
   background-position: center center;
   position: relative;
-  clip-path: polygon(0 0, 100% 0, 100% 75vh,0 100%);
-}
-
-.logo-box {
-  position: absolute;
-  top: 40px;
-  left: 40px;
-}
-
-.logo {
-  height: 35px;
-}
-
-.text-box {
-  position:absolute;
-  top: 40%;
-  left: 50%;
-  transform: translate(-50%,-50%);
-  text-align: center;
-}
+  clip-path: polygon(0 0, 100% 0, 100% 75vh, 0 100%); }
+  .header__logo-box {
+    position: absolute;
+    top: 4rem;
+    left: 4rem; }
+  .header__logo {
+    height: 3.5rem; }
+  .header__text-box {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center; }
 
 .heading-primary {
-  color: white;
+  color: #fff;
   text-transform: uppercase;
   backface-visibility: hidden;
-  margin-bottom: 60px;
-}
-
-.heading-primary-main {
-  display: block;
-  font-size: 60px;
-  font-weight: 400;
-  letter-spacing: 35px;
-  animation: moveInLeft 1s ease-out 0s 1;
-  /* animation: name duration timing-function delay iteration-count direction fill-mode; */
-}
-
-.heading-primary-sub {
- display: block;
- font-size: 20px;
- font-weight: 700;
- letter-spacing: 17.4px;
- animation: moveInRight 1s ease-out 0s 1;
-}
+  margin-bottom: 6rem; }
+  .heading-primary--main {
+    display: block;
+    font-size: 6rem;
+    font-weight: 400;
+    letter-spacing: 3.5rem;
+    animation: moveInLeft 1s ease-out 0s 1; }
+  .heading-primary--sub {
+    display: block;
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: 1.74rem;
+    animation: moveInRight 1s ease-out 0s 1; }
 
 @keyframes moveInLeft {
   0% {
     opacity: 0;
-    transform: translateX(-100px);
-  }
-
+    transform: translateX(-100px); }
   80% {
-    transform: translateX(10px);
-  }
-
+    transform: translateX(10px); }
   100% {
     opacity: 1;
-    transform: translateX(0);
-  }
-}
+    transform: translateX(0); } }
 
 @keyframes moveInRight {
   0% {
     opacity: 0;
-    transform: translateX(100px);
-  }
-
+    transform: translateX(100px); }
   80% {
-    transform: translateX(-10px);
-  }
-
+    transform: translateX(-10px); }
   100% {
     opacity: 1;
-    transform: translateX(0);
-  }
-}
+    transform: translateX(0); } }
 
-.btn:link,
-.btn:visited {
+.btn:link, .btn:visited {
   text-transform: uppercase;
   text-decoration: none;
-  padding: 15px 40px;
+  padding: 1.5rem 4rem;
   display: inline-block;
   transition: all .2s;
   border-radius: 4px;
-  position: relative;
-}
+  position: relative; }
 
-.btn:hover{
-  transform:translateY(-2px);
-  box-shadow: 0 10px 20px rgba(0,0,0,.2);
-}
-
-.btn:hover::after {
-  transform: scaleX(1.2) scaleY(1.4);
-  opacity: 0;
-}
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2); }
+  .btn:hover::after {
+    transform: scaleX(1.2) scaleY(1.4);
+    opacity: 0; }
 
 .btn:active {
   transform: translateY(0px);
-  box-shadow: 0 5px 10px rgba(0,0,0,.2);
-}
-
-.btn-white {
-  background-color: #fff;
-  color: #777;
-}
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2); }
 
 .btn::after {
-  content:'';
+  content: '';
   display: inline-block;
   height: 100%;
   width: 100%;
@@ -143,26 +104,22 @@ body {
   top: 0;
   left: 0;
   z-index: -1;
-  transition: all .2s;
-}
+  transition: all .2s; }
 
-.btn-white::after {
-  background: white;
-}
+.btn--white {
+  background-color: #fff;
+  color: #777; }
+  .btn--white::after {
+    background: #fff; }
+
+.btn--animated {
+  animation: moveFromBottom 0.5s ease-out 0.75s 1;
+  animation-fill-mode: backwards; }
 
 @keyframes moveFromBottom {
   0% {
     transform: translateY(30px);
-    opacity: 0;
-  }
-
+    opacity: 0; }
   100% {
     transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-.btn-animated {
-  animation: moveFromBottom 0.5s ease-out 0.75s 1;
-  animation-fill-mode: backwards;
-}
+    opacity: 1; } }
