@@ -271,7 +271,8 @@ body {
   margin-left: 2rem;
   margin-top: .7rem;
   display: block;
-  transition: all .2s; }
+  transition: all .2s;
+  transform: translateY(-8rem); }
 
 .form__radio-group {
   width: 49%;
