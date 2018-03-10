@@ -1,0 +1,15 @@
+{
+  "name": "natur",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "compile:sass": "node-sass -w sass/main.scss css/styles.css"
+  },
+  "author": "Javed",
+  "license": "ISC",
+  "devDependencies": {
+    "node-sass": "^4.7.2"
+  }
+}
