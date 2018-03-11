@@ -12,14 +12,23 @@
 
   <canvas id="canvas" resize></canvas>
   <script type="text/paperscript" canvas="canvas">
-
+    var arrayOfCircles = []
     function onKeyDown(event) {
       var maxPoint = new Point(view.size.width, view.size.height);
       var randomPoint = Point.random();
       var point = maxPoint * randomPoint;
-
-      new Path.Circle(point, 10).fillColor="#ed5";
+      var newCircle = Path.Circle(point, view.size.width*.15);
+      newCircle.fillColor="#ed5"
+      arrayOfCircles.push(newCircle);
     }
+
+    function onFrame(event) {
+        for(var i = 0; i < arrayOfCircles.length; i++) {
+          arrayOfCircles[i].fillColor.hue +=1;
+          arrayOfCircles[i].scale(.9);
+        }
+    }
+
   </script>
 </body>
 </html>
