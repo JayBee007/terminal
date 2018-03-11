@@ -19,5 +19,10 @@ function onFrame(event) {
     for(var i = 0; i < arrayOfCircles.length; i++) {
       arrayOfCircles[i].fillColor.hue +=1;
       arrayOfCircles[i].scale(.9);
+      if(arrayOfCircles[i].area < 1){
+        arrayOfCircles[i].remove();
+        arrayOfCircles.splice(i, 1);
+        i--;
     }
+  }
 }
