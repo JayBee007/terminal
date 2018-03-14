@@ -6,6 +6,32 @@
   position:fixed;
   background-color: rgba($color-black, .8);
   z-index: 2100;
+  transition: all .3s;
+  opacity: 0;
+  visibility: hidden;
+
+  &:target{
+    opacity: 1;
+    visibility: visible;
+  }
+
+  &__close {
+    &:link,
+    &:visited {
+      color: $color-grey-dark;
+      position: absolute;
+      top: 2.5rem;
+      right: 2.5rem;
+      font-size: 3rem;
+      text-decoration: none;
+      display: inline-block;
+      line-height: 1;
+    }
+
+    &:hover {
+      color: $color-primary;
+    }
+  }
 
   &__content {
     width: 75%;
@@ -14,10 +40,17 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%) scale(.5);
     border-radius: 3px;
     display: table;
     overflow: hidden;
+    transition: all .4s .2s;
+    opacity: 0;
+  }
+
+  &:target &__content {
+    opacity: 1;
+    transform: translate(-50%,-50%) scale(1);
   }
 
   &__right {
