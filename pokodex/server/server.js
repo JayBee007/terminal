@@ -2,6 +2,7 @@ import express from 'express';
 import path from 'path';
 import morgan from 'morgan';
 
+const PORT = process.env.PORT || 3000;
 const app = express();
 app.set('view engine', 'html');
 
@@ -15,6 +16,6 @@ app.get('*', (req,res) => {
 
 
 
-app.listen(3000, () => {
-  console.log('Server running on PORT 3000');
+app.listen(PORT, () => {
+  console.log(`Server running on ${PORT}`);
 });

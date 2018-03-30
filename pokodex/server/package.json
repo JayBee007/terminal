@@ -4,7 +4,8 @@
   "description": "Test task to implement Pokodex",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js --exec babel-node --presets es2015,stage-2",
+    "start": "babel-node server.js --presets es2015,stage-2",
+    "start:nodemon": "nodemon server.js --exec babel-node --presets es2015,stage-2",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
