@@ -1,7 +1,11 @@
 import mongoose from 'mongoose';
 import validator from 'validator';
+import findOrCreate from 'mongoose-find-or-create';
 
-const User = mongoose.model('User', {
+const UserSchema = new mongoose.Schema({
+  username: {
+    type: String,
+  },
   email: {
     type: String,
     required: true,
@@ -13,6 +17,14 @@ const User = mongoose.model('User', {
       message: `{value} is not a valid email`
     }
   },
-})
+  facebookId: {
+    type: String,
+    required: true,
+  }
+});
+
+UserSchema.plugin(findOrCreate);
+
+const User = mongoose.model('User', UserSchema);
 
 export default User;
