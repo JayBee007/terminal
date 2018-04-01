@@ -1,0 +1,6 @@
+const C = {
+  AUTHENTICATED: 'AUTHENTICATED',
+  UNAUTHENTICATED: 'UNAUTHENTICATED',
+}
+
+export default C;
