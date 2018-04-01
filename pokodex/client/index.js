@@ -3,7 +3,10 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 
-import store from './src/redux/store';
+import store, { sagaMiddleware } from './src/redux/store';
+import rootSaga from './src/redux/saga';
+
+sagaMiddleware.run(rootSaga);
 
 import App from './src/App';
 
