@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 import validator from 'validator';
-import findOrCreate from 'mongoose-find-or-create';
 
 const UserSchema = new mongoose.Schema({
   username: {
@@ -17,13 +16,42 @@ const UserSchema = new mongoose.Schema({
       message: `{value} is not a valid email`
     }
   },
-  facebookId: {
-    type: String,
-    required: true,
+  facebookProvider: {
+    type: {
+      id: String,
+      token: String
+    },
+    select: false
   }
 });
 
-UserSchema.plugin(findOrCreate);
+UserSchema.statics.findOrCreate = function(accessToken, refreshToken, profile, cb) {
+  const User = this;
+  console.log(profile);
+  return this.findOne({'facebookProvider.id': profile.id}, function(err, user) {
+    if(!user) {
+      const newUser = new User({
+        username: profile.username || 'Anonymous',
+        email: profile.emails[0].value,
+        facebookProvider: {
+          id: profile.id,
+          token: accessToken
+        }
+      })
+
+      newUser.save(function(error, savedUser) {
+        if(error) {
+          return console.error(error);
+        }
+        return cb(null, savedUser);
+      });
+    }else {
+      return cb(null, user)
+    }
+  })
+}
+
+
 
 const User = mongoose.model('User', UserSchema);
 

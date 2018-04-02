@@ -1,3 +1,5 @@
-import store from './store';
+import store, { sagaMiddleware} from './store';
+
+export {sagaMiddleware};
 
 export default store;

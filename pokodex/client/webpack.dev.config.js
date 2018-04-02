@@ -9,9 +9,15 @@ module.exports = {
       errors: true,
       warnings: true,
     },
+    proxy: {
+      "/auth": {
+        target: "https://localhost:3000",
+        secure: false,
+      }
+    }
   },
   devtool:"cheap-module-eval-soure-map",
-  entry: path.join(__dirname,'index.js'),
+  entry: ["babel-polyfill",path.join(__dirname,'index.js')],
   output: {
     path: path.join(__dirname, '/build'),
     filename: 'bundle.js',

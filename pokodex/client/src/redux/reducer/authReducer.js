@@ -1,11 +1,20 @@
-// import constants
+import C from '../constant';
 
 const initialAuthState = {
-    auth: true,
+    auth: false,
+    token: null,
 };
 
 const auth = (state=initialAuthState,action) => {
-  return state;
+  switch(action.type) {
+    case C.AUTHENTICATED:
+      return {...state, auth:true, token: action.token};
+    case C.UNAUTHENTICATED:
+      return {...state, auth:false, token: null};
+    default:
+      return state;
+  }
+
 }
 
 export default auth;
