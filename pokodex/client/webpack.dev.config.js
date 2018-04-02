@@ -9,6 +9,12 @@ module.exports = {
       errors: true,
       warnings: true,
     },
+    proxy: {
+      "/auth": {
+        target: "https://localhost:3000",
+        secure: false,
+      }
+    }
   },
   devtool:"cheap-module-eval-soure-map",
   entry: ["babel-polyfill",path.join(__dirname,'index.js')],

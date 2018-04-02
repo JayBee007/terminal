@@ -13,7 +13,7 @@ const loginReducer = (state=initialState, action) => {
     case C.LOGIN_SUCCESS:
       return {...state, requesting: false, successful: true, errors: false};
     case C.LOGIN_ERROR:
-      return {...state, requesting: false, successful: false, errros: action.errors}
+      return {...state, requesting: false, successful: false, errors: action.errors}
     default:
       return state;
   }

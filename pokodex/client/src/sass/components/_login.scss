@@ -56,4 +56,10 @@
       background: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/14082/icon_facebook.png') center no-repeat;
     }
   }
+
+  &__error {
+    display: inline-block;
+    color: $color-red;
+    height: 1.2rem;
+  }
 }

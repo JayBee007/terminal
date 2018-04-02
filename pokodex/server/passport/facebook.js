@@ -1,49 +1,19 @@
 import passport from 'passport';
-import FacebookStrategy from 'passport-facebook';
+import FacebookTokenStrategy from 'passport-facebook-token';
 
 import User from '../models/user';
 
 import {FACEBOOK_APP_ID, FACEBOOK_APP_SECRET} from '../config/keys';
 
-passport.serializeUser((user,cb) => {
-  cb(null, user.id);
-});
+passport.use(new FacebookTokenStrategy({
 
-passport.deserializeUser((id,cb) => {
-  User.findById({_id:id}, (err, user) => {
-    if(err) return console.error(err);
-    cb(null, user);
+  clientID: FACEBOOK_APP_ID,
+  clientSecret: FACEBOOK_APP_SECRET,
+
+  },(accessToken, refreshToken, profile, callback) => {
+
+      User.findOrCreate(accessToken, refreshToken, profile, (err,user) => {
+        return callback(null,user)
+      });
   })
-});
-
-passport.use(new FacebookStrategy({
-    clientID: FACEBOOK_APP_ID,
-    clientSecret: FACEBOOK_APP_SECRET,
-    callbackURL: "https://localhost:3000/auth/facebook/redirect",
-    profileFields: ['id', 'emails', 'name']
-  }, (accessToken, refreshToken, profile, callback) => {
-      const {id, username, emails } = profile;
-      const email = emails[0].value;
-      const userName = username || 'Anonymous';
-
-    User.findOrCreate({ facebookId: id, email, username: userName}, (err,user) => {
-      if(err) return console.error(err);
-      callback(null, user);
-    });
-
-  })
-)
-
-
-
-// passport.use(new FacebookStrategy({
-//   clientID: FACEBOOK_APP_ID,
-//   clientSecret: FACEBOOK_APP_SECRET,
-//   callbackURL: "http://localhost:3000/auth/facebook/callback"
-// },
-// function(accessToken, refreshToken, profile, cb) {
-//   User.findOrCreate({ facebookId: profile.id }, function (err, user) {
-//     return cb(err, user);
-//   });
-// }
-// ));
+);
