@@ -1,4 +1,4 @@
-import { take, call, fork, put } from 'redux-saga/effects';
+import { take, call, fork, put, cancel } from 'redux-saga/effects';
 import axios from 'axios';
 
 import C from '../constant';
@@ -13,6 +13,11 @@ function loginApi(accessToken) {
   })
 }
 
+function* logout () {
+  yield put({type:C.UNAUTHENTICATED});
+  localStorage.removeItem('auth')
+}
+
 function* loginFlow(accessToken) {
   let token;
   try {
@@ -23,6 +28,8 @@ function* loginFlow(accessToken) {
   }catch (errors) {
     yield put({ type: C.LOGIN_ERROR, errors })
   }
+
+  return token;
 }
 
 function* loginWatcher () {
@@ -32,6 +39,12 @@ function* loginWatcher () {
     const { accessToken } = yield take(C.LOGIN_REQUESTING);
 
     const task = yield fork(loginFlow, accessToken);
+
+    const action = yield take([C.UNAUTHENTICATED, C.LOGIN_ERROR]);
+
+    if (action.type === C.UNAUTHENTICATED) yield cancel(task)
+
+    yield call(logout)
   }
 
 

@@ -2,9 +2,14 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 
+import { unauthenticated } from '../../redux/action';
 
 const Nav = (props) => {
   const { auth } = props;
+
+  const handeLogout = () => {
+    props.unauthenticated();
+  }
 
   if(auth) {
     return (
@@ -13,7 +18,7 @@ const Nav = (props) => {
           <ul className="nav__nav">
             <li className="nav__item"><NavLink activeClassName="nav__link--active" className="nav__link" exact to="/pokemons/list">Pokemons</NavLink></li>
             <li className="nav__item"><NavLink activeClassName="nav__link--active" className="nav__link" exact to="/pokemons/favorites">Favorites</NavLink></li>
-            <li className="nav__item"><button className="nav__link nav__link--btn">Logout</button></li>
+            <li className="nav__item"><button onClick={handeLogout} className="nav__link nav__link--btn">Logout</button></li>
           </ul>
       </nav>
     )
@@ -31,4 +36,4 @@ function mapStateToProps(state) {
     auth: state.auth.auth
   }
 }
-export default connect(mapStateToProps, null)(Nav);
+export default connect(mapStateToProps, {unauthenticated})(Nav);

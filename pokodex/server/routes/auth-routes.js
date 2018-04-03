@@ -6,13 +6,19 @@ import { getCurrentUser, getOne } from '../middleware/currentUser';
 const router = express.Router();
 
 router.post('/facebook', passport.authenticate('facebook-token', { session: false}), (req, res, next) => {
+  // if(err) {
+  //   return res.status(err.oauthError.statusCode).json(err).end();
+  // }
   if(!req.user) {
     return res.send(401, 'User Not Authenticated');
   }
+
   req.auth = {
     id: req.user.id
   };
   next();
+},(error, req, res, next) => {
+  if(error) {res.status(400).json({message: 'Auth Failed', error})}
 }, generateToken, sendToken );
 
 
@@ -24,14 +30,3 @@ router.get("/logout", (req,res) => {
 });
 
 export default router;
-
-
-// router.post('/facebook', passport.authenticate('facebook-token', {
-//   session: false,
-//   scope: ["email"]
-// }));
-
-// router.get('/facebook/redirect', passport.authenticate('facebook', { session: false}), (req,res) => {
-//   const accessToken = generateToken(req.user.id);
-//   res.send(accessToken);
-// });
