@@ -15,7 +15,7 @@ function loginApi(accessToken) {
 
 function* logout () {
   yield put({type:C.UNAUTHENTICATED});
-  localStorage.removeItem('auth')
+  localStorage.removeItem('auth');
 }
 
 function* loginFlow(accessToken) {
