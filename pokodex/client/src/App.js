@@ -13,7 +13,7 @@ const App = () => {
   return(
     <Switch>
       <Route path='/' exact component={userIsNotAuthenticated(Login)}/>
-      <Route path='/pokemons' exact component={userIsAuthenticated(Pokemons)}  />
+      <Route path='/pokemons' component={userIsAuthenticated(Pokemons)}  />
       <Route component={userIsNotAuthenticated(Login)}/>
     </Switch>
   );

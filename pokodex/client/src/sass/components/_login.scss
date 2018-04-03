@@ -5,20 +5,6 @@
   flex-direction: column;
 }
 
-.nav {
-  height: 65px;
-  background: $color-red;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  &__title {
-    font-size: 2.5rem;
-    font-weight: 900;
-    color: $color-white;
-  }
-}
-
 .login {
   flex-grow: 1;
   display: flex;
