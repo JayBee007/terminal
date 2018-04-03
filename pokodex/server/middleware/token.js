@@ -1,11 +1,9 @@
 import jwt from 'jsonwebtoken';
 import expressJwt from 'express-jwt';
 
-import { JWT_KEY } from '../config/keys';
-
 export const createToken = (auth) => {
   const expiresIn = 60*120;
-  const secret = JWT_KEY;
+  const secret = process.env.JWT_KEY;
   const token = jwt.sign({id:auth.id}, secret, {
     expiresIn
   });
@@ -23,7 +21,7 @@ export const sendToken = (req, res) => {
 }
 
 export const authenticate = expressJwt({
-  secret: JWT_KEY,
+  secret: process.env.JWT_KEY,
   requestProperty: 'auth',
   getToken: function(req) {
 

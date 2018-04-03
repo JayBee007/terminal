@@ -1,4 +1,4 @@
 node_modules
 data
-config
+config/config.json
 certs

@@ -1,3 +1,4 @@
+import './config/config';
 import express from 'express';
 import path from 'path';
 import bodyParser from 'body-parser';
@@ -8,10 +9,9 @@ import cors from 'cors';
 import mongoose from './db/mongoose';
 import User from './models/user';
 
-import { COOKIE_KEY } from './config/keys';
-
 // routes
 import authRoutes from './routes/auth-routes';
+import apiRoutes from './routes/api-routes';
 import facebook from './passport/facebook';
 
 const PORT = process.env.PORT || 3000;
@@ -43,8 +43,11 @@ app.use(morgan('dev'));
 // app.get('*', (req,res) => {
 //   res.sendFile(path.join(__dirname, '../client/index.html'));
 // });
-
+app.get('/', (req,res) => {
+  res.send('hello');
+})
 app.use('/auth', authRoutes);
+app.use('/pokemons', apiRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on ${PORT}`);

@@ -27,7 +27,6 @@ const UserSchema = new mongoose.Schema({
 
 UserSchema.statics.findOrCreate = function(accessToken, refreshToken, profile, cb) {
   const User = this;
-  console.log(profile);
   return this.findOne({'facebookProvider.id': profile.id}, function(err, user) {
     if(!user) {
       const newUser = new User({
