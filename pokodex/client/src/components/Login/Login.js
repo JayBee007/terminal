@@ -3,7 +3,9 @@ import {connect} from 'react-redux';
 
 import { loginRequest, loginError } from '../../redux/action';
 
-import { FACEBOOK_APP_ID} from '../../../../server/config/keys';
+import { FACEBOOK_APP_ID } from '../../config/config';
+
+import Nav from '../Nav';
 
 class Login extends Component {
 
@@ -38,12 +40,9 @@ class Login extends Component {
   }
 
   render() {
-    console.log(this.props);
     return(
       <div className="container">
-        <nav className="nav">
-          <p className="nav__title">Pokodex</p>
-        </nav>
+        <Nav />
 
         <div className="login">
           <button onClick={this.handeClick} className="login__btn">Login by Facebook</button>

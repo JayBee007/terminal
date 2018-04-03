@@ -1,0 +1,62 @@
+.nav {
+  height: 65px;
+  background: $color-red;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-bottom: 4px solid $color-dark-red;
+
+  &__title {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: $color-white;
+    // margin-left: auto;
+    // margin-right: auto;
+  }
+
+  &__nav {
+    list-style: none;
+    // padding-right: 2.5rem;
+    height: 100%;
+  }
+
+  &__item {
+    display: inline-block;
+    height: 65px;
+    line-height: 65px;
+    &:not(:last-child) {
+      margin-right: 10px;
+    }
+
+
+  }
+
+  &__link {
+    &:visited,
+    &:link,
+    &--btn{
+      text-decoration: none;
+      font-size: 1.5rem;
+      color: $color-white;
+      transition: all .2s;
+      display: inline-block;
+      height: 100%;
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+    &--btn {
+      background: transparent;
+      border: none;
+      outline: none;
+      cursor: pointer;
+    }
+
+    &:hover {
+      color: $color-gray;
+    }
+
+    &--active {
+      border-bottom: 4px solid $color-white;
+    }
+  }
+}
