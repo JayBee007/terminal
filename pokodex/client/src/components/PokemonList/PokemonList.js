@@ -1,12 +1,17 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
-const PokemonList = () => {
+import { getPokemonRequest } from '../../redux/action';
 
+const PokemonList = (props) => {
+  const getPokemons = () => {
+    props.getPokemonRequest(20,20);
+  }
   return(
-    <div>
+    <div onClick={getPokemons} style={{cursor: 'pointer'}}>
       List
     </div>
   );
 }
 
-export default PokemonList
+export default connect(null, { getPokemonRequest })(PokemonList);
