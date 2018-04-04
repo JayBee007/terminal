@@ -16,7 +16,7 @@ const Nav = (props) => {
       <nav className="nav">
           <p className="nav__title">Pokodex</p>
           <ul className="nav__nav">
-            <li className="nav__item"><NavLink activeClassName="nav__link--active" className="nav__link" exact to="/pokemons/list">Pokemons</NavLink></li>
+            <li className="nav__item"><NavLink activeClassName="nav__link--active" className="nav__link" exact to="/pokemons/">Pokemons</NavLink></li>
             <li className="nav__item"><NavLink activeClassName="nav__link--active" className="nav__link" exact to="/pokemons/favorites">Favorites</NavLink></li>
             <li className="nav__item"><button onClick={handeLogout} className="nav__link nav__link--btn">Logout</button></li>
           </ul>

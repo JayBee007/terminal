@@ -7,16 +7,18 @@
   border-bottom: 4px solid $color-dark-red;
 
   &__title {
+    cursor: pointer;
     font-size: 2.5rem;
     font-weight: 900;
     color: $color-white;
-    // margin-left: auto;
-    // margin-right: auto;
+    transition: transform .3s;
+    &:hover {
+      transform: scale(1.1);
+    }
   }
 
   &__nav {
     list-style: none;
-    // padding-right: 2.5rem;
     height: 100%;
   }
 
