@@ -6,9 +6,7 @@ import { getCurrentUser, getOne } from '../middleware/currentUser';
 const router = express.Router();
 
 router.post('/facebook', passport.authenticate('facebook-token', { session: false}), (req, res, next) => {
-  // if(err) {
-  //   return res.status(err.oauthError.statusCode).json(err).end();
-  // }
+
   if(!req.user) {
     return res.send(401, 'User Not Authenticated');
   }

@@ -1,12 +1,12 @@
 import { take, call, fork, put, cancel } from 'redux-saga/effects';
-import axios from 'axios';
+import request from '../../utils/request';
 
 import C from '../constant';
 import { authenticated, unauthenticated} from '../action';
 
 function loginApi(accessToken) {
 
-  return axios.post('http://localhost:3000/auth/facebook', {access_token:accessToken}).then(res => {
+  return request.post('http://localhost:3000/auth/facebook', {access_token:accessToken}).then(res => {
     return res.headers['x-auth-token'];
   }).catch(err => {
     return err;

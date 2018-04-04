@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import validator from 'validator';
+import jwt from 'jsonwebtoken';
 
 const UserSchema = new mongoose.Schema({
   username: {
@@ -16,6 +17,8 @@ const UserSchema = new mongoose.Schema({
       message: `{value} is not a valid email`
     }
   },
+  token: String,
+  fav: [{ type: Number, unique: true }],
   facebookProvider: {
     type: {
       id: String,
@@ -50,6 +53,21 @@ UserSchema.statics.findOrCreate = function(accessToken, refreshToken, profile, c
   })
 }
 
+UserSchema.statics.findByToken = function(token) {
+  const User = this;
+  let decoded;
+
+  try {
+      decoded = jwt.verify(token, process.env.JWT_KEY);
+  } catch (e) {
+      return Promise.reject(e);
+  }
+
+  return User.findOne({
+      '_id': decoded.id,
+      'token': token,
+  });
+};
 
 
 const User = mongoose.model('User', UserSchema);

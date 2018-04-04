@@ -7,8 +7,12 @@ import throttle from 'lodash.throttle';
 import store, { sagaMiddleware } from './src/redux/store';
 import rootSaga from './src/redux/saga';
 import { saveState } from './src/utils/localStorage';
+import { setAuthToken } from './src/utils/request';
 
 sagaMiddleware.run(rootSaga);
+
+const token = JSON.parse(localStorage.getItem("state")).auth.token;
+setAuthToken(token);
 
 store.subscribe(throttle(() => {
   saveState({
