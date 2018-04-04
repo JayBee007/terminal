@@ -4,7 +4,7 @@ import { connectedRouterRedirect } from 'redux-auth-wrapper/history4/redirect';
 const locationHelper = locationHelperBuilder({})
 
 const userIsNotAuthenticated = connectedRouterRedirect({
-    redirectPath: (state, ownProps) => locationHelper.getRedirectQueryParam(ownProps) || '/pokemons/list',
+    redirectPath: (state, ownProps) => locationHelper.getRedirectQueryParam(ownProps) || '/pokemons/',
 
     allowRedirectBack: false,
 

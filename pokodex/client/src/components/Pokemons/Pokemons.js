@@ -10,7 +10,7 @@ const Pokemons = (props) => {
     <React.Fragment>
       <Nav />
       <Switch>
-        <Route path='/pokemons/list' exact component={PokemonList}  />
+        <Route path='/pokemons/' exact component={PokemonList}  />
         <Route path='/pokemons/favorites' exact component={Favorites}  />
       </Switch>
     </React.Fragment>
