@@ -8,6 +8,9 @@ function getPokemonApi(limit, offset) {
 
   // return request.get(`http://localhost:3000/pokemons/list/?limit=${limit}&offset=${offset}`).then(res => {
   return request.get(`https://pokodex.herokuapp.com/pokemons/list/?limit=${limit}&offset=${offset}`).then(res => {
+      if(res.status !== 200) {
+        throw new Error('Something went wrong');
+      }
     return res.data;
   }).catch(err => {
     return err;
@@ -16,15 +19,16 @@ function getPokemonApi(limit, offset) {
 
 
 function* getPokemonFlow(limit,offset) {
-  let res;
+  let result;
   try {
-    res = yield call(getPokemonApi, limit, offset)
-    yield put({ type: C.GET_POKEMON_SUCCESS, data:res });
+    result = yield call(getPokemonApi, limit, offset)
+
+    yield put({ type: C.GET_POKEMON_SUCCESS, data:result });
   }catch (errors) {
     yield put({ type: C.GET_POKEMON_ERROR, errors })
   }
 
-  return res;
+  return result;
 }
 
 function* pokemonWatcher () {

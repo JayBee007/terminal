@@ -4,6 +4,7 @@ const initialState = {
   requesting: null,
   successful: null,
   errors: null,
+  data: []
 }
 
 const getPokemonReducer = (state=initialState, action) => {

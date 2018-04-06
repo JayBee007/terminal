@@ -6,7 +6,10 @@ import { authenticated, unauthenticated} from '../action';
 
 function loginApi(accessToken) {
 
-  return request.post('http://localhost:3000/auth/facebook', {access_token:accessToken}).then(res => {
+  return request.post('https://pokodex.herokuapp.com/auth/facebook', {access_token:accessToken}).then(res => {
+    if(res.status !== 200) {
+      throw new Error('Something went wrong');
+    }
     return res.headers['x-auth-token'];
   }).catch(err => {
     return err;
