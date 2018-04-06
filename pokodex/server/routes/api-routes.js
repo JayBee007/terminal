@@ -38,38 +38,27 @@ router.get('/list', authorize, async (req,res) => {
   }
 });
 
-router.post('/favorites', authorize, (req,res) => {
-    User.update({token: req.token},{$push: {fav: req.body.id}}).then(() => {
-      return;
-    });
+router.post('/favorites', authorize, async (req,res) => {
+  const id = +req.body.id;
+  const token = req.token;
 
-    res.status(200).status({message: `${req.body.id} pushed to fav arrays` });
-})
+  await User.findOne({token:req.token}, async (err, user) => {
+    if(user.fav.includes(id)) {
+      await User.update({token}, {$pull: { fav: id}});
+      res.send({message: `${id} removed`}).sendStatus(200);
+    }else {
+      await User.update({token}, { $addToSet: { fav: id}});
+      res.send({message: `${id} added`}).sendStatus(200);
+    }
+  })
 
+});
 
-// PersonModel.update(
-//   { _id: person._id },
-//   { $push: { friends: friend } },
-//   done
-// );
-
-// app.post('/todos', authenticate, async (req,res) => {
-//   const todo = new Todo({
-//       text: req.body.text,
-//       _creator: req.user._id
-//   });
-
-//   try {
-//         const doc = await todo.save();
-//         res.send(doc);
-//   } catch (e) {
-//      res.status(400).send(e);
-//   }
-
-// });
-
-router.get('/favorites',authorize, (req,res) => {
-  res.send('FAVORITES');
+router.get('/favorites',authorize, async (req,res) => {
+  const token = req.token;
+  await User.findOne({token}, async (err,user) => {
+    res.send({fav: user.fav}).sendStatus(200);
+  });
 })
 
 export default router;

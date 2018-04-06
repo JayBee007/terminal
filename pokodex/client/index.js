@@ -11,8 +11,11 @@ import { setAuthToken } from './src/utils/request';
 
 sagaMiddleware.run(rootSaga);
 
-const token = JSON.parse(localStorage.getItem("state")).auth.token;
-setAuthToken(token);
+const state = JSON.parse(localStorage.getItem("state"))
+
+if(state) {
+  setAuthToken(state.auth.token);
+}
 
 store.subscribe(throttle(() => {
   saveState({

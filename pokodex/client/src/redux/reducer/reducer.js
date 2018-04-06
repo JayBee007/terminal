@@ -2,12 +2,12 @@ import { combineReducers } from 'redux';
 
 import auth from './authReducer';
 import login from './loginReducer';
-import pokemon from './getPokemonReducer';
+import pokemons from './getPokemonReducer';
 
 const rootReducer = combineReducers({
   auth,
   login,
-  pokemon,
+  pokemons,
 
 });
 
