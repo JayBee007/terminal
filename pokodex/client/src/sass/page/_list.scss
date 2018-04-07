@@ -1,7 +1,19 @@
 .list {
   display: flex;
-  padding-top: 10px;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin: 0 auto;
+  flex-direction: column;
+
+  &__meta {
+    display: flex;
+    flex-shrink: 0;
+    justify-content: space-evenly;
+    padding-bottom: 2rem;
+  }
+
+  &__card {
+    display: flex;
+    flex: 1;
+    overflow:auto;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
 }
