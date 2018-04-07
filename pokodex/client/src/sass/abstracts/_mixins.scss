@@ -4,3 +4,18 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+@mixin inputStyles {
+    display: block;
+    border: 1px solid $color-red;
+    border-radius: 4px;
+    padding: 10px 25px;
+    outline: none;
+    font-size: 2.5rem;
+    transition: all .2s;
+    color: inherit;
+    &:focus {
+      border: 1px solid $color-dark-yellow;
+      box-shadow: 0 0 .2rem rgba($color-dark-yellow, 0.5);
+  }
+}

@@ -5,8 +5,9 @@
   &__meta {
     display: flex;
     flex-shrink: 0;
-    justify-content: space-evenly;
-    padding-bottom: 2rem;
+    justify-content: space-between;
+    padding: 5rem 1rem 2rem;
+    flex-wrap: wrap;
   }
 
   &__card {

@@ -1,0 +1,31 @@
+.pagination {
+  width: 15rem;
+  padding-left: 1.8rem;
+  padding-right: 1.8rem;
+  position: relative;
+  text-align: center;
+  &__input {
+    @include inputStyles;
+    display: inline-block;
+    width: 4rem;
+    padding:.5rem 1rem;
+    font-size: 1.2rem;
+  }
+
+  &__nav {
+    cursor: pointer;
+    font-size: 3.5rem;
+    position: absolute;
+    color: $color-dark-red;
+    font-weight: 900;
+    top:25%;
+    transform: translateY(-50%);
+    &--right {
+      right: 0;
+    }
+
+    &--left {
+      left: 0;
+    }
+  }
+}

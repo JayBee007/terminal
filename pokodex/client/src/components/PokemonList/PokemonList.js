@@ -5,13 +5,61 @@ import Loader from '../Loader';
 import Card from './components/Card';
 import Error from '../Error';
 import Search from '../Search';
+import Pagination from '../Pagination';
 
 import { getPokemonRequest } from '../../redux/action';
 
 class PokemonList extends React.Component {
 
   state = {
-    pokemons: this.props.pokemons.data
+    pokemons: this.props.pokemons.data,
+    // offset: 0,
+    limit: 20,
+    currentPage: 0,
+  }
+
+  changeLimit = (limit) => {
+    console.log(limit);
+    const { getPokemonRequest } = this.props;
+    this.setState((prevState) => ({
+      currentPage: 0,
+      limit: limit
+    }),() => {
+      const {currentPage, limit } = this.state;
+      const offset = currentPage * limit;
+      getPokemonRequest(limit,offset);
+    })
+  }
+
+  handleNext = () => {
+    const { getPokemonRequest } = this.props;
+    this.setState((prevState) => {
+      return {
+        currentPage:prevState.currentPage + 1
+      }
+    },() => {
+      const {currentPage, limit } = this.state;
+      const offset = currentPage * limit;
+      getPokemonRequest(limit,offset);
+    })
+  }
+
+  handlePrev = () => {
+    const { getPokemonRequest } = this.props;
+    this.setState((prevState) => {
+      if(prevState.currentPage === 0) {
+        return {
+          currentPage: prevState.currentPage
+        }
+      }
+      return {
+        currentPage:prevState.currentPage - 1
+      }
+    },() => {
+      const {currentPage, limit } = this.state;
+      const offset = currentPage * limit;
+      getPokemonRequest(limit,offset);
+    })
   }
 
   componentDidMount() {
@@ -56,6 +104,7 @@ class PokemonList extends React.Component {
         <section className="list">
         <div className="list__meta">
           <Search filterPokemon={this.searchFilter} />
+          <Pagination next={this.handleNext} prev={this.handlePrev} changeLimit={this.changeLimit} />
         </div>
 
         {
