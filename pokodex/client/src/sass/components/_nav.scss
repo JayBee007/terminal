@@ -2,6 +2,7 @@
   height: 65px;
   background: $color-red;
   display: flex;
+  flex-shrink: 0;
   justify-content: space-around;
   align-items: center;
   border-bottom: 4px solid $color-dark-red;
