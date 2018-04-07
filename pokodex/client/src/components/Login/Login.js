@@ -6,6 +6,7 @@ import { loginRequest, loginError } from '../../redux/action';
 import { FACEBOOK_APP_ID } from '../../config/config';
 
 import Nav from '../Nav';
+import Loader from '../Loader';
 
 class Login extends Component {
 
@@ -34,19 +35,23 @@ class Login extends Component {
         const { accessToken } = response.authResponse;
         this.props.loginRequest(accessToken);
       }else {
-        this.props.loginError('User not signed in');
+        this.props.loginError({name: 'Not logged in', message: 'User not signed in'});
       }
     }, {scope: 'public_profile,email'});
   }
 
   render() {
+    const { login } = this.props;
+    const { errors, requesting } = login;
     return(
       <div className="container">
         <Nav />
-
+        { requesting &&
+          <Loader isLoading={requesting} />
+        }
         <div className="login">
           <button onClick={this.handeClick} className="login__btn">Login by Facebook</button>
-          <span className="login__error">{this.props.errors}</span>
+          { errors && <span className="login__error">{errors.name} - {errors.message}</span> }
         </div>
 
       </div>
@@ -56,7 +61,7 @@ class Login extends Component {
 
 function mapStateToProps(state) {
   return {
-    errors: state.login.errors
+    login: state.login
   }
 }
 

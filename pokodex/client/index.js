@@ -21,7 +21,10 @@ store.subscribe(throttle(() => {
   saveState({
     auth: store
       .getState()
-      .auth
+      .auth,
+    pokemons: store
+      .getState()
+      .pokemons
   });
 }, 1000));
 

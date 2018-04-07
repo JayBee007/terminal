@@ -7,14 +7,11 @@ import { authenticated, unauthenticated} from '../action';
 function getPokemonApi(limit, offset) {
 
   // return request.get(`http://localhost:3000/pokemons/list/?limit=${limit}&offset=${offset}`).then(res => {
-  return request.get(`https://pokodex.herokuapp.com/pokemons/list/?limit=${limit}&offset=${offset}`).then(res => {
-      if(res.status !== 200) {
-        throw new Error('Something went wrong');
-      }
-    return res.data;
-  }).catch(err => {
-    return err;
-  })
+    return request.get(`https://pokodex.herokuapp.com/pokemons/list/?limit=${limit}&offset=${offset}`).then(res => {
+      return res.data;
+    }).catch(err => {
+      throw err.response.data;
+    });
 }
 
 
@@ -22,7 +19,6 @@ function* getPokemonFlow(limit,offset) {
   let result;
   try {
     result = yield call(getPokemonApi, limit, offset)
-
     yield put({ type: C.GET_POKEMON_SUCCESS, data:result });
   }catch (errors) {
     yield put({ type: C.GET_POKEMON_ERROR, errors })
