@@ -1,8 +1,14 @@
 import React from 'react';
+import { connect } from 'react-redux';
+
+import { likePokemonRequest } from '../../../redux/action';
 
 const Card = (props) => {
-
-  const { avatar, types, abilities, name, id, filterByTags} = props;
+  const addToFavorites = () => {
+    const { id, name, avatar, abilities, types } = props;
+    props.likePokemonRequest(id,name,avatar,abilities,types);
+  }
+  const { avatar, types, abilities, name, id, isFav, filterByTags} = props;
   return(
     <div className="card">
 
@@ -28,9 +34,12 @@ const Card = (props) => {
           types.map((type, i) => (<button className="card__btn" key={i} onClick={() => filterByTags(type)}>{type}</button>))
         }
       </div>
+      <div onClick={addToFavorites} className="card__like">
+        <span className={isFav ? "fas fa-heart": "far fa-heart"}></span>
+      </div>
 
     </div>
   )
 }
 
-export default Card;
+export default connect(null, { likePokemonRequest })(Card);

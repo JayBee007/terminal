@@ -1,12 +1,12 @@
 .list {
   display: flex;
   flex-direction: column;
-
+  padding-top: 10px;
   &__meta {
     display: flex;
     flex-shrink: 0;
     justify-content: space-between;
-    padding: 5rem 1rem 2rem;
+    padding: 0 1rem 2rem;
     flex-wrap: wrap;
   }
 
@@ -16,5 +16,11 @@
     overflow:auto;
     flex-wrap: wrap;
     justify-content: center;
+  }
+
+  @include response(phone) {
+    &__card {
+      justify-content: space-around;
+    }
   }
 }

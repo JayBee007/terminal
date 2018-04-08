@@ -9,8 +9,16 @@
   margin-bottom: 10px;
   transition: all .2s;
   box-shadow: 0 0px 1px .15rem rgba(0,0,0,0.16);
+  display: flex;
+  flex-direction: column;
   &:not(:last-child) {
     margin-right: 10px;
+  }
+
+  @include response(phone) {
+    &:not(:last-child) {
+      margin-right: 0;
+    }
   }
 
   &:hover {
@@ -51,6 +59,14 @@
     &:hover {
       transform: translateY(-.1rem);
     }
+  }
+
+  &__like {
+    color: $color-dark-red;
+    font-size: 2.5rem;
+    cursor: pointer;
+    margin-top: auto;
+    transition: all .2s;
   }
 
 }

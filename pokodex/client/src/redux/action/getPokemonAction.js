@@ -5,3 +5,8 @@ export const getPokemonRequest = (limit, offset) => ({
   limit,
   offset
 });
+
+export const getPokemonUpdate = (pokemon) => ({
+  type: C.GET_POKEMON_UPDATE,
+  pokemon
+});
