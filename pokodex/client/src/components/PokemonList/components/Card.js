@@ -1,8 +1,8 @@
 import React from 'react';
 
 const Card = (props) => {
-  // const { pokemon } = props;
-  const { avatar, types, abilities, name, id} = props;
+
+  const { avatar, types, abilities, name, id, filterByTags} = props;
   return(
     <div className="card">
 
@@ -16,16 +16,16 @@ const Card = (props) => {
       </div>
 
       <div className="card__ability">
-        <p className="card__sec-text">type</p>
+        <p className="card__sec-text">ability</p>
         {
-          abilities.map((ability, i) => (<button className="card__btn" key={i}>{ability}</button>))
+          abilities.map((ability, i) => (<button className="card__btn" key={i} onClick={() => filterByTags(ability)}>{ability}</button>))
         }
       </div>
 
       <div className="card__type">
-        <p className="card__sec-text">ability</p>
+        <p className="card__sec-text">type</p>
         {
-          types.map((type, i) => (<button className="card__btn" key={i}>{type}</button>))
+          types.map((type, i) => (<button className="card__btn" key={i} onClick={() => filterByTags(type)}>{type}</button>))
         }
       </div>
 

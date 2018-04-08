@@ -10,7 +10,7 @@ function getPokemonApi(limit, offset) {
     return request.get(`https://pokodex.herokuapp.com/pokemons/list/?limit=${limit}&offset=${offset}`).then(res => {
       return res.data;
     }).catch(err => {
-      throw err.response.data;
+      throw err.response
     });
 }
 
@@ -32,12 +32,7 @@ function* pokemonWatcher () {
   while (true) {
 
     const { limit, offset } = yield take(C.GET_POKEMON_REQUEST);
-
     const task = yield fork(getPokemonFlow, limit, offset);
-
-    const action = yield take([C.GET_POKEMON_ERROR]);
-
-    if (action.type === C.GET_POKEMON_ERROR) yield cancel(task);
 
   }
 
