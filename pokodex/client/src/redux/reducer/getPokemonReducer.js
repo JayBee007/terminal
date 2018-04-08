@@ -15,6 +15,8 @@ const getPokemonReducer = (state=initialState, action) => {
       return {...state, requesting: false, successful: true, errors: false, data: action.data};
     case C.GET_POKEMON_ERROR:
       return {...state, requesting: false, successful: false, errors: action.errors}
+    case C.UNAUTHENTICATED:
+      return {...initialState};
     default:
       return state;
   }
