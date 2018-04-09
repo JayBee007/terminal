@@ -9,7 +9,7 @@ const Search = (props) => {
 
   return(
       <form className="search">
-        <input className="search__input" type="text" onChange={handleOnChange} />
+        <input placeholder="Search Pokemons...." className="search__input" type="text" onChange={handleOnChange} />
       </form>
   )
 }

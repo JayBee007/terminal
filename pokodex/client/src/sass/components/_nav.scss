@@ -18,6 +18,12 @@
     }
   }
 
+  @include response(phone) {
+    &__title {
+      display: none;
+    }
+  }
+
   &__nav {
     list-style: none;
     height: 100%;

@@ -13,11 +13,10 @@ class PokemonList extends React.Component {
 
   state = {
     pokemons: this.props.pokemons.data,
-    // offset: 0,
     limit: 20,
     currentPage: 0,
   }
-
+  /* Paginatin Start */
   changeLimit = (limit) => {
     console.log(limit);
     const { getPokemonRequest } = this.props;
@@ -61,6 +60,7 @@ class PokemonList extends React.Component {
       getPokemonRequest(limit,offset);
     })
   }
+  /* Paginatin End */
 
   componentDidMount() {
     const { getPokemonRequest, pokemons } = this.props;
@@ -104,7 +104,10 @@ class PokemonList extends React.Component {
         <section className="list">
         <div className="list__meta">
           <Search filterPokemon={this.searchFilter} />
-          <Pagination next={this.handleNext} prev={this.handlePrev} changeLimit={this.changeLimit} />
+          <Pagination
+            next={this.handleNext}
+            prev={this.handlePrev}
+            changeLimit={this.changeLimit} />
         </div>
 
         {
@@ -120,6 +123,7 @@ class PokemonList extends React.Component {
                    abilities={pokemon.abilities}
                    types={pokemon.types}
                    id={pokemon.id}
+                   isFav={pokemon.isFav}
                    filterByTags={this.filterByTags} />
            ))
         }

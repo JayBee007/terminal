@@ -37,17 +37,19 @@ app.use(bodyParser.json());
 app.use(passport.initialize());
 
 app.use(morgan('dev'));
-// app.use(express.static(path.join(__dirname, '../client/')));
 
+app.use(express.static(path.join(__dirname, 'build/')));
 
-// app.get('*', (req,res) => {
-//   res.sendFile(path.join(__dirname, '../client/index.html'));
-// });
 app.get('/', (req,res) => {
-  res.send('hello');
-})
+  res.sendFile(path.join(__dirname, 'build/index.html'));
+});
+
 app.use('/auth', authRoutes);
 app.use('/pokemons', apiRoutes);
+
+app.get('*', (req,res) => {
+  res.sendFile(path.join(__dirname, 'build/index.html'));
+});
 
 app.listen(PORT, () => {
   console.log(`Server running on ${PORT}`);

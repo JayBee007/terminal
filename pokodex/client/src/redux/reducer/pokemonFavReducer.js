@@ -7,13 +7,13 @@ const initialState = {
   data: []
 }
 
-const getPokemonReducer = (state=initialState, action) => {
+const pokemonFavReducer = (state=initialState, action) => {
   switch(action.type) {
-    case C.GET_POKEMON_REQUEST:
+    case C.GET_POKEMON_FAV_REQUEST:
       return {...state, requesting: true, successful: false, errors: false};
-    case C.GET_POKEMON_SUCCESS:
+    case C.GET_POKEMON_FAV_SUCCESS:
       return {...state, requesting: false, successful: true, errors: false, data: action.data};
-    case C.GET_POKEMON_ERROR:
+    case C.GET_POKEMON_FAV_ERROR:
       return {...state, requesting: false, successful: false, errors: action.errors}
     case C.GET_POKEMON_UPDATE:
       const data = state.data.map(pokemon => {
@@ -24,11 +24,9 @@ const getPokemonReducer = (state=initialState, action) => {
         }
       });
       return {...state, data};
-    case C.UNAUTHENTICATED:
-      return {...initialState};
     default:
       return state;
   }
 }
 
-export default getPokemonReducer;
+export default pokemonFavReducer;

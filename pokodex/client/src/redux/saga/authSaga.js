@@ -6,8 +6,8 @@ import C from '../constant';
 import { authenticated, unauthenticated} from '../action';
 
 function loginApi(accessToken) {
-
-  return request.post('https://pokodex.herokuapp.com/auth/facebook', {access_token:accessToken}).then(res => {
+  // return request.post('http://localhost:3000/auth/facebook', {access_token:accessToken}).then(res => {
+  return request.post('/auth/facebook', {access_token:accessToken}).then(res => {
     return res.headers['x-auth-token'];
   }).catch(err => {
     throw err;
