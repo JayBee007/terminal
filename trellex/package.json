@@ -1,0 +1,16 @@
+{
+  "name": "trellex",
+  "version": "0.0.1",
+  "description": "Flex Trellex",
+  "main": "index.js",
+  "scripts": {
+    "watch:sass": "node-sass sass/main.scss css/style.css -w",
+    "live-server": "live-server",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Javed",
+  "license": "MIT",
+  "devDependencies": {
+    "node-sass": "^4.8.3"
+  }
+}
