@@ -5,13 +5,41 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
-  <link rel="stylesheet" href="styles.csss">
+  <link rel="stylesheet" href="styles.css">
   <title>Note Master</title>
   <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
 </head>
 <body>
   <div id="app">
     <h3>{{title}}</h3>
+    <div class="form">
+
+      <div class="form-group">
+        <label for="">Note Title</label>
+        <input class="form-control" type="text" v-model="note.title">
+      </div>
+
+      <div class="form-group">
+        <label for="">Note Text</label>
+        <textarea class="form-control" v-model="note.text"></textarea>
+      </div>
+
+      <button class="btn btn-primary" @click="addNote">Submit</button>
+    </div>
+
+    <div class="col-sm-12">
+        <div class="col-sm-4 note"  v-for="(note, index) in notes">
+          <div class="card">
+            <div class="card-block">
+              <button class="close" @click="removeNote(index)">&times;</button>
+              <h4 class="card-title">{{note.title}}</h4>
+              <h6 class="card-subtitle mb-2 text-muted">{{note.date}}</h6>
+              <p class="card-text">{{note.text}}</p>
+            </div>
+          </div>
+        </div>
+    </div>
+
   </div>
 </body>
 <script src="app.js"></script>
