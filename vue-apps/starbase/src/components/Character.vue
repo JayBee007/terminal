@@ -20,7 +20,8 @@ import axios from 'axios';
     props: ['id'],
     data() {
       return {
-        character: {}
+        character: {},
+        // type: this.$route.params.type
       }
     },
     methods: {
