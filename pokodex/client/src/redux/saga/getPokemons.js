@@ -6,8 +6,8 @@ import { authenticated, unauthenticated} from '../action';
 
 function getPokemonApi(limit, offset) {
 
-  // return request.get(`http://localhost:3000/pokemons/list/?limit=${limit}&offset=${offset}`).then(res => {
-    return request.get(`/pokemons/list/?limit=${limit}&offset=${offset}`).then(res => {
+  return request.get(`http://localhost:3000/pokemons/list/?limit=${limit}&offset=${offset}`).then(res => {
+    // return request.get(`/pokemons/list/?limit=${limit}&offset=${offset}`).then(res => {
       return res.data;
     }).catch(err => {
       throw err.response.data;

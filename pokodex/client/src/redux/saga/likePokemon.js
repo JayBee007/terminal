@@ -6,8 +6,8 @@ import { authenticated, unauthenticated, getPokemonUpdate} from '../action';
 
 function likePokemonApi(id, name, avatar, abilities, types) {
   const data = {id, name, avatar, abilities, types};
-  // return request.post('http://localhost:3000/pokemons/favorites', data).then(res => {
-    return request.post(`/pokemons/favorites`, data).then(res => {
+  return request.post('http://localhost:3000/pokemons/favorites', data).then(res => {
+    // return request.post(`/pokemons/favorites`, data).then(res => {
       return res.data;
     }).catch(err => {
       throw err.response.data;
