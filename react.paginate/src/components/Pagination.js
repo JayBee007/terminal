@@ -69,7 +69,7 @@ class Pagination extends Component {
     this.gotoPage(this.state.currentPage + this.pageNeighbours * 2 + 1);
   };
 
-  fetchPageNummbers = () => {
+  fetchPageNumbers = () => {
     const totalPages = this.totalPages;
     const currentPage = this.state.currentPage;
     const pageNeighbours = this.pageNeighbours;
