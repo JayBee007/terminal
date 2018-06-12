@@ -5,8 +5,8 @@ import C from '../constant';
 
 function favPokemonApi() {
 
-  // return request.get('http://localhost:3000/pokemons/favorites').then(res => {
-    return request.get(`/pokemons/favorites`).then(res => {
+  return request.get('http://localhost:3000/pokemons/favorites').then(res => {
+    // return request.get(`/pokemons/favorites`).then(res => {
       return res.data;
     }).catch(err => {
       throw err.response.data;
