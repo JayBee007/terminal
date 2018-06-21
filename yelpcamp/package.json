@@ -6,14 +6,16 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "babel-node app.js --presets es2015,stage-2",
-    "start:nodemon": "nodemon app.js --exec babel-node --presets es2015,stage-2"
+    "start:nodemon": "nodemon app.js --exec babel-node --presets es2015,stage-2",
+    "start:mongo": "mongod -dbpath E:\\projects\\code\\fcc\\practice\\terminal\\yelpcamp\\data"
   },
   "author": "Javed",
   "license": "MIT",
   "dependencies": {
     "body-parser": "^1.18.3",
     "ejs": "^2.6.1",
-    "express": "^4.16.3"
+    "express": "^4.16.3",
+    "mongoose": "^5.1.6"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
