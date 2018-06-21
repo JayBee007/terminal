@@ -2,17 +2,8 @@ import express from "express";
 import morgan from "morgan";
 import bodyParser from "body-parser";
 
-let campgrounds = [
-  {name: "Salmon Creek", image: "https://pixabay.com/get/eb3db30a29fd063ed1584d05fb1d4e97e07ee3d21cac104497f9c471a7eab0bd_340.jpg"},
-  {name: "Mountain Goat's Rest", image: "https://pixabay.com/get/e83db80d2cfd053ed1584d05fb1d4e97e07ee3d21cac104497f9c471a7eab0bd_340.jpg"},
-  {name: "Granite Hill", image: "https://pixabay.com/get/e833b3092cf5033ed1584d05fb1d4e97e07ee3d21cac104497f9c471a7eab0bd_340.jpg"},
-  {name: "Salmon Creek", image: "https://pixabay.com/get/eb3db30a29fd063ed1584d05fb1d4e97e07ee3d21cac104497f9c471a7eab0bd_340.jpg"},
-  {name: "Granite Hill", image: "https://pixabay.com/get/e833b3092cf5033ed1584d05fb1d4e97e07ee3d21cac104497f9c471a7eab0bd_340.jpg"},
-  {name: "Salmon Creek", image: "https://pixabay.com/get/eb3db30a29fd063ed1584d05fb1d4e97e07ee3d21cac104497f9c471a7eab0bd_340.jpg"},
-  {name: "Mountain Goat's Rest", image: "https://pixabay.com/get/e83db80d2cfd053ed1584d05fb1d4e97e07ee3d21cac104497f9c471a7eab0bd_340.jpg"},
-  {name: "Granite Hill", image: "https://pixabay.com/get/e833b3092cf5033ed1584d05fb1d4e97e07ee3d21cac104497f9c471a7eab0bd_340.jpg"},
-  {name: "Mountain Goat's Rest", image: "https://pixabay.com/get/e83db80d2cfd053ed1584d05fb1d4e97e07ee3d21cac104497f9c471a7eab0bd_340.jpg"},
-]
+import "./db";
+import Campground from "./models/campground";
 
 const app = express();
 
@@ -33,7 +24,10 @@ app.post("/campgrounds", (req,res) => {
 
 
 app.get("/campgrounds", (req,res) => {
-  res.render("campgrounds", { campgrounds });
+  Campground.find((err, campgrounds) => {
+    if(err) res.json(err);
+    res.render("campgrounds", { campgrounds });
+  })
 });
 
 app.get("/campgrounds/new", (req,res) => {
