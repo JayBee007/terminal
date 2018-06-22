@@ -3,7 +3,9 @@ import morgan from "morgan";
 import bodyParser from "body-parser";
 
 import "./db";
-import Campground from "./models/campground";
+
+// Routes;
+import campgroundsRoutes from "./routes/campgrounds-routes";
 
 const app = express();
 
@@ -16,24 +18,7 @@ app.get("/", (req,res) => {
   res.render("landing");
 });
 
-
-app.post("/campgrounds", (req,res) => {
-  campgrounds.push(req.body);
-  res.redirect("campgrounds");
-});
-
-
-app.get("/campgrounds", (req,res) => {
-  Campground.find((err, campgrounds) => {
-    if(err) res.json(err);
-    res.render("campgrounds", { campgrounds });
-  })
-});
-
-app.get("/campgrounds/new", (req,res) => {
-  res.render("new");
-});
-
+app.use("/campgrounds", campgroundsRoutes);
 
 
 app.listen(4000, () => {
