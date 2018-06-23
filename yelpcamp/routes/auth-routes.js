@@ -9,12 +9,19 @@ import User from '../models/user';
 const router = express.Router();
 
 router.get('/login', (req,res) => {
-
+  res.render('auth/login');
 });
 
 
+router.post('/login',
+  passport.authenticate('local',
+    { successRedirect: '/campgrounds',
+      failureRedirect: '/auth/login'
+    })
+);
+
 router.get('/signup', (req,res) => {
-  res.render("auth/signup");
+  res.render('auth/signup');
 });
 
 router.post('/signup', (req,res) => {
@@ -28,9 +35,9 @@ router.post('/signup', (req,res) => {
   })
 });
 
-
 router.get('/logout', (req,res) => {
-
+  req.logout();
+  res.redirect('/');
 });
 
 export default router;
