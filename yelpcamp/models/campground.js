@@ -1,9 +1,15 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const CampgroundSchema = new mongoose.Schema({
   name: String,
   image: String,
-  description: String
+  description: String,
+  comments: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Comment'
+    }
+  ]
 });
 
 const Campground = mongoose.model('Campground', CampgroundSchema);

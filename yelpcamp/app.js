@@ -4,25 +4,47 @@
 import express from 'express';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
+import passport from 'passport';
+import LocalStrategy from 'passport-local';
+import expressSession from 'express-session';
 
 import './db';
 
-// Routes;
+// routes
 import campgroundsRoutes from './routes/campgrounds-routes';
+import authRoutes from './routes/auth-routes';
+
+// models
+import User from './models/user';
+
+import seedDB from './seed';
+
+seedDB();
 
 const app = express();
 
+app.set('view engine', 'ejs');
+
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(expressSession({
+  secret: 'onceuponatimeinfifa',
+  resave: false,
+  saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
-app.set('view engine', 'ejs');
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 app.get('/', (req, res) => {
   res.render('landing');
 });
 
 app.use('/campgrounds', campgroundsRoutes);
-
+app.use('/auth', authRoutes);
 
 app.listen(4000, () => {
   console.log('app running');
