@@ -7,8 +7,12 @@ import bodyParser from 'body-parser';
 
 import './db';
 
-// Routes;
+// routes
 import campgroundsRoutes from './routes/campgrounds-routes';
+
+import seedDB from './seed';
+
+seedDB();
 
 const app = express();
 

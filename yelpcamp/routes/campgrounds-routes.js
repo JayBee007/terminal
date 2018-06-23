@@ -33,11 +33,10 @@ router.get('/new', (req, res) => {
 
 router.get('/:id', (req, res) => {
   // Adventure.findById(id, function (err, adventure) {});
-  Campground.findById(req.params.id, (err, campground) => {
-    if (err) res.send(err).status(500);
-    res.render('show', { campground });
+  Campground.findById(req.params.id).populate('comments').exec((err, campground) => {
+    if(err) res.send(err).status(500);
+    res.render('show', { campground});
   });
 });
-
 
 export default router;
