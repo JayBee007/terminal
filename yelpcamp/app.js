@@ -1,12 +1,13 @@
 /* eslint import/no-extraneous-dependencies: 0 */
 /* eslint no-console: 0 */
 
-import express from 'express';
-import morgan from 'morgan';
-import bodyParser from 'body-parser';
-import passport from 'passport';
-import LocalStrategy from 'passport-local';
+import express        from 'express';
+import morgan         from 'morgan';
+import bodyParser     from 'body-parser';
+import passport       from 'passport';
+import LocalStrategy  from 'passport-local';
 import expressSession from 'express-session';
+import methodOverride from 'method-override';
 
 import './db';
 
@@ -29,6 +30,8 @@ const app = express();
 
 app.set('view engine', 'ejs');
 
+app.use(express.static(`${__dirname}/public`));
+app.use(methodOverride('_method'));
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(expressSession({
