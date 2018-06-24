@@ -21,7 +21,10 @@
               <p>$9.00/night</p>
             </div>
             <p class="card-text"><%= campground.description %></p>
-            <a class="btn btn-warning" href="/campgrounds/<%= campground._id %>/comments/new">Add Comment</a>
+            <div class="d-flex justify-content-between">
+              <a class="btn btn-warning" href="/campgrounds/<%= campground._id %>/comments/new">Add Comment</a>
+              <a class="btn btn-info" href="/campgrounds/<%= campground._id %>/edit">Edit Campground</a>
+            </div>
           </div>
         </div>
 
