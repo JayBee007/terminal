@@ -1,4 +1,7 @@
+/* eslint no-console: 0 */
 import mongoose from "mongoose";
+
+mongoose.Promise = global.Promise;
 
 mongoose.connect("mongodb://localhost/yelpcamp");
 

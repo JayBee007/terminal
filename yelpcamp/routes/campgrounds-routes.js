@@ -52,32 +52,44 @@ router.get('/:id', (req, res) => {
 });
 
 // edit single campground form
-router.get('/:id/edit', (req,res) => {
-  Campground.findById(req.params.id, (err, campground) => {
-    if(err) res.send(err).status(500);
-    res.render('campgrounds/edit', { campground });
-  });
+router.get('/:id/edit', isLoggedIn, (req,res) => {
+  Campground.findByUserId(req.params.id, req.user._id)
+    .then(campground => {
+      res.render('campgrounds/edit', { campground });
+    })
+    .catch(() => {
+      res.redirect(`/campgrounds/${req.params.id}`);
+    });
 });
 
 // update single campground
-router.put('/:id', (req,res) => {
+router.put('/:id', isLoggedIn, (req,res) => {
   const { name, image, description } = req.body;
-  Campground.findByIdAndUpdate(req.params.id,{
-    name,
-    image,
-    description
-  }, (err, campground) => {
-    if(err) res.send(err).status(500);
-    res.redirect(`/campgrounds/${campground._id}`);
-  })
+  Campground.findByUserId(req.params.id, req.user._id)
+    .then(() => {
+      Campground.findByIdAndUpdate(req.params.id,{ name, image, description},(err, campground) => {
+        if(err) res.send(err).status(500);
+        res.redirect(`/campgrounds/${campground._id}`);
+      })
+    })
+    .catch(() => {
+      res.redirect('back');
+    });
+
 });
 
 // destroy single campground
-router.delete('/:id', (req,res) => {
-  Campground.findByIdAndRemove(req.params.id, (err) => {
-    if(err) res.send(err).status(500);
-    res.redirect('/campgrounds');
-  })
+router.delete('/:id', isLoggedIn, (req,res) => {
+  Campground.findByUserId(req.params.id, req.user._id)
+    .then(() => {
+      Campground.findByIdAndRemove(req.params.id, (err) => {
+        if(err) res.send(err).status(500);
+        res.redirect('/campgrounds');
+      })
+    })
+    .catch(() => {
+      res.redirect('back');
+    })
 });
 
 export default router;

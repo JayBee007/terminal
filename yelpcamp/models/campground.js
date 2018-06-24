@@ -19,6 +19,40 @@ const CampgroundSchema = new mongoose.Schema({
   ]
 });
 
+CampgroundSchema.statics.findByUserId = function findByUserId(campgroundId, userId) {
+  const Campground = this;
+
+  return new Promise((resolve, reject) => {
+    Campground.findById(campgroundId)
+      .then(campground => {
+        if(!campground) return reject(new Error('No campground found'));
+
+        if(campground.author.id.equals(userId)) {
+          return resolve(campground);
+        }
+
+        return reject( new Error('Unauthorized access'));
+      })
+  })
+
+  // return Campground.findById(campgroundId)
+  //   .then(campground => {
+  //     if(!campground) {
+  //       return Promise.reject(new Error('No campground found'));
+  //     }
+
+  //     return new Promise((resolve, reject) => {
+  //       if(campground.author.id.equals(userId)) {
+  //         resolve(campground);
+  //       }else {
+  //         reject( new Error('Unauthorized access'));
+  //       }
+  //     })
+  //   }).catch(err => Promise.reject(err));
+
+};
+
+
 const Campground = mongoose.model('Campground', CampgroundSchema);
 
 // Campground.create({
