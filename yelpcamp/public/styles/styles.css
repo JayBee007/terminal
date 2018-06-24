@@ -1,0 +1,37 @@
+.campground-title {
+  position: relative;
+}
+
+.campground-title p {
+  margin: 0;
+}
+
+.campground-delete_form {
+  position: absolute;
+  top: -16px;
+  right: -30px;
+}
+
+.cross-icon {
+  /* display: none; */
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  color: white;
+  position: relative;
+}
+
+.cross-icon::before {
+  content: "x";
+  height: 24px;
+  width: 24px;
+  border-radius: 50%;
+  /* position: absolute; */
+  text-align: center;
+  line-height: 24px;
+  display: inline-block;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
