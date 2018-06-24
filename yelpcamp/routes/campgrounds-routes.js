@@ -72,4 +72,12 @@ router.put('/:id', (req,res) => {
   })
 });
 
+// destroy single campground
+router.delete('/:id', (req,res) => {
+  Campground.findByIdAndRemove(req.params.id, (err) => {
+    if(err) res.send(err).status(500);
+    res.redirect('/campgrounds');
+  })
+});
+
 export default router;

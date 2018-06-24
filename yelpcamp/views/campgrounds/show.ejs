@@ -15,11 +15,17 @@
         <div class="card mb-4">
           <img class="card-img-top" src="<%= campground.image %>" />
           <div class="card-body">
+
             <div class="card-title d-flex justify-content-between font-weight-bold" style="font-size: 1.6rem;">
-              <p><%= campground.name %><br />
-              <span class="text-muted" style="font-size: 0.6em;font-weight:normal;  "><em>submitted by <%= campground.author.username %></em></span></p>
+              <div class="campground-title">
+                <p><%= campground.name %></p>
+                <form class="campground-delete_form" action='/campgrounds/<%=campground._id%>?_method=DELETE' method='POST'>
+                  <button type="submit" class="btn btn-danger cross-icon"></button>
+                </form>
+              </div>
               <p>$9.00/night</p>
             </div>
+            <span class="text-muted" style="font-size: 0.6em;font-weight:normal; display:block;  "><em>submitted by <%= campground.author.username %></em></span>
             <p class="card-text"><%= campground.description %></p>
             <div class="d-flex justify-content-between">
               <a class="btn btn-warning" href="/campgrounds/<%= campground._id %>/comments/new">Add Comment</a>
