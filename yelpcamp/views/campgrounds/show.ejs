@@ -19,9 +19,11 @@
             <div class="card-title d-flex justify-content-between font-weight-bold" style="font-size: 1.6rem;">
               <div class="campground-title">
                 <p><%= campground.name %></p>
-                <form class="campground-delete_form" action='/campgrounds/<%=campground._id%>?_method=DELETE' method='POST'>
-                  <button type="submit" class="btn btn-danger cross-icon"></button>
-                </form>
+                <% if(user && campground.author.id.equals(user._id)) { %>
+                  <form class="campground-delete_form" action='/campgrounds/<%=campground._id%>?_method=DELETE' method='POST'>
+                    <button type="submit" class="btn btn-danger cross-icon"></button>
+                  </form>
+                <% } %>
               </div>
               <p>$9.00/night</p>
             </div>
@@ -29,7 +31,9 @@
             <p class="card-text"><%= campground.description %></p>
             <div class="d-flex justify-content-between">
               <a class="btn btn-warning" href="/campgrounds/<%= campground._id %>/comments/new">Add Comment</a>
-              <a class="btn btn-info" href="/campgrounds/<%= campground._id %>/edit">Edit Campground</a>
+              <% if(user && campground.author.id.equals(user._id)) { %>
+                <a class="btn btn-info" href="/campgrounds/<%= campground._id %>/edit">Edit Campground</a>
+              <% } %>
             </div>
           </div>
         </div>
