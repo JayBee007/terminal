@@ -3,6 +3,7 @@
 /* eslint no-underscore-dangle: 0 */
 
 import Campground from './models/campground';
+import Comment from './models/comment';
 
 export const isLoggedIn = (req,res,next) => {
   if(req.isAuthenticated()) {
@@ -22,6 +23,22 @@ export const checkCampgroundOwnership = (req,res,next) => {
       if(err) {
         res.redirect('back');
       }else if(campground.author.id.equals(req.user._id)) {
+          next();
+      }else {
+          res.redirect('back');
+      }
+    });
+  }else {
+    res.redirect('back');
+  }
+}
+
+export const checkCommentOwnership = (req,res,next) => {
+  if(req.isAuthenticated()) {
+    Comment.findById(req.params.comment_id, (err, comment) => {
+      if(err) {
+        res.redirect('back');
+      }else if(comment.author.id.equals(req.user._id)) {
           next();
       }else {
           res.redirect('back');
