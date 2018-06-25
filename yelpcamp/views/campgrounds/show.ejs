@@ -50,8 +50,9 @@
               </div>
             </div>
 
-            <div class="row">
-              <p class="col"><%= comment.text %></p>
+            <div>
+              <p><%= comment.text %></p>
+              <a class="btn btn-info btn-sm" href="/campgrounds/<%= campground._id %>/comments/<%= comment._id %>/edit">Edit</a>
             </div>
 
             <hr/>
