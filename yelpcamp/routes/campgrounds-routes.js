@@ -57,7 +57,8 @@ router.get('/:id/edit', isLoggedIn, (req,res) => {
     .then(campground => {
       res.render('campgrounds/edit', { campground });
     })
-    .catch(() => {
+    .catch((e) => {
+      req.flash('error', e);
       res.redirect(`/campgrounds/${req.params.id}`);
     });
 });
@@ -72,7 +73,8 @@ router.put('/:id', isLoggedIn, (req,res) => {
         res.redirect(`/campgrounds/${campground._id}`);
       })
     })
-    .catch(() => {
+    .catch((e) => {
+      req.flash('error', e);
       res.redirect('back');
     });
 
@@ -87,7 +89,8 @@ router.delete('/:id', isLoggedIn, (req,res) => {
         res.redirect('/campgrounds');
       })
     })
-    .catch(() => {
+    .catch((e) => {
+      req.flash('error', e);
       res.redirect('back');
     })
 });

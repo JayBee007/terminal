@@ -9,11 +9,14 @@ export const isLoggedIn = (req,res,next) => {
   if(req.isAuthenticated()) {
     return next();
   }
+  req.flash('error', 'Please login.');
   res.redirect('/auth/login');
 }
 
 export const addUserToReq = (req, res, next) => {
   res.locals.user = req.user;
+  res.locals.error = req.flash('error');
+  res.locals.success = req.flash('success');
   next();
 }
 
@@ -37,14 +40,17 @@ export const checkCommentOwnership = (req,res,next) => {
   if(req.isAuthenticated()) {
     Comment.findById(req.params.comment_id, (err, comment) => {
       if(err) {
+        req.flash('error', 'Permission denied');
         res.redirect('back');
       }else if(comment.author.id.equals(req.user._id)) {
           next();
       }else {
+          req.flash('error', 'Something went wrong!');
           res.redirect('back');
       }
     });
   }else {
+    req.flash('error', 'Please login');
     res.redirect('back');
   }
 }
