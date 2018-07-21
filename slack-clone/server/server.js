@@ -1,19 +1,22 @@
 /* eslint no-console: 0 */
 import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
+import path from 'path';
+import { fileLoader, mergeTypes, mergeResolvers } from 'merge-graphql-schemas';
 
-import typeDefs from './graphql/schema';
-import resolvers from './graphql/resolvers';
 import models from './db';
 
 const PORT = 4000;
 
+const typeDefs = mergeTypes(fileLoader(path.join(__dirname, './graphql/schema')));
+const resolvers = mergeResolvers(fileLoader(path.join(__dirname, './graphql/resolvers')));
+
 const app = express();
-const server = new ApolloServer({ typeDefs, resolvers });
+const server = new ApolloServer({ typeDefs, resolvers, context: { models, user: { id: 1 } } });
 
 server.applyMiddleware({ app });
 
-models.sequelize.sync({ force: true }).then(() => {
+models.sequelize.sync().then(() => {
   app.listen(PORT, () => {
     console.log('Server ready');
   });
