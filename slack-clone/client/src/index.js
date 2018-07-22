@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router} from 'react-router-dom';
+import CssBaseline from '@material-ui/core/CssBaseline';
 
 // Apollo
 import ApolloClient from 'apollo-boost';
@@ -15,6 +16,9 @@ const client = new ApolloClient({
 
 const App = () => (
   <ApolloProvider client={client}>
+    <React.Fragment>
+      <CssBaseline />
+    </React.Fragment>
     <Router>
       <Routes />
     </Router>
