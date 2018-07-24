@@ -1,4 +1,6 @@
 import React from 'react';
+import { Mutation } from 'react-apollo';
+import gql from 'graphql-tag';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
@@ -7,6 +9,14 @@ import Card from '@material-ui/core/Card';
 import Icon from '@material-ui/core/Icon';
 import { withStyles } from '@material-ui/core/styles';
 
+const REGISTER = gql`
+  mutation register($username: String!, $email: String!, $password: String!) {
+    register(username: $username, email: $email, password: $password) {
+      id
+      email
+    }
+  }
+`;
 
 class Register extends React.Component {
   state = {
@@ -25,42 +35,54 @@ class Register extends React.Component {
   render() {
     const { classes } = this.props
     return (
-      <Grid container className={classes.container} justify="center">
-        <Grid item xs={10} sm={6} md={3}>
-          <Card className={classes.root}>
-            <Typography variant="headline" align="center">Register</Typography>
-            <form>
-              <TextField
-                fullWidth
-                id="username"
-                label="Username"
-                margin="normal"
-                onChange={this.handeOnChange}
-              />
-              <TextField
-                fullWidth
-                type="email"
-                id="email"
-                label="Email"
-                margin="normal"
-                onChange={this.handeOnChange}
-              />
-              <TextField
-                fullWidth
-                type="password"
-                id="password"
-                label="Password"
-                margin="normal"
-                onChange={this.handeOnChange}
-              />
-              <Button variant="contained" color="primary" fullWidth>
-                Register
-                <Icon className={classes.icon}>send</Icon>
-              </Button>
-            </form>
-          </Card>
-        </Grid>
-      </Grid>
+      <Mutation mutation={REGISTER} update={({data}) => {console.log(data)}}>
+      {(register) => (
+        <Grid container className={classes.container} justify="center">
+          <Grid item xs={10} sm={6} md={3}>
+            <Card className={classes.root}>
+              <Typography variant="headline" align="center">Register</Typography>
+              <form
+                onSubmit={e => {
+                  e.preventDefault();
+                  register({variables:this.state})
+                }}
+              >
+                <TextField
+                  fullWidth
+                  id="username"
+                  label="Username"
+                  margin="normal"
+                  required
+                  onChange={this.handeOnChange}
+                />
+                <TextField
+                  fullWidth
+                  type="email"
+                  id="email"
+                  label="Email"
+                  margin="normal"
+                  required
+                  onChange={this.handeOnChange}
+                />
+                <TextField
+                  fullWidth
+                  type="password"
+                  id="password"
+                  label="Password"
+                  margin="normal"
+                  required
+                  onChange={this.handeOnChange}
+                />
+                <Button type="submit" variant="contained" color="primary" fullWidth>
+                  Register
+                  <Icon className={classes.icon}>send</Icon>
+                </Button>
+              </form>
+            </Card>
+          </Grid>
+        </Grid>)
+      }
+      </Mutation>
     )
   }
 }
