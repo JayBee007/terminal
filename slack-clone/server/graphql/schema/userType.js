@@ -13,8 +13,13 @@ export default `
     allUsers: [User!]!
   }
 
+  type AccessToken {
+    id: Int!
+    token: String!
+  }
+
   type Mutation {
-    register(username: String!, email: String!, password: String!): User!
+    register(username: String!, email: String!, password: String!): AccessToken!
   }
 
 `;

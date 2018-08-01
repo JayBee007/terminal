@@ -1,6 +1,6 @@
 /* eslint no-useless-escape:0 */
 import React from 'react';
-import { Mutation } from 'react-apollo';
+import { Mutation, graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -9,16 +9,22 @@ import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import Icon from '@material-ui/core/Icon';
 import { withStyles } from '@material-ui/core/styles';
+import { compose } from 'recompose';
 
 const REGISTER = gql`
   mutation register($username: String!, $email: String!, $password: String!) {
     register(username: $username, email: $email, password: $password) {
       id
-      email
+      token
     }
   }
 `;
 
+const SET_USER = gql`
+  mutation setUser($id: Int!, $token: String!) {
+    setUser(id: $id, token: $token) @client
+  }
+`
 class Register extends React.Component {
   state = {
     username: '',
@@ -27,6 +33,10 @@ class Register extends React.Component {
     emailError: '',
     passwordError: '',
     usernameError: '',
+  }
+
+  login = () => {
+    this.props.history.push('/')
   }
 
   handeOnChange = (e) => {
@@ -68,10 +78,21 @@ class Register extends React.Component {
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, mutate } = this.props;
     const { emailError, usernameError, passwordError, email, username, password } = this.state;
     return (
-      <Mutation mutation={REGISTER} update={({data}) => {console.log(data)}}>
+      <Mutation mutation={REGISTER}
+        update={(cache, {data: { register}}) => {
+          const { id, token } = register;
+          mutate({
+            variables: {
+              id,
+              token
+            }
+          });
+          this.login();
+        }}
+      >
       {(register) => (
         <Grid container className={classes.container} justify="center">
           <Grid item xs={10} sm={6} md={3}>
@@ -147,4 +168,7 @@ const styles = {
   }
 }
 
-export default withStyles(styles)(Register);
+export default compose(
+  withStyles(styles),
+  graphql(SET_USER)
+)(Register);
