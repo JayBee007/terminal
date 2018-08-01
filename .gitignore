@@ -3,3 +3,4 @@
 /yelpcamp/data
 /yelpcamp/node_modules
 /slack-clone/server/node_modules
+/slack-clone/server/.env

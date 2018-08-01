@@ -8,10 +8,20 @@ import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from "react-apollo";
 
 import Routes from './routes';
+
+import defaults from './state/defaults';
+import resolvers from './state/resolvers';
+import typeDefs from './state/typeDefs';
+
 import registerServiceWorker from './registerServiceWorker';
 
 const client = new ApolloClient({
-  uri: 'http://localhost:4000/graphql'
+  uri: 'http://localhost:4000/graphql',
+  clientState: {
+    defaults,
+    resolvers,
+    typeDefs
+  }
 });
 
 const App = () => (
