@@ -3,15 +3,15 @@ const resolvers = {
     setUser: (_, variables, { cache }) => {
       const { id, token } = variables;
 
-      const user = {
+      const authUser = {
         id,
         token,
-        __typename: 'User'
+        __typename: 'AuthUser'
       }
 
-      cache.writeData({ data: {user}});
+      cache.writeData({ data: {authUser}});
 
-      return user;
+      return authUser;
     }
   }
 }
