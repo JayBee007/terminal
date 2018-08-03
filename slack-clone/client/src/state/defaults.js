@@ -1,8 +1,8 @@
 const defaults = {
-  user: {
+  authUser: {
     id: '',
     token: '',
-    __typename: 'User'
+    __typename: 'AuthUser'
   }
 }
 

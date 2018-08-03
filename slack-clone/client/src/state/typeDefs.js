@@ -1,11 +1,11 @@
 const typeDefs = `
-  type User {
+  type AuthUser {
     id: Int!
     token: String!
   }
 
   type Mutation {
-    setUser(id: Int!, token: String!): User
+    setUser(id: Int!, token: String!): AuthUser
   }
 `;
 

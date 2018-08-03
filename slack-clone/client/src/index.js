@@ -4,8 +4,9 @@ import { BrowserRouter as Router} from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
 // Apollo
-import ApolloClient from 'apollo-boost';
+import ApolloClient, { InMemoryCache } from 'apollo-boost';
 import { ApolloProvider } from "react-apollo";
+import { persistCache } from 'apollo-cache-persist';
 
 import Routes from './routes';
 
@@ -23,6 +24,13 @@ const client = new ApolloClient({
     typeDefs
   }
 });
+
+// const { id, token } = getUserFromLocalStorage();
+
+// client.mutate({
+//   variables: {id, token},
+//   mutation: SET_USER
+// });
 
 const App = () => (
   <ApolloProvider client={client}>
