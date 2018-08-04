@@ -10,7 +10,7 @@ import Icon from '@material-ui/core/Icon';
 import { withStyles } from '@material-ui/core/styles';
 import { compose } from 'recompose';
 
-import * as authService from '../services/authService';
+import { REGISTER, SET_USER, setUserToLocalStorage} from '../services/authService';
 
 class Register extends React.Component {
   state = {
@@ -64,20 +64,32 @@ class Register extends React.Component {
     }))
   }
 
+  handleSubmitErrors = (errors) => {
+    errors.forEach(error => {
+      this.setState(() => ({
+        [`${error.path}Error`]: error.message
+      }))
+    })
+  }
+
   render() {
     const { classes, mutate } = this.props;
     const { emailError, usernameError, passwordError, email, username, password } = this.state;
     return (
-      <Mutation mutation={authService.REGISTER}
+      <Mutation mutation={REGISTER}
         update={(cache, {data: { register}}) => {
-          const { id, token } = register;
+          const { id, token, errors } = register;
+          if(errors && errors.length > 0) {
+            this.handleSubmitErrors(errors);
+            return;
+          }
           mutate({
             variables: {
               id,
               token
             }
           });
-          authService.setUserToLocalStorage(id, token);
+          setUserToLocalStorage(id, token);
           this.login();
         }}
       >
@@ -158,5 +170,5 @@ const styles = {
 
 export default compose(
   withStyles(styles),
-  graphql(authService.SET_USER)
+  graphql(SET_USER)
 )(Register);

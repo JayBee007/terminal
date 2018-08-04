@@ -4,13 +4,16 @@ import { Route, Switch } from 'react-router-dom';
 import Login from './Login';
 import Register from './Register';
 import Home from './Home';
+
 import Auth from '../components/Auth';
+import UnAuth from '../components/UnAuth';
+
 
 const Routes = () => (
   <Switch>
-    <Route path="/" exact component={() => <Auth Component={Home} />} />
-    <Route path="/login" exact component={Login} />
-    <Route path="/register" exact component={Register} />
+    <Route path="/" exact render={(props) => <Auth Component={Home} {...props} />} />
+    <Route path="/login" exact render={(props) => <UnAuth Component={Login} {...props} />} />
+    <Route path="/register" exact render={(props) => <UnAuth Component={Register} {...props} />} />
   </Switch>
 );
 

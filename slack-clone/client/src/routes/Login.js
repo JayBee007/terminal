@@ -10,16 +10,14 @@ import Icon from '@material-ui/core/Icon';
 import { withStyles } from '@material-ui/core/styles';
 import { compose } from 'recompose';
 
-import * as authService from '../services/authService';
+import { LOGIN, SET_USER, setUserToLocalStorage} from '../services/authService';
 
-class Register extends React.Component {
+class Login extends React.Component {
   state = {
-    username: '',
     email: '',
     password: '',
     emailError: '',
     passwordError: '',
-    usernameError: '',
   }
 
   login = () => {
@@ -39,14 +37,6 @@ class Register extends React.Component {
           return;
         }
         break;
-      case 'username':
-        if (value.length < 3) {
-          this.setState(() => ({
-            [`${id}Error`]: 'invalid username'
-          }))
-          return
-        }
-        break;
       case 'password':
         if (value.length < 6) {
           this.setState(() => ({
@@ -64,49 +54,50 @@ class Register extends React.Component {
     }))
   }
 
+  handleSubmitErrors = (errors) => {
+    errors.forEach(error => {
+      this.setState(() => ({
+        [`${error.path}Error`]: error.message
+      }))
+    })
+  }
+
   render() {
     const { classes, mutate } = this.props;
-    const { emailError, usernameError, passwordError, email, username, password } = this.state;
+    const { emailError, passwordError, email, password } = this.state;
     return (
-      <Mutation mutation={authService.REGISTER}
-        update={(cache, {data: { register}}) => {
-          const { id, token } = register;
+      <Mutation mutation={LOGIN}
+        update={(cache, {data: { login}}) => {
+          const { id, token, errors } = login;
+          if(errors && errors.length > 0) {
+            this.handleSubmitErrors(errors);
+            return;
+          }
           mutate({
             variables: {
               id,
               token
             }
           });
-          authService.setUserToLocalStorage(id, token);
+          setUserToLocalStorage(id, token);
           this.login();
         }}
       >
-      {(register) => (
+      {(login) => (
         <Grid container className={classes.container} justify="center">
           <Grid item xs={10} sm={6} md={3}>
             <Card className={classes.root}>
-              <Typography variant="headline" align="center">Register</Typography>
+              <Typography variant="headline" align="center">Login</Typography>
               <form
                 autoComplete="off"
                 onSubmit={e => {
                   e.preventDefault();
-                  register({variables:{
-                    username,
+                  login({variables:{
                     email,
                     password
                   }})
                 }}
               >
-                <TextField
-                  error={usernameError.length > 0}
-                  fullWidth
-                  id="username"
-                  label="Username"
-                  margin="normal"
-                  required
-                  helperText={usernameError}
-                  onChange={this.handeOnChange}
-                />
                 <TextField
                   error={emailError.length > 0}
                   fullWidth
@@ -130,7 +121,7 @@ class Register extends React.Component {
                   onChange={this.handeOnChange}
                 />
                 <Button type="submit" variant="contained" color="primary" fullWidth>
-                  Register
+                  Login
                   <Icon className={classes.icon}>send</Icon>
                 </Button>
               </form>
@@ -158,5 +149,5 @@ const styles = {
 
 export default compose(
   withStyles(styles),
-  graphql(authService.SET_USER)
-)(Register);
+  graphql(SET_USER)
+)(Login);
