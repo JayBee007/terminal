@@ -61,20 +61,9 @@ export default {
         };
       }
     },
-    register: async (parent, { password, ...restArgs }, { models }) => {
+    register: async (parent, args, { models }) => {
       try {
-        if (password.length < 5 || password.length > 100) {
-          return {
-            errors: [
-              {
-                path: 'password',
-                message: 'password needs to be between 5 and 100 characters',
-              },
-            ],
-          };
-        }
-        const hashedPassword = await bcrypt.hash(password, 12);
-        const user = await models.User.create({ password: hashedPassword, ...restArgs });
+        const user = await models.User.create(args);
         return {
           id: user.id,
           token: jwt.sign({
