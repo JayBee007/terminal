@@ -1,3 +1,6 @@
+/* eslint no-param-reassign: 0 */
+import bcrypt from 'bcrypt';
+
 export default(sequelize, DataTypes) => {
   const User = sequelize.define('user', {
     username: {
@@ -24,7 +27,23 @@ export default(sequelize, DataTypes) => {
         },
       },
     },
-    password: DataTypes.STRING,
+    password: {
+      type: DataTypes.STRING,
+      validate: {
+        len: {
+          args: [6, 100],
+          msg: 'The username needs to be between 6 and 100 characters',
+        },
+      },
+    },
+  },
+  {
+    hooks: {
+      afterValidate: async (user) => {
+        const hashedPassword = await bcrypt.hash(user.password, 12);
+        user.password = hashedPassword;
+      },
+    },
   });
 
 
