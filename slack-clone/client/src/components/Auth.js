@@ -19,7 +19,7 @@ const Auth = (props) => {
       token
     }
   });
-  return <Component />
+  return <Component {...props} />
 
 }
 

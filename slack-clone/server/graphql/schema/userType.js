@@ -14,12 +14,14 @@ export default `
   }
 
   type AccessToken {
-    id: Int!
-    token: String!
+    id: Int
+    token: String
+    errors: [Error!]
   }
 
   type Mutation {
     register(username: String!, email: String!, password: String!): AccessToken!
+    login(email: String!, password: String!): AccessToken!
   }
 
 `;

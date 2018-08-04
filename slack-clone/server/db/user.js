@@ -24,15 +24,7 @@ export default(sequelize, DataTypes) => {
         },
       },
     },
-    password: {
-      type: DataTypes.STRING,
-      validate: {
-        len: {
-          args: [6, 100],
-          msg: 'The username needs to be between 6 and 100 characters',
-        },
-      },
-    },
+    password: DataTypes.STRING,
   });
 
 
