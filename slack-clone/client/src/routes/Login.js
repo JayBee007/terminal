@@ -24,7 +24,7 @@ class Login extends React.Component {
     this.props.history.push('/')
   }
 
-  handeOnChange = (e) => {
+  handleOnChange = (e) => {
     const { id, value } = e.target;
 
     switch(id) {
@@ -42,7 +42,7 @@ class Login extends React.Component {
           this.setState(() => ({
             [`${id}Error`]: 'password must be minimum 6 characters'
           }))
-          return
+          return;
         }
         break;
       default:
@@ -107,7 +107,7 @@ class Login extends React.Component {
                   margin="normal"
                   required
                   helperText={emailError}
-                  onChange={this.handeOnChange}
+                  onChange={this.handleOnChange}
                 />
                 <TextField
                   error={passwordError.length > 0}
@@ -118,7 +118,7 @@ class Login extends React.Component {
                   margin="normal"
                   required
                   helperText={passwordError}
-                  onChange={this.handeOnChange}
+                  onChange={this.handleOnChange}
                 />
                 <Button type="submit" variant="contained" color="primary" fullWidth>
                   Login

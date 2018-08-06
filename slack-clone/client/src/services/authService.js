@@ -43,5 +43,5 @@ export const unsetUserFromLocalStorage = () => {
 }
 
 export const getUserFromLocalStorage = () => {
-  return window.localStorage.getItem('user');
+  return window.localStorage.getItem('user') || undefined;
 }

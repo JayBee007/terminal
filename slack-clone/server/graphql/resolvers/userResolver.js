@@ -1,14 +1,9 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import _ from 'lodash';
 
-const formatErrors = (e, models) => {
-  if (e instanceof models.sequelize.ValidationError) {
-    return e.errors.map(x => _.pick(x, ['path', 'message']));
-  }
 
-  return [{ path: 'name', message: 'something went wrong' }];
-};
+import { formatErrors } from '../../utils';
+
 
 export default {
   Query: {
