@@ -26,7 +26,7 @@ class Register extends React.Component {
     this.props.history.push('/')
   }
 
-  handeOnChange = (e) => {
+  handleOnChange = (e) => {
     const { id, value } = e.target;
 
     switch(id) {
@@ -117,7 +117,7 @@ class Register extends React.Component {
                   margin="normal"
                   required
                   helperText={usernameError}
-                  onChange={this.handeOnChange}
+                  onChange={this.handleOnChange}
                 />
                 <TextField
                   error={emailError.length > 0}
@@ -128,7 +128,7 @@ class Register extends React.Component {
                   margin="normal"
                   required
                   helperText={emailError}
-                  onChange={this.handeOnChange}
+                  onChange={this.handleOnChange}
                 />
                 <TextField
                   error={passwordError.length > 0}
@@ -139,7 +139,7 @@ class Register extends React.Component {
                   margin="normal"
                   required
                   helperText={passwordError}
-                  onChange={this.handeOnChange}
+                  onChange={this.handleOnChange}
                 />
                 <Button type="submit" variant="contained" color="primary" fullWidth>
                   Register
