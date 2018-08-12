@@ -1,5 +1,6 @@
 /* eslint no-console: 0 */
 import express from 'express';
+import morgan from 'morgan';
 import { ApolloServer } from 'apollo-server-express';
 import path from 'path';
 import jwt from 'jsonwebtoken';
@@ -15,6 +16,7 @@ const typeDefs = mergeTypes(fileLoader(path.join(__dirname, './graphql/schema'))
 const resolvers = mergeResolvers(fileLoader(path.join(__dirname, './graphql/resolvers')));
 
 const app = express();
+app.use(morgan('dev'));
 const server = new ApolloServer({
   typeDefs,
   resolvers,
