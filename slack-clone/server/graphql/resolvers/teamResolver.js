@@ -10,10 +10,9 @@ export default {
           ok: true,
         };
       } catch (error) {
-        console.log('auth', error);
         return {
           ok: false,
-          errors: formatErrors(error),
+          errors: formatErrors(error, models),
         };
       }
     }),

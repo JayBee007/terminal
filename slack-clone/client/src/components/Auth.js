@@ -1,8 +1,9 @@
 import React from 'react';
 import { graphql } from 'react-apollo';
 import { Redirect } from 'react-router-dom';
+import jwtDecode from 'jwt-decode';
 
-import {SET_USER, getUserFromLocalStorage } from '../services/authService';
+import {SET_USER, getUserFromLocalStorage, unsetUserFromLocalStorage } from '../services/authService';
 
 
 const Auth = (props) => {
@@ -13,6 +14,15 @@ const Auth = (props) => {
   }
 
   const { id, token } = JSON.parse(user);
+
+  try {
+    jwtDecode(token)
+  }catch(e) {
+    unsetUserFromLocalStorage();
+    return <Redirect to='/login' />
+  }
+
+
   const { Component, mutate } = props;
   mutate({variables: {
       id,
