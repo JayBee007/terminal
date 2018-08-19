@@ -12,3 +12,23 @@ export const CREATE_TEAM = gql`
 
   }
 `;
+
+export const GET_ALL_TEAMS = gql`
+{
+  allTeams {
+    id
+    name
+  }
+}`;
+
+export const GET_ALL_TEAMS_AND_CHANNELS = gql`
+{
+  allTeams {
+    id
+    name
+    channels {
+      id
+      name
+    }
+  }
+}`;

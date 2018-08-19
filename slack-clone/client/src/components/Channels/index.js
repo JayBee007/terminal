@@ -5,9 +5,20 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 import { withStyles } from '@material-ui/core/styles';
+import { Query } from 'react-apollo';
+import findIndex from 'lodash/findIndex';
+
+import { getUserFromLocalStorage } from '../../services/authService';
+
+import Loader from '../../components/Loader';
+
+import { GET_ALL_TEAMS_AND_CHANNELS } from '../../services/teamService';
 
 const ChannelsContainer = (props) => {
-  const { teamName, userName, users, channels, classes} = props;
+  const { users, classes} = props;
+  const user = getUserFromLocalStorage();
+  const userName = JSON.parse(user).username;
+
 
   const renderChannel = ({id, name}) => (
     <ListItem key={`channel-${id}`} button className={classes.listItem}>
@@ -27,38 +38,53 @@ const ChannelsContainer = (props) => {
   )
 
   return (
-    <React.Fragment>
-      <div>
-        <Typography variant="headline" className={classes.teamName}>
-          {teamName}
-        </Typography>
-        <Typography>
-          {userName}
-        </Typography>
-      </div>
-      <div style={{marginRight: '-1rem', marginLeft: '-1rem'}}>
-        <Divider />
-        <List>
-          <ListItem button className={classes.channelItem}>
-            <ListItemText primary="Channels" classes={{
-              primary: classes.channelText
-            }} />
-          </ListItem>
-          {channels.map(renderChannel)}
-        </List>
-      </div>
-      <div style={{marginRight: '-1rem', marginLeft: '-1rem'}}>
-        <Divider />
-        <List>
-          <ListItem button className={classes.channelItem}>
-            <ListItemText primary="Direct Messages" classes={{
-              primary: classes.channelText
-            }} />
-          </ListItem>
-          {users.map(renderUser)}
-        </List>
-      </div>
-    </React.Fragment>
+    <Query query={ GET_ALL_TEAMS_AND_CHANNELS }>
+    {({ loading, error, data}) => {
+
+      if(loading) return <Loader />
+      if(error) return <p>Error: {error}</p>
+
+      const { allTeams } = data;
+      const teamIdx = findIndex(allTeams, ['id', 25]);
+      const team = allTeams[teamIdx];
+      const channels = team.channels;
+
+      return (
+        <React.Fragment>
+          <div>
+            <Typography variant="headline" className={classes.teamName}>
+              {team.name}
+            </Typography>
+            <Typography>
+              {userName}
+            </Typography>
+          </div>
+          <div style={{marginRight: '-1rem', marginLeft: '-1rem'}}>
+            <Divider />
+            <List>
+              <ListItem button className={classes.channelItem}>
+                <ListItemText primary="Channels" classes={{
+                  primary: classes.channelText
+                }} />
+              </ListItem>
+              {channels.map(renderChannel)}
+            </List>
+          </div>
+          <div style={{marginRight: '-1rem', marginLeft: '-1rem'}}>
+            <Divider />
+            <List>
+              <ListItem button className={classes.channelItem}>
+                <ListItemText primary="Direct Messages" classes={{
+                  primary: classes.channelText
+                }} />
+              </ListItem>
+              {users.map(renderUser)}
+            </List>
+          </div>
+        </React.Fragment>
+      )
+    }}
+    </Query>
   )
 }
 

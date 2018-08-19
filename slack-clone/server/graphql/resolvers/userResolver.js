@@ -44,6 +44,7 @@ export default {
             id: user.id,
             email: user.email,
           }, process.env.JWT_KEY),
+          username: user.username,
         };
       } catch (error) {
         return {
@@ -65,6 +66,7 @@ export default {
             id: user.id,
             email: user.email,
           }, process.env.JWT_KEY),
+          username: user.username,
         };
       } catch (error) {
         return {

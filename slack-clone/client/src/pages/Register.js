@@ -78,7 +78,7 @@ class Register extends React.Component {
     return (
       <Mutation mutation={REGISTER}
         update={(cache, {data: { register}}) => {
-          const { id, token, errors } = register;
+          const { id, token,username, errors } = register;
           if(errors && errors.length > 0) {
             this.handleSubmitErrors(errors);
             return;
@@ -86,10 +86,11 @@ class Register extends React.Component {
           mutate({
             variables: {
               id,
-              token
+              token,
+              username
             }
           });
-          setUserToLocalStorage(id, token);
+          setUserToLocalStorage(id, token, username);
           this.login();
         }}
       >

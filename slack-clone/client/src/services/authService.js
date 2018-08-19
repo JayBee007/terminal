@@ -5,6 +5,7 @@ export const REGISTER = gql`
     register(username: $username, email: $email, password: $password) {
       id
       token
+      username
       errors {
         path
         message
@@ -18,6 +19,7 @@ export const LOGIN = gql`
     login(email: $email, password: $password) {
       id
       token
+      username
       errors {
         path
         message
@@ -27,14 +29,14 @@ export const LOGIN = gql`
 `;
 
 export const SET_USER = gql`
-  mutation setUser($id: Int!, $token: String!) {
-    setUser(id: $id, token: $token) @client
+  mutation setUser($id: Int!, $token: String!, $username: String!) {
+    setUser(id: $id, token: $token, username: $username) @client
   }
 `
-export const setUserToLocalStorage = (id, token) => {
+export const setUserToLocalStorage = (id, token, username) => {
   const user = window.localStorage.getItem('user');
   if(user) return;
-  const data = JSON.stringify({id, token});
+  const data = JSON.stringify({id, token, username});
   window.localStorage.setItem('user',data);
 }
 
