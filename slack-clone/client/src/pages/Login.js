@@ -68,7 +68,7 @@ class Login extends React.Component {
     return (
       <Mutation mutation={LOGIN}
         update={(cache, {data: { login}}) => {
-          const { id, token, errors } = login;
+          const { id, token,username, errors } = login;
           if(errors && errors.length > 0) {
             this.handleSubmitErrors(errors);
             return;
@@ -76,10 +76,11 @@ class Login extends React.Component {
           mutate({
             variables: {
               id,
-              token
+              token,
+              username
             }
           });
-          setUserToLocalStorage(id, token);
+          setUserToLocalStorage(id, token, username);
           this.login();
         }}
       >

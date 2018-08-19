@@ -16,6 +16,7 @@ export default `
   type AccessToken {
     id: Int
     token: String
+    username: String
     errors: [Error!]
   }
 

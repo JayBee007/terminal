@@ -3,9 +3,14 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import {withStyles} from '@material-ui/core/styles'
+import { Query } from 'react-apollo';
+
+import Loader from '../../components/Loader';
+
+import { GET_ALL_TEAMS } from '../../services/teamService';
 
 const TeamsContainer = (props) => {
-  const { teams, classes } = props;
+  const { classes } = props;
 
   const renderTeam = ({id, letter}) => (
     <ListItem key={`team-${id}`} button className={classes.item}>
@@ -16,9 +21,33 @@ const TeamsContainer = (props) => {
     </ListItem>
   )
   return (
-    <List>
-      {teams.map(renderTeam)}
-    </List>
+    <Query query={GET_ALL_TEAMS}>
+      {({ loading, error, data}) => {
+
+        if(loading) return <Loader />
+        if(error) return <p>Error: {error}</p>
+
+        const { allTeams } = data;
+        const teams = allTeams.map(team => ({
+          id: team.id,
+          letter: team.name.charAt(0).toUpperCase(),
+        }))
+
+        if(allTeams) {
+          return (
+            <List>
+              {teams.map(renderTeam)}
+            </List>
+          )
+        }else {
+          return (
+            <p>Nothing to show</p>
+          )
+        }
+
+
+      }}
+    </Query>
   )
 }
 

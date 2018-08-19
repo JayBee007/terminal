@@ -13,7 +13,7 @@ const Auth = (props) => {
     return <Redirect to='/login' />
   }
 
-  const { id, token } = JSON.parse(user);
+  const { id, token, username } = JSON.parse(user);
 
   try {
     jwtDecode(token)
@@ -26,7 +26,8 @@ const Auth = (props) => {
   const { Component, mutate } = props;
   mutate({variables: {
       id,
-      token
+      token,
+      username
     }
   });
   return <Component {...props} />

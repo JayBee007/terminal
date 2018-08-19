@@ -11,9 +11,7 @@ import FullHeightRow from '../../layout/FullHeightRow';
 const ViewTeam = (props) => (
   <FullHeight>
     <FullHeightRow gridSize={1} className={props.classes.team}>
-      <Teams
-        teams={[{id:1, letter: "T"}, {id: 2, letter: "B"}]}
-      />
+      <Teams />
     </FullHeightRow>
     <FullHeightRow gridSize={2} className={props.classes.channel}>
       <Channels

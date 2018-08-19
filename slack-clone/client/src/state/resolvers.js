@@ -1,11 +1,12 @@
 const resolvers = {
   Mutation: {
     setUser: (_, variables, { cache }) => {
-      const { id, token } = variables;
+      const { id, token, username } = variables;
 
       const authUser = {
         id,
         token,
+        username,
         __typename: 'AuthUser'
       }
 
