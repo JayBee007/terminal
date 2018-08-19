@@ -10,7 +10,7 @@ import { withStyles } from '@material-ui/core/styles';
 
 import { CREATE_TEAM } from '../../services/teamService';
 
-class Team extends React.Component {
+class CreateTeam extends React.Component {
   state = {
     team: '',
     teamError: ''
@@ -108,4 +108,4 @@ const styles = {
   }
 }
 
-export default withStyles(styles)(Team);
+export default withStyles(styles)(CreateTeam);
