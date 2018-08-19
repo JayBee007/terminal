@@ -36,7 +36,7 @@ const ChannelsContainer = (props) => {
           {userName}
         </Typography>
       </div>
-      <div>
+      <div style={{marginRight: '-1rem', marginLeft: '-1rem'}}>
         <Divider />
         <List>
           <ListItem button className={classes.channelItem}>
@@ -47,7 +47,7 @@ const ChannelsContainer = (props) => {
           {channels.map(renderChannel)}
         </List>
       </div>
-      <div>
+      <div style={{marginRight: '-1rem', marginLeft: '-1rem'}}>
         <Divider />
         <List>
           <ListItem button className={classes.channelItem}>
@@ -67,13 +67,13 @@ const styles = {
     color: '#fff',
   },
   listItem: {
-    padding: 0
+    padding: '0 0 0 1rem',
   },
   listText: {
     color: '#ddd',
   },
   channelItem: {
-    padding: '0 0 0 10px'
+    padding: '0 0 0 0.7rem'
   },
   channelText: {
     color: '#ddd',
