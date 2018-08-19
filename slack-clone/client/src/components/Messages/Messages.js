@@ -11,7 +11,6 @@ const Messages = (props) => (
 const styles = {
   container: {
     flex: '1',
-    background: 'yellowgreen',
   }
 }
 

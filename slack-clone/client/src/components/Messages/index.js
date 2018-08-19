@@ -4,13 +4,15 @@ import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 
 import Messages from './Messages';
+import SendMessage from './SendMessage';
 
-const MessagesContainer = (props) => (
+const MessagesContainer = ({channelName, ...props}) => (
   <Grid container direction="column" className={props.classes.container}>
-    <Typography variant="headline" align="center">
-      Header
+    <Typography variant="headline">
+      #{channelName}
     </Typography>
     <Messages />
+    <SendMessage channelName='general' />
   </Grid>
 );
 

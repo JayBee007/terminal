@@ -8,11 +8,10 @@ const FullHeight = (props) => (
   </Grid>
 )
 
-const styles = theme => ({
+const styles = {
   container: {
     height: '100vh',
-    background: theme.palette.primary.dark,
   },
-})
+}
 
 export default withStyles(styles)(FullHeight);
