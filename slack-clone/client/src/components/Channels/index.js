@@ -4,6 +4,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
+import Icon from '@material-ui/core/Icon';
 import { withStyles } from '@material-ui/core/styles';
 import { Query } from 'react-apollo';
 import findIndex from 'lodash/findIndex';
@@ -11,81 +12,105 @@ import findIndex from 'lodash/findIndex';
 import { getUserFromLocalStorage } from '../../services/authService';
 
 import Loader from '../../components/Loader';
+import CreateChannelModal from './CreateChannelModal';
 
 import { GET_ALL_TEAMS_AND_CHANNELS } from '../../services/teamService';
 
-const ChannelsContainer = (props) => {
-  const { users, classes, currentTeamId} = props;
-  const user = getUserFromLocalStorage();
-  const userName = JSON.parse(user).username;
+class ChannelsContainer extends React.Component {
 
+  state = {
+    createChannelModalVisible: false
+  }
 
-  const renderChannel = ({id, name}) => (
-    <ListItem key={`channel-${id}`} button className={classes.listItem}>
+  handleModalVisiblity = () => {
+    this.setState(prevState => ({
+      createChannelModalVisible: !prevState.createChannelModalVisible
+    }));
+  }
+
+  renderChannel = ({id, name}) => (
+    <ListItem key={`channel-${id}`} button className={this.props.classes.listItem}>
       <ListItemText primary={`#${name}`}  classes={{
-        primary: classes.listText
+        primary: this.props.classes.listText
       }}/>
     </ListItem>
   )
 
-  const renderUser = ({id, name, status}) => (
-    <ListItem key={`user-${id}`} button className={classes.listItem}>
+  renderUser = ({id, name, status}) => (
+    <ListItem key={`user-${id}`} button className={this.props.classes.listItem}>
 
-      <ListItemText classes={{ primary: classes.listText }}>
-        <span className={`${classes.status} ${status === 'online' ? classes.online : classes.offline}`}></span> {name}
+      <ListItemText classes={{ primary: this.props.classes.listText }}>
+        <span className={`${this.props.classes.status} ${status === 'online' ? this.props.classes.online : this.props.classes.offline}`}></span> {name}
       </ListItemText>
     </ListItem>
   )
 
-  return (
-    <Query query={ GET_ALL_TEAMS_AND_CHANNELS }>
-    {({ loading, error, data}) => {
+  render() {
 
-      if(loading) return <Loader />
-      if(error) return <p>Error: {error}</p>
+    const { users, classes, currentTeamId } = this.props;
+    const { createChannelModalVisible } = this.state;
+    const user = getUserFromLocalStorage();
+    const userName = JSON.parse(user).username;
 
-      const { allTeams } = data;
-      const teamIdx = currentTeamId ? findIndex(allTeams, ['id', parseInt(currentTeamId,10)]) : 0;
-      const team = allTeams[teamIdx];
-      const channels = team.channels;
+    return (
+      <Query query={ GET_ALL_TEAMS_AND_CHANNELS }>
+      {({ loading, error, data}) => {
 
-      return (
-        <React.Fragment>
-          <div>
-            <Typography variant="headline" className={classes.teamName}>
-              {team.name}
-            </Typography>
-            <Typography>
-              {userName}
-            </Typography>
-          </div>
-          <div style={{marginRight: '-1rem', marginLeft: '-1rem'}}>
-            <Divider />
-            <List>
-              <ListItem button className={classes.channelItem}>
-                <ListItemText primary="Channels" classes={{
-                  primary: classes.channelText
-                }} />
-              </ListItem>
-              {channels.map(renderChannel)}
-            </List>
-          </div>
-          <div style={{marginRight: '-1rem', marginLeft: '-1rem'}}>
-            <Divider />
-            <List>
-              <ListItem button className={classes.channelItem}>
-                <ListItemText primary="Direct Messages" classes={{
-                  primary: classes.channelText
-                }} />
-              </ListItem>
-              {users.map(renderUser)}
-            </List>
-          </div>
-        </React.Fragment>
-      )
-    }}
-    </Query>
-  )
+        if(loading) return <Loader />
+        if(error) return <p>Error: {error}</p>
+
+        const { allTeams } = data;
+        const teamIdx = currentTeamId ? findIndex(allTeams, ['id', parseInt(currentTeamId,10)]) : 0;
+        const team = allTeams[teamIdx];
+        const channels = team.channels;
+
+        return (
+          <React.Fragment>
+            <div>
+              <Typography variant="headline" className={classes.teamName}>
+                {team.name}
+              </Typography>
+              <Typography>
+                {userName}
+              </Typography>
+            </div>
+            <div style={{marginRight: '-1rem', marginLeft: '-1rem'}}>
+              <Divider />
+              <List>
+                <ListItem button className={classes.channelItem}>
+                  <ListItemText classes={{
+                    primary: classes.channelText
+                  }}>
+                    Channels
+                    <Icon
+                      color="action"
+                      className={classes.icon}
+                      onClick={this.handleModalVisiblity}>
+                        add_circle
+                    </Icon>
+                  </ListItemText>
+                </ListItem>
+                {channels.map(this.renderChannel)}
+              </List>
+            </div>
+            <div style={{marginRight: '-1rem', marginLeft: '-1rem'}}>
+              <Divider />
+              <List>
+                <ListItem button className={classes.channelItem}>
+                  <ListItemText primary="Direct Messages" classes={{
+                    primary: classes.channelText
+                  }} />
+                </ListItem>
+                {users.map(this.renderUser)}
+              </List>
+            </div>
+            <CreateChannelModal isOpen={createChannelModalVisible} handleModalVisiblity={this.handleModalVisiblity} teamId={team.id}/>
+          </React.Fragment>
+        )
+      }}
+      </Query>
+    )
+  }
 }
 
 const styles = {
@@ -115,6 +140,12 @@ const styles = {
   },
   offline: {
     border: '1px solid #ddd'
+  },
+  icon: {
+    fontSize: '16px',
+    marginLeft: '5px',
+    display: 'inline-block',
+    lineHeight: '20px',
   }
 }
 
