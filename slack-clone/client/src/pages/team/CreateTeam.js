@@ -40,16 +40,17 @@ class CreateTeam extends React.Component {
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, history } = this.props;
     const { team, teamError } = this.state;
     return(
       <Mutation mutation={CREATE_TEAM}
         update={(_, { data: { createTeam }}) => {
-          const { errors } = createTeam;
+          const { errors, team } = createTeam;
           if(errors && errors.length > 0) {
             this.handleSubmitErrors(errors);
             return;
           }
+          history.push(`/team/view-team/${team.id}`)
         }}
       >
         {(createTeam) => (

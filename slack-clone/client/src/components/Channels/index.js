@@ -15,7 +15,7 @@ import Loader from '../../components/Loader';
 import { GET_ALL_TEAMS_AND_CHANNELS } from '../../services/teamService';
 
 const ChannelsContainer = (props) => {
-  const { users, classes} = props;
+  const { users, classes, currentTeamId} = props;
   const user = getUserFromLocalStorage();
   const userName = JSON.parse(user).username;
 
@@ -45,7 +45,7 @@ const ChannelsContainer = (props) => {
       if(error) return <p>Error: {error}</p>
 
       const { allTeams } = data;
-      const teamIdx = findIndex(allTeams, ['id', 25]);
+      const teamIdx = currentTeamId ? findIndex(allTeams, ['id', parseInt(currentTeamId,10)]) : 0;
       const team = allTeams[teamIdx];
       const channels = team.channels;
 

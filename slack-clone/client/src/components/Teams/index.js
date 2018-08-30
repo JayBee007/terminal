@@ -1,8 +1,9 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import {withStyles} from '@material-ui/core/styles'
+import {withStyles} from '@material-ui/core/styles';
 import { Query } from 'react-apollo';
 
 import Loader from '../../components/Loader';
@@ -13,12 +14,15 @@ const TeamsContainer = (props) => {
   const { classes } = props;
 
   const renderTeam = ({id, letter}) => (
-    <ListItem key={`team-${id}`} button className={classes.item}>
+    <Link to={`/team/view-team/${id}`} key={`team-${id}`}>
+      <ListItem button className={classes.item}>
       <ListItemText primary={letter} classes={{
         primary: classes.text,
         root: classes.root,
       }} />
-    </ListItem>
+      </ListItem>
+    </Link>
+
   )
   return (
     <Query query={GET_ALL_TEAMS}>
@@ -78,23 +82,3 @@ const styles = {
 }
 
 export default withStyles(styles)(TeamsContainer);
-
-
-// const TeamListItem = styled.li`
-//   height: 50px;
-//   width: 50px;
-//   background-color: #676066;
-//   color: #fff;
-//   margin: auto;
-//   margin-bottom: 10px;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   font-size: 24px;
-//   border-radius: 11px;
-//   &:hover {
-//     border-style: solid;
-//     border-width: thick;
-//     border-color: #767676;
-//   }
-// `;
