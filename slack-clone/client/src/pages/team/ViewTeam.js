@@ -15,9 +15,7 @@ const ViewTeam = (props) => (
     </FullHeightRow>
     <FullHeightRow gridSize={2} className={props.classes.channel}>
       <Channels
-        teamName="Avengers"
-        userName="Jay"
-        channels={[{id: 1, name: 'general'}, {id:2, name: 'random'}]}
+        currentTeamId={props.match.params.teamId}
         users={[{id:1, name: 'slackbot', status: 'online'},  {id:2, name: 'bob', status: 'offline'}]}
       />
     </FullHeightRow>
