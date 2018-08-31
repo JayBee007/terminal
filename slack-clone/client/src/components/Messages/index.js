@@ -12,7 +12,7 @@ const MessagesContainer = ({channelName, ...props}) => (
       #{channelName}
     </Typography>
     <Messages />
-    <SendMessage channelName='general' />
+    <SendMessage channelName={channelName} />
   </Grid>
 );
 
