@@ -6,10 +6,10 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { Mutation } from 'react-apollo';
-
+import findIndex from 'lodash/findIndex';
 
 import { CREATE_CHANNEL } from '../../services/channelService';
-
+import { GET_ALL_TEAMS_AND_CHANNELS } from '../../services/teamService';
 
 class CreateChannelModal extends React.Component {
 
@@ -18,9 +18,8 @@ class CreateChannelModal extends React.Component {
   }
 
   handleOnChange = (e) => {
-    console.log('handle', e.target.value)
-
     const { value } = e.target;
+
     if (value.length < 0 ) return;
     this.setState(() => ({
       channelName: value
@@ -34,8 +33,18 @@ class CreateChannelModal extends React.Component {
     return (
       <Mutation mutation={CREATE_CHANNEL}
         update={(cache, {data: { createChannel}}) => {
-          if( createChannel ) {
-            handleModalVisiblity();
+          const { ok, channel } = createChannel;
+          if(ok) {
+
+            const data  = cache.readQuery({query: GET_ALL_TEAMS_AND_CHANNELS});
+            const teamIdx = findIndex(data.allTeams, ['id', teamId]);
+
+            data.allTeams[teamIdx].channels.push(channel);
+
+            cache.writeQuery({
+              query: GET_ALL_TEAMS_AND_CHANNELS,
+              data,
+            })
           }
         }}
       >
@@ -53,10 +62,29 @@ class CreateChannelModal extends React.Component {
                 onSubmit={e => {
                   e.preventDefault();
                   if(channelName.length > 0) {
+                    handleModalVisiblity();
                     createChannel({variables:{
                       teamId,
                       name: channelName
-                    }})
+                    },
+                    optimisticResponse: {
+                      __typename: "Mutation",
+                      createChannel: {
+                        __typename: "",
+                        ok: true,
+                        errors: {
+                          __typename: "",
+                          path: null,
+                          message: null,
+                        },
+                        channel: {
+                          __typename: "",
+                          id: 1,
+                          name: channelName
+                        }
+                      }
+                    },
+                  })
                   }
                 }}
               >
