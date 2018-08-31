@@ -45,8 +45,6 @@ class CreateChannelModal extends React.Component {
               query: GET_ALL_TEAMS_AND_CHANNELS,
               data,
             })
-
-            handleModalVisiblity();
           }
         }}
       >
@@ -64,10 +62,29 @@ class CreateChannelModal extends React.Component {
                 onSubmit={e => {
                   e.preventDefault();
                   if(channelName.length > 0) {
+                    handleModalVisiblity();
                     createChannel({variables:{
                       teamId,
                       name: channelName
-                    }})
+                    },
+                    optimisticResponse: {
+                      __typename: "Mutation",
+                      createChannel: {
+                        __typename: "",
+                        ok: true,
+                        errors: {
+                          __typename: "",
+                          path: null,
+                          message: null,
+                        },
+                        channel: {
+                          __typename: "",
+                          id: 1,
+                          name: channelName
+                        }
+                      }
+                    },
+                  })
                   }
                 }}
               >
