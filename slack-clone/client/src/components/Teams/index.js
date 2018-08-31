@@ -4,14 +4,14 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import {withStyles} from '@material-ui/core/styles';
-import { Query } from 'react-apollo';
-
-import Loader from '../../components/Loader';
-
-import { GET_ALL_TEAMS } from '../../services/teamService';
 
 const TeamsContainer = (props) => {
-  const { classes } = props;
+  const { classes, allTeams } = props;
+
+  const teams = allTeams.map(team => ({
+    id: team.id,
+    letter: team.name.charAt(0).toUpperCase(),
+  }))
 
   const renderTeam = ({id, letter}) => (
     <Link to={`/team/view-team/${id}`} key={`team-${id}`}>
@@ -22,37 +22,20 @@ const TeamsContainer = (props) => {
       }} />
       </ListItem>
     </Link>
-
   )
-  return (
-    <Query query={GET_ALL_TEAMS}>
-      {({ loading, error, data}) => {
 
-        if(loading) return <Loader />
-        if(error) return <p>Error: {error}</p>
-
-        const { allTeams } = data;
-        const teams = allTeams.map(team => ({
-          id: team.id,
-          letter: team.name.charAt(0).toUpperCase(),
-        }))
-
-        if(allTeams) {
-          return (
-            <List>
-              {teams.map(renderTeam)}
-            </List>
-          )
-        }else {
-          return (
-            <p>Nothing to show</p>
-          )
-        }
+    if(allTeams.length > 0 ) {
+      return (
+        <List>
+          {teams.map(renderTeam)}
+        </List>
+      );
+    }
 
 
-      }}
-    </Query>
-  )
+    return (
+      <p>Nothing to show</p>
+    );
 }
 
 const styles = {

@@ -8,6 +8,8 @@ import Routes from './routes';
 import registerServiceWorker from './registerServiceWorker';
 import client from './apollo';
 
+import './index.css';
+
 const App = () => (
   <ApolloProvider client={client}>
     <React.Fragment>

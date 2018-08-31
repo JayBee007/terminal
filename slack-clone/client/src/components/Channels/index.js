@@ -6,15 +6,12 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 import Icon from '@material-ui/core/Icon';
 import { withStyles } from '@material-ui/core/styles';
-import { Query } from 'react-apollo';
-import findIndex from 'lodash/findIndex';
+
+import { Link } from 'react-router-dom';
 
 import { getUserFromLocalStorage } from '../../services/authService';
 
-import Loader from '../../components/Loader';
 import CreateChannelModal from './CreateChannelModal';
-
-import { GET_ALL_TEAMS_AND_CHANNELS } from '../../services/teamService';
 
 class ChannelsContainer extends React.Component {
 
@@ -28,11 +25,11 @@ class ChannelsContainer extends React.Component {
     }));
   }
 
-  renderChannel = ({id, name}) => (
+  renderChannel = ({id, name}, teamId) => (
     <ListItem key={`channel-${id}`} button className={this.props.classes.listItem}>
-      <ListItemText primary={`#${name}`}  classes={{
-        primary: this.props.classes.listText
-      }}/>
+      <ListItemText classes={{ primary: this.props.classes.listText }}>
+        <Link to={`/team/view-team/${teamId}/${id}`}>{`#${name}`}</Link>
+      </ListItemText>
     </ListItem>
   )
 
@@ -47,68 +44,53 @@ class ChannelsContainer extends React.Component {
 
   render() {
 
-    const { users, classes, currentTeamId } = this.props;
+    const { users, classes, channels, team } = this.props;
     const { createChannelModalVisible } = this.state;
     const user = getUserFromLocalStorage();
     const userName = JSON.parse(user).username;
 
     return (
-      <Query query={ GET_ALL_TEAMS_AND_CHANNELS }>
-      {({ loading, error, data}) => {
-
-        if(loading) return <Loader />
-        if(error) return <p>Error: {error}</p>
-
-        const { allTeams } = data;
-        const teamIdx = currentTeamId ? findIndex(allTeams, ['id', parseInt(currentTeamId,10)]) : 0;
-        const team = allTeams[teamIdx];
-        const channels = team.channels;
-
-        return (
-          <React.Fragment>
-            <div>
-              <Typography variant="headline" className={classes.teamName}>
-                {team.name}
-              </Typography>
-              <Typography>
-                {userName}
-              </Typography>
-            </div>
-            <div style={{marginRight: '-1rem', marginLeft: '-1rem'}}>
-              <Divider />
-              <List>
-                <ListItem button className={classes.channelItem}>
-                  <ListItemText classes={{
-                    primary: classes.channelText
-                  }}>
-                    Channels
-                    <Icon
-                      color="action"
-                      className={classes.icon}
-                      onClick={this.handleModalVisiblity}>
-                        add_circle
-                    </Icon>
-                  </ListItemText>
-                </ListItem>
-                {channels.map(this.renderChannel)}
-              </List>
-            </div>
-            <div style={{marginRight: '-1rem', marginLeft: '-1rem'}}>
-              <Divider />
-              <List>
-                <ListItem button className={classes.channelItem}>
-                  <ListItemText primary="Direct Messages" classes={{
-                    primary: classes.channelText
-                  }} />
-                </ListItem>
-                {users.map(this.renderUser)}
-              </List>
-            </div>
-            <CreateChannelModal isOpen={createChannelModalVisible} handleModalVisiblity={this.handleModalVisiblity} teamId={team.id}/>
-          </React.Fragment>
-        )
-      }}
-      </Query>
+      <React.Fragment>
+        <div>
+          <Typography variant="headline" className={classes.teamName}>
+            {team.name}
+          </Typography>
+          <Typography>
+            {userName}
+          </Typography>
+        </div>
+        <div style={{marginRight: '-1rem', marginLeft: '-1rem'}}>
+          <Divider />
+          <List>
+            <ListItem button className={classes.channelItem}>
+              <ListItemText classes={{
+                primary: classes.channelText
+              }}>
+                Channels
+                <Icon
+                  color="action"
+                  className={classes.icon}
+                  onClick={this.handleModalVisiblity}>
+                    add_circle
+                </Icon>
+              </ListItemText>
+            </ListItem>
+            {channels.map(channel => this.renderChannel(channel, team.id))}
+          </List>
+        </div>
+        <div style={{marginRight: '-1rem', marginLeft: '-1rem'}}>
+          <Divider />
+          <List>
+            <ListItem button className={classes.channelItem}>
+              <ListItemText primary="Direct Messages" classes={{
+                primary: classes.channelText
+              }} />
+            </ListItem>
+            {users.map(this.renderUser)}
+          </List>
+        </div>
+        <CreateChannelModal isOpen={createChannelModalVisible} handleModalVisiblity={this.handleModalVisiblity} teamId={team.id}/>
+      </React.Fragment>
     )
   }
 }
