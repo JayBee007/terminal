@@ -8,6 +8,7 @@ import Icon from '@material-ui/core/Icon';
 import { withStyles } from '@material-ui/core/styles';
 import { Query } from 'react-apollo';
 import findIndex from 'lodash/findIndex';
+import { Link } from 'react-router-dom';
 
 import { getUserFromLocalStorage } from '../../services/authService';
 
@@ -28,11 +29,11 @@ class ChannelsContainer extends React.Component {
     }));
   }
 
-  renderChannel = ({id, name}) => (
+  renderChannel = ({id, name}, teamId) => (
     <ListItem key={`channel-${id}`} button className={this.props.classes.listItem}>
-      <ListItemText primary={`#${name}`}  classes={{
-        primary: this.props.classes.listText
-      }}/>
+      <ListItemText classes={{ primary: this.props.classes.listText }}>
+        <Link to={`/team/view-team/${teamId}/${id}`}>{`#${name}`}</Link>
+      </ListItemText>
     </ListItem>
   )
 
@@ -90,7 +91,7 @@ class ChannelsContainer extends React.Component {
                     </Icon>
                   </ListItemText>
                 </ListItem>
-                {channels.map(this.renderChannel)}
+                {channels.map(channel => this.renderChannel(channel, team.id))}
               </List>
             </div>
             <div style={{marginRight: '-1rem', marginLeft: '-1rem'}}>

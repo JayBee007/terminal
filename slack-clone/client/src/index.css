@@ -1,0 +1,11 @@
+a,
+a:active,
+a:visited {
+  text-decoration: none;
+  color: inherit;
+  transition: color 0.2s;
+}
+
+a:hover {
+  color: #36173b;
+}
