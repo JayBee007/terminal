@@ -11,6 +11,7 @@ import models from './db';
 require('dotenv').config();
 
 const PORT = 4000;
+const FORCE = false;
 
 const typeDefs = mergeTypes(fileLoader(path.join(__dirname, './graphql/schema')));
 const resolvers = mergeResolvers(fileLoader(path.join(__dirname, './graphql/resolvers')));
@@ -34,7 +35,7 @@ const server = new ApolloServer({
 
 server.applyMiddleware({ app });
 
-models.sequelize.sync().then(() => {
+models.sequelize.sync({ force: FORCE }).then(() => {
   app.listen(PORT, () => {
     console.log('Server ready');
   });

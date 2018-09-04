@@ -12,16 +12,24 @@ import { Link } from 'react-router-dom';
 import { getUserFromLocalStorage } from '../../services/authService';
 
 import CreateChannelModal from './CreateChannelModal';
+import InvitePeopleModal from './InvitePeopleModal';
 
 class ChannelsContainer extends React.Component {
 
   state = {
-    createChannelModalVisible: false
+    createChannelModalVisible: false,
+    invitePeopleModalVisible: false
   }
 
   handleModalVisiblity = () => {
     this.setState(prevState => ({
       createChannelModalVisible: !prevState.createChannelModalVisible
+    }));
+  }
+
+  handleInvitePeopleModal = () => {
+    this.setState(prevState => ({
+      invitePeopleModalVisible: !prevState.invitePeopleModalVisible,
     }));
   }
 
@@ -45,7 +53,7 @@ class ChannelsContainer extends React.Component {
   render() {
 
     const { users, classes, channels, team } = this.props;
-    const { createChannelModalVisible } = this.state;
+    const { createChannelModalVisible, invitePeopleModalVisible } = this.state;
     const user = getUserFromLocalStorage();
     const userName = JSON.parse(user).username;
 
@@ -89,7 +97,17 @@ class ChannelsContainer extends React.Component {
             {users.map(this.renderUser)}
           </List>
         </div>
+        <div style={{marginRight: '-1rem', marginLeft: '-1rem'}}>
+          <Divider />
+          <Link
+            to='#'
+            style={{paddingLeft: '0.7rem', paddingTop: '0.5rem', display:'block'}}
+            onClick={this.handleInvitePeopleModal}>
+              + Invite People
+          </Link>
+        </div>
         <CreateChannelModal isOpen={createChannelModalVisible} handleModalVisiblity={this.handleModalVisiblity} teamId={team.id}/>
+        <InvitePeopleModal isOpen={invitePeopleModalVisible} handleModalVisiblity={this.handleInvitePeopleModal} teamId={team.id}/>
       </React.Fragment>
     )
   }
