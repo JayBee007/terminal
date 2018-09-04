@@ -35,3 +35,15 @@ export const GET_ALL_TEAMS_AND_CHANNELS = gql`
     }
   }
 }`;
+
+export const ADD_TEAM_MEMBER = gql`
+  mutation addTeamMember($email: String!, $teamId: Int!) {
+    addTeamMember(email: $email, teamId: $teamId) {
+      ok
+      errors {
+        path
+        message
+      }
+    }
+  }
+`;
