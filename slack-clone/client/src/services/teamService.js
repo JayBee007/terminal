@@ -34,6 +34,14 @@ export const GET_ALL_TEAMS_AND_CHANNELS = gql`
       name
     }
   }
+  inviteTeams {
+    id
+    name
+    channels {
+      id
+      name
+    }
+  }
 }`;
 
 export const ADD_TEAM_MEMBER = gql`

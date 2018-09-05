@@ -16,29 +16,32 @@ import { GET_ALL_TEAMS_AND_CHANNELS } from '../../services/teamService';
 const ViewTeam = (props) => (
   <Query query={ GET_ALL_TEAMS_AND_CHANNELS }>
       {({ loading, error, data}) => {
-
+        
         if(loading) return <Loader />
         if(error) return <p>Error: {error}</p>
 
         const { teamId, channelId } = props.match.params;
-        const { allTeams } = data;
-        if(!allTeams.length) {
+        const { allTeams, inviteTeams } = data;
+
+        const teams = [...allTeams, ...inviteTeams];
+        
+        if(!teams.length) {
           return <Redirect to="/team/create-team" />
         }
 
         const teamIdInteger = parseInt(teamId, 10);
-        const teamIdx = teamIdInteger ? findIndex(allTeams, ['id', teamIdInteger]) : 0;
-        const team = allTeams[teamIdx];
+        const teamIdx = teamIdInteger ? findIndex(teams, ['id', teamIdInteger]) : 0;
+        const team = teamIdx === -1 ? teams[0] : teams[teamIdx];
 
         const channelIdInteger = parseInt(channelId, 10);
         const channels = team.channels;
         const channelIdx = channelIdInteger ? findIndex(channels, ['id',channelIdInteger]) : 0;
-        const currentChannel = team.channels[channelIdx];
+        const currentChannel = channelIdx === -1 ? team.channels[0] :team.channels[channelIdx];
 
         return (
           <FullHeight>
             <FullHeightRow gridSize={1} className={props.classes.team}>
-              <Teams allTeams={allTeams} />
+              <Teams allTeams={teams} />
             </FullHeightRow>
             <FullHeightRow gridSize={2} className={props.classes.channel}>
               <Channels
