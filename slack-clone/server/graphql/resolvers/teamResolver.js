@@ -9,13 +9,16 @@ export default {
   Mutation: {
     createTeam: requiresAuth.createResolver(async (parent, args, { models, user }) => {
       try {
-        const team = await models.Team.create({ ...args, owner: user.id });
-        await models.Channel.create({
-          name: 'general',
-          teamId: team.id,
+        const response = await models.sequelize.transaction(async () => {
+          const team = await models.Team.create({ ...args, owner: user.id });
+          await models.Channel.create({
+            name: 'general',
+            teamId: team.id,
+          });
+          return team;
         });
         return {
-          team,
+          team: response,
           ok: true,
         };
       } catch (error) {
