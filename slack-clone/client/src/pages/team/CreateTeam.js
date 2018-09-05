@@ -50,7 +50,7 @@ class CreateTeam extends React.Component {
             this.handleSubmitErrors(errors);
             return;
           }
-          history.push(`/team/view-team/${team.id}`)
+          history.push(`/team/view-team/${team.id}`) //TODO Bug: redirect to new team after being redirected from view-team
         }}
       >
         {(createTeam) => (
