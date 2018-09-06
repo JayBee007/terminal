@@ -47,6 +47,7 @@ const ViewTeam = (props) => (
               <Channels
                 channels={channels}
                 team={team}
+                owner={team.owner}
                 currentTeamId={props.match.params.teamId}
                 users={[{id:1, name: 'slackbot', status: 'online'},  {id:2, name: 'bob', status: 'offline'}]}
               />

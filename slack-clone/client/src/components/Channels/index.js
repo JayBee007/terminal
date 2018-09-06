@@ -52,11 +52,14 @@ class ChannelsContainer extends React.Component {
 
   render() {
 
-    const { users, classes, channels, team } = this.props;
+    const { users, classes, channels, team, owner } = this.props;
     const { createChannelModalVisible, invitePeopleModalVisible } = this.state;
-    const user = getUserFromLocalStorage();
-    const userName = JSON.parse(user).username;
-
+    let user = getUserFromLocalStorage();
+    user = JSON.parse(user);
+    const userName = user.username;
+    const userId = user.id;
+    const isOwner = owner === userId;
+    
     return (
       <React.Fragment>
         <div>
@@ -75,12 +78,12 @@ class ChannelsContainer extends React.Component {
                 primary: classes.channelText
               }}>
                 Channels
-                <Icon
+                { isOwner &&  <Icon
                   color="action"
                   className={classes.icon}
                   onClick={this.handleModalVisiblity}>
                     add_circle
-                </Icon>
+                </Icon> }
               </ListItemText>
             </ListItem>
             {channels.map(channel => this.renderChannel(channel, team.id))}
@@ -99,12 +102,12 @@ class ChannelsContainer extends React.Component {
         </div>
         <div style={{marginRight: '-1rem', marginLeft: '-1rem'}}>
           <Divider />
-          <Link
+          {isOwner && <Link
             to='#'
             style={{paddingLeft: '0.7rem', paddingTop: '0.5rem', display:'block'}}
             onClick={this.handleInvitePeopleModal}>
               + Invite People
-          </Link>
+          </Link>}
         </div>
         <CreateChannelModal isOpen={createChannelModalVisible} handleModalVisiblity={this.handleModalVisiblity} teamId={team.id}/>
         <InvitePeopleModal isOpen={invitePeopleModalVisible} handleModalVisiblity={this.handleInvitePeopleModal} teamId={team.id}/>

@@ -29,6 +29,7 @@ export const GET_ALL_TEAMS_AND_CHANNELS = gql`
   allTeams {
     id
     name
+    owner
     channels {
       id
       name
@@ -37,6 +38,7 @@ export const GET_ALL_TEAMS_AND_CHANNELS = gql`
   inviteTeams {
     id
     name
+    owner
     channels {
       id
       name
