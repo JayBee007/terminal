@@ -1,6 +1,8 @@
+import requiresAuth from '../permissions';
+
 export default {
   Mutation: {
-    createMessage: async (parent, args, { models, user }) => {
+    createMessage: requiresAuth.createResolver(async (parent, args, { models, user }) => {
       try {
         await models.Message.create({
           ...args,
@@ -11,6 +13,6 @@ export default {
         // console.log(error);
         return false;
       }
-    },
+    }),
   },
 };

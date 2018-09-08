@@ -5,7 +5,7 @@ import requiresAuth from '../permissions';
 export default {
   Query: {
     allTeams: requiresAuth.createResolver(async (parent, args, { models, user }) => models.Team.findAll({ where: { owner: user.id } }, { raw: true })),
-    inviteTeams: requiresAuth.createResolver(async (parent, args, { models, user }) =>  models.sequelize.query('select * from teams join members on id = team_id where user_id = ?', {
+    inviteTeams: requiresAuth.createResolver(async (parent, args, { models, user }) => models.sequelize.query('select * from teams join members on id = team_id where user_id = ?', {
       replacements: [user.id],
       model: models.Team,
     })),
