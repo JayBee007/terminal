@@ -16,7 +16,7 @@ import { GET_ALL_TEAMS_AND_CHANNELS } from '../../services/teamService';
 const ViewTeam = (props) => (
   <Query query={ GET_ALL_TEAMS_AND_CHANNELS }>
       {({ loading, error, data}) => {
-        
+
         if(loading) return <Loader />
         if(error) return <p>Error: {error}</p>
 
@@ -24,7 +24,7 @@ const ViewTeam = (props) => (
         const { allTeams, inviteTeams } = data;
 
         const teams = [...allTeams, ...inviteTeams];
-        
+
         if(!teams.length) {
           return <Redirect to="/team/create-team" />
         }
@@ -54,7 +54,7 @@ const ViewTeam = (props) => (
             </FullHeightRow>
             <FullHeightRow gridSize={9}>
               <Messages
-                channelName={currentChannel.name}
+                channelName={currentChannel.name} channelId={currentChannel.id}
               />
             </FullHeightRow>
           </FullHeight>

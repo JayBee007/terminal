@@ -6,13 +6,13 @@ import { withStyles } from '@material-ui/core/styles';
 import Messages from './Messages';
 import SendMessage from './SendMessage';
 
-const MessagesContainer = ({channelName, ...props}) => (
+const MessagesContainer = ({channelName, channelId, ...props}) => (
   <Grid container direction="column" className={props.classes.container}>
     <Typography variant="headline">
       #{channelName}
     </Typography>
     <Messages />
-    <SendMessage channelName={channelName} />
+    <SendMessage channelName={channelName} channelId={channelId} />
   </Grid>
 );
 

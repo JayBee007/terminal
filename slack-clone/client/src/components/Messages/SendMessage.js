@@ -1,24 +1,78 @@
 import React from 'react';
+import { Mutation } from 'react-apollo';
 import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
 import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/core/styles';
 
-const SendMessage = (props) => (
-  <Grid item>
-    <FormControl className={props.classes.control}>
-      <Input
-        classes={{
-          focused:props.classes.focused
+import { CREATE_MESSAGE } from '../../services/messageService';
+
+class SendMessage extends React.Component {
+
+  state = {
+    text: ''
+  };
+
+  handleChange = (e) => {
+    const value = e.target.value;
+    this.setState({
+      text: value
+    });
+  }
+
+  render() {
+    const { classes, channelName, channelId } = this.props;
+    const { text } = this.state;
+    return (
+      <Mutation
+        mutation={CREATE_MESSAGE}
+        update={(_, {data: { createMessage }}) => {
+          if(createMessage) {
+            this.setState({
+              text: ''
+            })
+          }
         }}
-        disableUnderline
-        id="send-message"
-        className={props.classes.input}
-        placeholder={`Message #${props.channelName}`}
-      />
-    </FormControl>
-  </Grid>
-)
+      >
+        {(createMessage) => {
+          return (
+            <Grid item>
+              <form
+                autoComplete="off"
+                onSubmit={e => {
+                  e.preventDefault();
+
+                  if(text.length > 0) {
+                    createMessage({
+                      variables: {
+                        channelId,
+                        text
+                      }
+                    });
+                  }
+                }}
+              >
+                <FormControl className={classes.control}>
+                  <Input
+                    onChange={this. handleChange}
+                    classes={{
+                      focused:classes.focused
+                    }}
+                    disableUnderline
+                    id="send-message"
+                    className={classes.input}
+                    placeholder={`Message #${channelName}`}
+                    value={text}
+                  />
+                </FormControl>
+              </form>
+            </Grid>
+          );
+        }}
+      </Mutation>
+    )
+  }
+};
 
 
 const styles = {
