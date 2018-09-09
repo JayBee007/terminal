@@ -5,3 +5,16 @@ export const CREATE_MESSAGE = gql`
     createMessage(channelId: $channelId, text: $text)
   }
 `;
+
+export const GET_MESSAGES = gql`
+  query getMessages($channelId: Int!) {
+    getMessages(channelId: $channelId) {
+      id
+      text
+      user {
+        username
+      }
+      created_at
+    }
+  }
+`;

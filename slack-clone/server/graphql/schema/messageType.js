@@ -1,9 +1,14 @@
 export default `
   type Message {
     id: Int!
-    test: String!
+    text: String!
     user: User!
     channel: Channel!
+    created_at: String!
+  }
+
+  type Query {
+    getMessages(channelId: Int!): [Message!]!
   }
 
   type Mutation {

@@ -21,7 +21,7 @@ class SendMessage extends React.Component {
   }
 
   render() {
-    const { classes, channelName, channelId } = this.props;
+    const { classes, channelName, channelId, className } = this.props;
     const { text } = this.state;
     return (
       <Mutation
@@ -36,7 +36,7 @@ class SendMessage extends React.Component {
       >
         {(createMessage) => {
           return (
-            <Grid item>
+            <Grid item className={className}>
               <form
                 autoComplete="off"
                 onSubmit={e => {
@@ -54,7 +54,7 @@ class SendMessage extends React.Component {
               >
                 <FormControl className={classes.control}>
                   <Input
-                    onChange={this. handleChange}
+                    onChange={this.handleChange}
                     classes={{
                       focused:classes.focused
                     }}

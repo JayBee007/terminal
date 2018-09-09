@@ -69,6 +69,10 @@ const styles = {
   },
   channel: {
     background: '#563e58',
+  },
+  message: {
+    overflow: 'auto',
+    height: '100%',
   }
 }
 

@@ -8,18 +8,29 @@ import SendMessage from './SendMessage';
 
 const MessagesContainer = ({channelName, channelId, ...props}) => (
   <Grid container direction="column" className={props.classes.container}>
-    <Typography variant="headline">
+    <Typography variant="headline" className={props.classes.channelName}>
       #{channelName}
     </Typography>
-    <Messages />
-    <SendMessage channelName={channelName} channelId={channelId} />
+    <Messages channelId={channelId}/>
+    <SendMessage channelName={channelName} channelId={channelId} className={props.classes.sendMessage} />
   </Grid>
 );
 
 const styles = {
   container: {
-    height: '100%'
+    height: '100%',
+    flex: 'auto',
+    flexWrap: 'nowrap',
+  },
+  channelName: {
+    flexShrink: 0
+  },
+  sendMessage: {
+    flexShrink: 0,
+    marginTop: 'auto',
+    paddingTop: '5px',
   }
+
 }
 
 export default withStyles(styles)(MessagesContainer);
