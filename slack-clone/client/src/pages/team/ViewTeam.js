@@ -18,7 +18,7 @@ const ViewTeam = (props) => (
       {({ loading, error, data}) => {
 
         if(loading) return <Loader />
-        if(error) return <p>Error: {error}</p>
+        if(error) return <p>Error: {JSON.stringify(error)}</p>
 
         const { teamId, channelId } = props.match.params;
         const { allTeams, inviteTeams } = data;
