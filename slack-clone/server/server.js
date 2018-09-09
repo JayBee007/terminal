@@ -1,10 +1,14 @@
 /* eslint no-console: 0 */
+/* eslint no-new:0 */
 import express from 'express';
 import morgan from 'morgan';
 import { ApolloServer } from 'apollo-server-express';
 import path from 'path';
 import jwt from 'jsonwebtoken';
 import { fileLoader, mergeTypes, mergeResolvers } from 'merge-graphql-schemas';
+import { createServer } from 'http';
+import { SubscriptionServer } from 'subscriptions-transport-ws';
+import { execute, subscribe } from 'graphql';
 
 import models from './db';
 
@@ -17,6 +21,8 @@ const typeDefs = mergeTypes(fileLoader(path.join(__dirname, './graphql/schema'))
 const resolvers = mergeResolvers(fileLoader(path.join(__dirname, './graphql/resolvers')));
 
 const app = express();
+const ws = createServer(app);
+
 app.use(morgan('dev'));
 const server = new ApolloServer({
   typeDefs,
@@ -36,7 +42,22 @@ const server = new ApolloServer({
 server.applyMiddleware({ app });
 
 models.sequelize.sync({ force: FORCE }).then(() => {
-  app.listen(PORT, () => {
-    console.log('Server ready');
+  // app.listen(PORT, () => {
+  //   console.log('Server ready');
+  ws.listen(PORT, () => {
+    console.log(`Apollo Server is now running on http://localhost:${PORT}`);
+    // Set up the WebSocket for handling GraphQL subscriptions
+    new SubscriptionServer({
+      onConnect: (connectionParams, webSocket, context) => {
+        console.log('new ws connection');
+      },
+      execute,
+      subscribe,
+      schema: typeDefs,
+    }, {
+      server: ws,
+      path: '/subscriptions',
+    });
   });
 });
+// });
