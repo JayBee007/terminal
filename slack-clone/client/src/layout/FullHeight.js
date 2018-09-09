@@ -11,6 +11,7 @@ const FullHeight = (props) => (
 const styles = {
   container: {
     height: '100vh',
+    flexWrap: 'nowrap',
   },
 }
 
