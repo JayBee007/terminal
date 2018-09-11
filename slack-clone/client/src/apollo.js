@@ -13,6 +13,9 @@ import defaults from './state/defaults';
 import resolvers from './state/resolvers';
 import typeDefs from './state/typeDefs';
 
+const user  = getUserFromLocalStorage();
+const token = user && JSON.parse(user).token;
+
 const cache = new InMemoryCache();
 
 const httpLink = new HttpLink({
@@ -23,7 +26,10 @@ const httpLink = new HttpLink({
 const wsLink = new WebSocketLink({
   uri: `ws://localhost:4000/subscriptions`,
   options: {
-    reconnect: true
+    reconnect: true,
+    connectionParams: {
+      'x-token': token,
+  },
   }
 });
 
@@ -38,11 +44,10 @@ const link = split(
 );
 
 const request = operation => {
-  const user  = getUserFromLocalStorage();
   let headers;
   if(user) {
     headers = {
-      'x-token': JSON.parse(user).token
+      'x-token': token,
     }
     operation.setContext({headers})
   }

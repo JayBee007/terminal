@@ -1,6 +1,6 @@
 /* eslint no-useless-escape:0 */
 import React from 'react';
-import { Mutation, graphql } from 'react-apollo';
+import { Mutation, graphql, compose } from 'react-apollo';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
@@ -8,7 +8,6 @@ import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import Icon from '@material-ui/core/Icon';
 import { withStyles } from '@material-ui/core/styles';
-import { compose } from 'recompose';
 
 import { REGISTER, SET_USER, setUserToLocalStorage} from '../services/authService';
 

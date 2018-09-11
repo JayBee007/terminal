@@ -18,3 +18,28 @@ export const GET_MESSAGES = gql`
     }
   }
 `;
+// const newChannelMessageSubscription = gql`
+//   subscription($channelId: Int!) {
+//     newChannelMessage(channelId: $channelId) {
+//       id
+//       text
+//       user {
+//         username
+//       }
+//       created_at
+//     }
+//   }
+// `;
+
+export const SUBSCRIBE_MESSAGE = gql`
+  subscription($channelId: Int!) {
+    messageAdded(channelId: $channelId) {
+      id
+      text
+      user {
+        username
+      }
+      created_at
+    }
+  }
+`;
