@@ -24,7 +24,7 @@
   },
   "devDependencies": {
     "eslint-plugin-prettier": "^2.6.2",
-    "react-scripts": "1.1.4"
+    "react-scripts": "^1.1.5"
   },
   "scripts": {
     "start": "react-scripts start",
