@@ -7,7 +7,21 @@ import Message from './Message';
 class Messages extends React.Component {
 
   componentDidMount() {
-    this.props.subscribeToNewMessages();
+    this.unsubscribe = this.props.subscribeToNewMessages();
+  }
+
+  componentDidUpdate(prevProps) {
+    const { channelId } = prevProps;
+    if( this.props.channelId !== channelId) {
+      if(this.unsubscribe) {
+        this.unsubscribe();
+      }
+      this.unsubscribe = this.props.subscribeToNewMessages();
+    }
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe();
   }
 
   render() {

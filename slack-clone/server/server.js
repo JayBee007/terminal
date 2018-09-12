@@ -64,6 +64,9 @@ models.sequelize.sync({ force: FORCE }).then(() => {
         console.log('onOperation from Client.....');
         return params;
       },
+      onOperationComplete: () => {
+        console.log('Operation complete unsubscribing');
+      },
       execute,
       subscribe,
       schema,

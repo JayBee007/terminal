@@ -12,7 +12,7 @@ import Loader from '../Loader';
 import { GET_MESSAGES, SUBSCRIBE_MESSAGE } from '../../services/messageService';
 
 const MessagesContainer = ({channelName, channelId, ...props}) => (
-  <Query query={GET_MESSAGES} variables={{channelId }}>
+  <Query query={GET_MESSAGES} variables={{channelId }} fetchPolicy='network-only'>
     {({subscribeToMore, loading, error, data: {getMessages }}) => {
 
       if(loading) return <Loader />
