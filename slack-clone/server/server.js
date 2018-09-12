@@ -56,9 +56,11 @@ models.sequelize.sync({ force: FORCE }).then(() => {
         const token = connectionParams['x-token'];
         if (token) {
           const { id, email } = jwt.verify(token, process.env.JWT_KEY);
+          // TODO: refactor use user object form verification
           return { models, user: { id, email } };
         }
-        return { models };
+
+        throw new Error('missing auth token');
       },
       onOperation: (message, params, webSocket) => {
         console.log('onOperation from Client.....');
