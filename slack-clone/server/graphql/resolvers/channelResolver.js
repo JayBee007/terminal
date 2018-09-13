@@ -1,3 +1,4 @@
+/* eslint max-len:0 */
 import { formatErrors } from '../../utils';
 import requiresAuth from '../permissions';
 
@@ -5,8 +6,8 @@ export default {
   Mutation: {
     createChannel: requiresAuth.createResolver(async (parent, args, { models, user }) => {
       try {
-        const team = await models.Team.findOne({ where: { id: args.teamId } }, { raw: true });
-        if (team.owner !== user.id) {
+        const member = await models.Member.findOne({ where: { teamId: args.teamId, userId: user.id } }, { raw: true });
+        if (!member) {
           return {
             ok: false,
             errors: [

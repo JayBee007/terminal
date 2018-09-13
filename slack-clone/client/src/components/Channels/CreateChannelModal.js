@@ -9,7 +9,7 @@ import { Mutation } from 'react-apollo';
 import findIndex from 'lodash/findIndex';
 
 import { CREATE_CHANNEL } from '../../services/channelService';
-import { GET_ALL_TEAMS_AND_CHANNELS } from '../../services/teamService';
+import { GET_USER } from '../../services/userService';
 
 class CreateChannelModal extends React.Component {
 
@@ -35,14 +35,14 @@ class CreateChannelModal extends React.Component {
         update={(cache, {data: { createChannel}}) => {
           const { ok, channel } = createChannel;
           if(ok) {
+            
+            const data  = cache.readQuery({query: GET_USER});
+            const teamIdx = findIndex(data.getUser.teams, ['id', teamId]);
 
-            const data  = cache.readQuery({query: GET_ALL_TEAMS_AND_CHANNELS});
-            const teamIdx = findIndex(data.allTeams, ['id', teamId]);
-
-            data.allTeams[teamIdx].channels.push(channel);
+            data.getUser.teams[teamIdx].channels.push(channel);
 
             cache.writeQuery({
-              query: GET_ALL_TEAMS_AND_CHANNELS,
+              query: GET_USER,
               data,
             })
           }

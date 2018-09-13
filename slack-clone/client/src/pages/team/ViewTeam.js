@@ -12,19 +12,21 @@ import Loader from '../../components/Loader';
 import FullHeight from '../../layout/FullHeight';
 import FullHeightRow from '../../layout/FullHeightRow';
 
-import { GET_ALL_TEAMS_AND_CHANNELS } from '../../services/teamService';
+import { GET_USER } from '../../services/userService'
+
+
 const ViewTeam = (props) => (
-  <Query query={ GET_ALL_TEAMS_AND_CHANNELS }>
+  <Query query={ GET_USER } fetchPolicy="network-only">
       {({ loading, error, data}) => {
 
         if(loading) return <Loader />
         if(error) return <p>Error: {JSON.stringify(error)}</p>
 
         const { teamId, channelId } = props.match.params;
-        const { allTeams, inviteTeams } = data;
+        const { getUser } = data;
 
-        const teams = [...allTeams, ...inviteTeams];
-
+        const {teams, ...user} = getUser;
+        
         if(!teams.length) {
           return <Redirect to="/team/create-team" />
         }
@@ -47,7 +49,8 @@ const ViewTeam = (props) => (
               <Channels
                 channels={channels}
                 team={team}
-                owner={team.owner}
+                user={user}
+                owner ={team.admin}
                 currentTeamId={props.match.params.teamId}
                 users={[{id:1, name: 'slackbot', status: 'online'},  {id:2, name: 'bob', status: 'offline'}]}
               />

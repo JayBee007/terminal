@@ -1,3 +1,4 @@
+/* eslint max-len: 0 */
 import { PubSub, withFilter } from 'graphql-subscriptions';
 import requiresAuth from '../permissions';
 
@@ -10,10 +11,10 @@ export default {
   },
   Subscription: {
     messageAdded: {
-      subscribe: withFilter(
+      subscribe: requiresAuth.createResolver(withFilter(
         () => pubsub.asyncIterator(NEW_MESSAGE),
         (payload, args) => payload.messageAdded.channelId === args.channelId,
-      ),
+      )),
     },
   },
   Query: {

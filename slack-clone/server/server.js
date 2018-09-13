@@ -60,7 +60,7 @@ models.sequelize.sync({ force: FORCE }).then(() => {
           return { models, user: { id, email } };
         }
 
-        throw new Error('missing auth token');
+        return { models };
       },
       onOperation: (message, params, webSocket) => {
         console.log('onOperation from Client.....');
