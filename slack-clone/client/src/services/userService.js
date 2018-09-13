@@ -8,6 +8,7 @@ export const GET_USER = gql`
     teams {
       id
       name
+      admin
       channels {
         id
         name

@@ -53,8 +53,6 @@ class ChannelsContainer extends React.Component {
     const { users, classes, channels, team, owner, user } = this.props;
     const { createChannelModalVisible, invitePeopleModalVisible } = this.state;
     
-    const isOwner = owner === user.id;
-    
     return (
       <React.Fragment>
         <div>
@@ -73,7 +71,7 @@ class ChannelsContainer extends React.Component {
                 primary: classes.channelText
               }}>
                 Channels
-                { isOwner &&  <Icon
+                { owner &&  <Icon
                   color="action"
                   className={classes.icon}
                   onClick={this.handleModalVisiblity}>
@@ -97,7 +95,7 @@ class ChannelsContainer extends React.Component {
         </div>
         <div style={{marginRight: '-1rem', marginLeft: '-1rem'}}>
           <Divider />
-          {isOwner && <Link
+          {owner && <Link
             to='#'
             style={{paddingLeft: '0.7rem', paddingTop: '0.5rem', display:'block'}}
             onClick={this.handleInvitePeopleModal}>
