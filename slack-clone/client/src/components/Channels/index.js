@@ -9,8 +9,6 @@ import { withStyles } from '@material-ui/core/styles';
 
 import { Link } from 'react-router-dom';
 
-import { getUserFromLocalStorage } from '../../services/authService';
-
 import CreateChannelModal from './CreateChannelModal';
 import InvitePeopleModal from './InvitePeopleModal';
 
@@ -52,13 +50,10 @@ class ChannelsContainer extends React.Component {
 
   render() {
 
-    const { users, classes, channels, team, owner } = this.props;
+    const { users, classes, channels, team, owner, user } = this.props;
     const { createChannelModalVisible, invitePeopleModalVisible } = this.state;
-    let user = getUserFromLocalStorage();
-    user = JSON.parse(user);
-    const userName = user.username;
-    const userId = user.id;
-    const isOwner = owner === userId;
+    
+    const isOwner = owner === user.id;
     
     return (
       <React.Fragment>
@@ -67,7 +62,7 @@ class ChannelsContainer extends React.Component {
             {team.name}
           </Typography>
           <Typography>
-            {userName}
+            {user.username}
           </Typography>
         </div>
         <div style={{marginRight: '-1rem', marginLeft: '-1rem'}}>
