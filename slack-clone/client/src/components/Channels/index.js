@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -7,7 +8,6 @@ import Divider from '@material-ui/core/Divider';
 import Icon from '@material-ui/core/Icon';
 import { withStyles } from '@material-ui/core/styles';
 
-import { Link } from 'react-router-dom';
 
 import CreateChannelModal from './CreateChannelModal';
 import InvitePeopleModal from './InvitePeopleModal';
@@ -39,20 +39,25 @@ class ChannelsContainer extends React.Component {
     </ListItem>
   )
 
-  renderUser = ({id, name, status}) => (
-    <ListItem key={`user-${id}`} button className={this.props.classes.listItem}>
+  renderUser = ({id, name, status}) => {
+    const { team, currentChannel } = this.props;
+    return (
+      <Link to={`/team/view-team/${team.id}/${currentChannel.id}/user/${id}`} key={`user-${id}`}>
+        <ListItem  button className={this.props.classes.listItem}>
 
-      <ListItemText classes={{ primary: this.props.classes.listText }}>
-        <span className={`${this.props.classes.status} ${status === 'online' ? this.props.classes.online : this.props.classes.offline}`}></span> {name}
-      </ListItemText>
-    </ListItem>
-  )
+          <ListItemText classes={{ primary: this.props.classes.listText }}>
+            <span className={`${this.props.classes.status} ${status === 'online' ? this.props.classes.online : this.props.classes.offline}`}></span> {name}
+          </ListItemText>
+        </ListItem>
+      </Link>
+    )
+  }
 
   render() {
 
     const { users, classes, channels, team, owner, user } = this.props;
     const { createChannelModalVisible, invitePeopleModalVisible } = this.state;
-    
+
     return (
       <React.Fragment>
         <div>
