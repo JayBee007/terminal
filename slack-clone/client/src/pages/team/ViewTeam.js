@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import { Query } from 'react-apollo';
 import findIndex from 'lodash/findIndex';
@@ -55,11 +55,19 @@ const ViewTeam = (props) => (
                 users={[{id:1, name: 'slackbot', status: 'online'},  {id:2, name: 'bob', status: 'offline'}]}
               />
             </FullHeightRow>
-            <FullHeightRow gridSize={9}>
-              <Messages
-                channelName={currentChannel.name} channelId={currentChannel.id}
-              />
-            </FullHeightRow>
+            
+              <Route path="/user/:teamId/:userId" render={() => (
+                  <div>Direct Messages</div>
+              )}/>
+              {/* <Route path="/:teamId?/:channelId?" render={() => (
+                <FullHeightRow gridSize={9}>
+                  <Messages
+                    channelName={currentChannel.name} channelId={currentChannel.id}
+                  />
+                </FullHeightRow>
+              )}/> */}
+            
+            
           </FullHeight>
         )
       }}
