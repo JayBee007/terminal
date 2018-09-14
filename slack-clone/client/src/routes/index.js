@@ -15,7 +15,7 @@ const Routes = () => (
     <Route path="/" exact render={(props) => <Auth Component={Home} {...props} />} />
     <Route path="/login" exact render={(props) => <UnAuth Component={Login} {...props} />} />
     <Route path="/register" exact render={(props) => <UnAuth Component={Register} {...props} />} />
-    <Route path="/team/:action/:teamId?/:channelId?" exact render={(props) => <Auth Component={Team} {...props} />} />
+    <Route path="/team/:action" render={(props) => <Auth Component={Team} {...props} />} />
   </Switch>
 );
 
