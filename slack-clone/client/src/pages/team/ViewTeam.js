@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import { Query } from 'react-apollo';
 import findIndex from 'lodash/findIndex';
@@ -18,7 +18,6 @@ import { GET_USER } from '../../services/userService'
 const ViewTeam = (props) => (
   <Query query={ GET_USER } fetchPolicy="network-only">
       {({ loading, error, data}) => {
-
         if(loading) return <Loader />
         if(error) return <p>Error: {JSON.stringify(error)}</p>
 
@@ -26,7 +25,7 @@ const ViewTeam = (props) => (
         const { getUser } = data;
 
         const {teams, ...user} = getUser;
-        
+
         if(!teams.length) {
           return <Redirect to="/team/create-team" />
         }
@@ -48,6 +47,7 @@ const ViewTeam = (props) => (
             <FullHeightRow gridSize={2} className={props.classes.channel}>
               <Channels
                 channels={channels}
+                currentChannel={currentChannel}
                 team={team}
                 user={user}
                 owner ={team.admin}
@@ -55,11 +55,21 @@ const ViewTeam = (props) => (
                 users={[{id:1, name: 'slackbot', status: 'online'},  {id:2, name: 'bob', status: 'offline'}]}
               />
             </FullHeightRow>
-            <FullHeightRow gridSize={9}>
-              <Messages
-                channelName={currentChannel.name} channelId={currentChannel.id}
-              />
-            </FullHeightRow>
+              <Switch>
+              <Route path={`${props.match.path}/:teamId?/:channelId?/user/:userId`} exact render={() => (
+                <FullHeightRow gridSize={9}>
+                  <div>Direct Messages</div>
+                  </FullHeightRow>
+              )}/>
+              <Route path={`${props.match.path}/:teamId?/:channelId?`} exact render={() => (
+                <FullHeightRow gridSize={9}>
+                  <Messages
+                    channelName={currentChannel.name} channelId={currentChannel.id}
+                  />
+                </FullHeightRow>
+              )}/>
+              </Switch>
+
           </FullHeight>
         )
       }}
