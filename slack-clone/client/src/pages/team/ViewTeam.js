@@ -5,6 +5,7 @@ import { Query } from 'react-apollo';
 import findIndex from 'lodash/findIndex';
 // components
 import Messages from '../../components/Messages/';
+import DirectMessages from '../../components/DirectMessages/';
 import Channels from '../../components/Channels/';
 import Teams from '../../components/Teams/';
 import Loader from '../../components/Loader';
@@ -22,6 +23,7 @@ const ViewTeam = (props) => (
         if(error) return <p>Error: {JSON.stringify(error)}</p>
 
         const { teamId, channelId } = props.match.params;
+
         const { getUser } = data;
 
         const {teams, ...user} = getUser;
@@ -56,18 +58,18 @@ const ViewTeam = (props) => (
               />
             </FullHeightRow>
               <Switch>
-              <Route path={`${props.match.path}/:teamId?/:channelId?/user/:userId`} exact render={() => (
-                <FullHeightRow gridSize={9}>
-                  <div>Direct Messages</div>
+                <Route path={`${props.match.path}/:teamId?/:channelId?/user/:userId`} exact render={(props) => (
+                  <FullHeightRow gridSize={9}>
+                    <DirectMessages team={team} receiverId={props.match.params.userId}/>
                   </FullHeightRow>
-              )}/>
-              <Route path={`${props.match.path}/:teamId?/:channelId?`} exact render={() => (
-                <FullHeightRow gridSize={9}>
-                  <Messages
-                    channelName={currentChannel.name} channelId={currentChannel.id}
-                  />
-                </FullHeightRow>
-              )}/>
+                )}/>
+                <Route path={`${props.match.path}/:teamId?/:channelId?`} exact render={() => (
+                  <FullHeightRow gridSize={9}>
+                    <Messages
+                      channelName={currentChannel.name} channelId={currentChannel.id}
+                    />
+                  </FullHeightRow>
+                )}/>
               </Switch>
 
           </FullHeight>

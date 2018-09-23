@@ -1,6 +1,6 @@
 /* eslint max-len: 0 */
 import { PubSub, withFilter } from 'graphql-subscriptions';
-import requiresAuth from '../permissions';
+import requiresAuth, { requiresTeamAccess } from '../permissions';
 
 const pubsub = new PubSub();
 const NEW_MESSAGE = 'NEW_MESSAGE';
@@ -11,7 +11,7 @@ export default {
   },
   Subscription: {
     messageAdded: {
-      subscribe: requiresAuth.createResolver(withFilter(
+      subscribe: requiresTeamAccess.createResolver(withFilter(
         () => pubsub.asyncIterator(NEW_MESSAGE),
         (payload, args) => payload.messageAdded.channelId === args.channelId,
       )),
