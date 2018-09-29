@@ -10,25 +10,24 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Paper from '@material-ui/core/Paper';
 import deburr from 'lodash/deburr';
 import { withStyles } from '@material-ui/core/styles';
+import { Query, compose } from 'react-apollo';
+import { withRouter } from 'react-router-dom';
 
-const suggestions = [
-  { label: 'Afghanistan' },
-  { label: 'Aland Islands' },
-  { label: 'Albania' },
-  { label: 'Algeria' },
-  { label: 'American Samoa' },
-  { label: 'Andorra' },
-  { label: 'Angola' },
-  { label: 'Anguilla' },
-  { label: 'Antarctica' },
-  { label: 'Antigua and Barbuda' },
-  { label: 'Argentina' },
-  { label: 'Armenia' },
-  { label: 'Aruba' },
-]
+import { GET_TEAM_MEMBERS } from '../../services/teamService';
+
+import Loader from '../Loader';
 
 class DirectMessageModal extends React.Component {
 
+  handleChange = value => {
+    const { history, teamId, channelId, handleModalVisiblity } = this.props;
+    history.push(`/team/view-team/${teamId}/${channelId}/user/${value.id}`);
+    handleModalVisiblity();
+  }
+
+  handleItemToString = item => {
+    return item ? item.username: '';
+  }
 
   renderInput = inputProps => {
     const { InputProps, classes, ref, ...other } = inputProps;
@@ -54,29 +53,28 @@ class DirectMessageModal extends React.Component {
     return (
       <MenuItem
         {...itemProps}
-        key={suggestion.label}
+        key={suggestion.id}
         selected={isHighlighted}
         component="div"
         style={{
           fontWeight: isSelected ? 500 : 400,
         }}
       >
-        {suggestion.label}
+        {suggestion.username}
       </MenuItem>
     );
   }
 
-  getSuggestions = value => {
+  getSuggestions = (value, teamMembers) => {
     const inputValue = deburr(value.trim()).toLowerCase();
     const inputLength = inputValue.length;
     let count = 0;
 
     return inputLength === 0
       ? []
-      : suggestions.filter(suggestion => {
+      : teamMembers.filter(teamMember => {
           const keep =
-            count < 5 && suggestion.label.slice(0, inputLength).toLowerCase() === inputValue;
-
+            count < 5 && teamMember.username.slice(0, inputLength).toLowerCase() === inputValue;
           if (keep) {
             count += 1;
           }
@@ -88,64 +86,72 @@ class DirectMessageModal extends React.Component {
 
 
   render() {
-    const { isOpen, handleModalVisiblity, classes } = this.props;
+    const { isOpen, handleModalVisiblity, classes, teamId } = this.props;
 
     return (
-      <React.Fragment>
-        <Dialog
-          open={isOpen}
-          onClose={handleModalVisiblity}
-          aria-labelledby="form-dialog-title"
-        >
-          <DialogTitle id="form-dialog-title">Find Team Member</DialogTitle>
-          <DialogContent>
-            <Downshift id="downshift-simple">
-              {({
-                getInputProps,
-                getItemProps,
-                getMenuProps,
-                highlightedIndex,
-                inputValue,
-                isOpen,
-                selectedItem,
-              }) => (
-                <div className={classes.container}>
-                  {this.renderInput({
-                    fullWidth: true,
-                    classes,
-                    InputProps: getInputProps({
-                      placeholder: 'Search a country (start with a)',
-                    }),
-                  })}
-                  <div {...getMenuProps()}>
-                    {isOpen ? (
-                      <Paper className={classes.paper} square>
-                        {this.getSuggestions(inputValue).map((suggestion, index) =>
-                          this.renderSuggestion({
-                            suggestion,
-                            index,
-                            itemProps: getItemProps({ item: suggestion.label }),
-                            highlightedIndex,
-                            selectedItem,
-                          }),
-                        )}
-                      </Paper>
-                    ) : null}
-                  </div>
-                </div>
-              )}
-            </Downshift>
-            <DialogActions>
+      <Query
+        query={GET_TEAM_MEMBERS} variables={{teamId}}>
+        {({ loading, error, data: { getTeamMembers}}) => {
+
+          if(loading) return <Loader />
+          if(error) return <p>Error: {JSON.stringify(error)}</p>
+
+
+        return (
+          <React.Fragment>
+            <Dialog
+              open={isOpen}
+              onClose={handleModalVisiblity}
+              aria-labelledby="form-dialog-title"
+            >
+              <DialogTitle id="form-dialog-title">Find Team Member</DialogTitle>
+              <DialogContent>
+                <Downshift onChange={this.handleChange} itemToString={this.handleItemToString}>
+                  {({
+                    getInputProps,
+                    getItemProps,
+                    getMenuProps,
+                    highlightedIndex,
+                    inputValue,
+                    isOpen,
+                    selectedItem,
+                  }) => (
+                    <div className={classes.container}>
+                      {this.renderInput({
+                        fullWidth: true,
+                        classes,
+                        InputProps: getInputProps({
+                          placeholder: 'Search Team Members',
+                        }),
+                      })}
+                      <div {...getMenuProps()}>
+                        {isOpen ? (
+                          <Paper className={classes.paper} square>
+                            {this.getSuggestions(inputValue, getTeamMembers).map((suggestion, index) =>
+                              this.renderSuggestion({
+                                suggestion,
+                                index,
+                                itemProps: getItemProps({ item: suggestion }),
+                                highlightedIndex,
+                                selectedItem,
+                              }),
+                            )}
+                          </Paper>
+                        ) : null}
+                      </div>
+                    </div>
+                  )}
+                </Downshift>
+                <DialogActions>
                   <Button onClick={handleModalVisiblity} color="primary">
                     Cancel
                   </Button>
-                  <Button type='submit' color="primary">
-                    Start Chat
-                  </Button>
                 </DialogActions>
-          </DialogContent>
-        </Dialog>
-      </React.Fragment>
+              </DialogContent>
+            </Dialog>
+          </React.Fragment>
+        )}}
+      </Query>
     )
   }
 }
@@ -177,4 +183,7 @@ const styles = theme => ({
   },
 });
 
-export default withStyles(styles)(DirectMessageModal);
+export default compose(
+  withStyles(styles),
+  withRouter,
+)(DirectMessageModal);

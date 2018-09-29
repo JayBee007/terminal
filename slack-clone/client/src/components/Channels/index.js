@@ -63,7 +63,7 @@ class ChannelsContainer extends React.Component {
 
   render() {
 
-    const { users, classes, channels, team, owner, user } = this.props;
+    const { users, classes, channels, team, owner, user, currentChannel } = this.props;
     const { createChannelModalVisible, invitePeopleModalVisible, directMessageModalVisible } = this.state;
 
     return (
@@ -125,7 +125,7 @@ class ChannelsContainer extends React.Component {
         </div>
         <CreateChannelModal isOpen={createChannelModalVisible} handleModalVisiblity={this.handleModalVisiblity} teamId={team.id}/>
         <InvitePeopleModal isOpen={invitePeopleModalVisible} handleModalVisiblity={this.handleInvitePeopleModal} teamId={team.id}/>
-        <DirectMessageModal isOpen={directMessageModalVisible} handleModalVisiblity={this.handleDirectMessageModal} />
+        <DirectMessageModal isOpen={directMessageModalVisible} handleModalVisiblity={this.handleDirectMessageModal} teamId={team.id} channelId={currentChannel.id}/>
       </React.Fragment>
     )
   }
