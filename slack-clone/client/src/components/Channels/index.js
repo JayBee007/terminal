@@ -11,12 +11,14 @@ import { withStyles } from '@material-ui/core/styles';
 
 import CreateChannelModal from './CreateChannelModal';
 import InvitePeopleModal from './InvitePeopleModal';
+import DirectMessageModal from './DirectMessageModal';
 
 class ChannelsContainer extends React.Component {
 
   state = {
     createChannelModalVisible: false,
-    invitePeopleModalVisible: false
+    invitePeopleModalVisible: false,
+    directMessageModalVisible: false,
   }
 
   handleModalVisiblity = () => {
@@ -28,6 +30,12 @@ class ChannelsContainer extends React.Component {
   handleInvitePeopleModal = () => {
     this.setState(prevState => ({
       invitePeopleModalVisible: !prevState.invitePeopleModalVisible,
+    }));
+  }
+
+  handleDirectMessageModal = () => {
+    this.setState(prevState => ({
+      directMessageModalVisible: !prevState.directMessageModalVisible,
     }));
   }
 
@@ -56,7 +64,7 @@ class ChannelsContainer extends React.Component {
   render() {
 
     const { users, classes, channels, team, owner, user } = this.props;
-    const { createChannelModalVisible, invitePeopleModalVisible } = this.state;
+    const { createChannelModalVisible, invitePeopleModalVisible, directMessageModalVisible } = this.state;
 
     return (
       <React.Fragment>
@@ -91,9 +99,17 @@ class ChannelsContainer extends React.Component {
           <Divider />
           <List>
             <ListItem button className={classes.channelItem}>
-              <ListItemText primary="Direct Messages" classes={{
+              <ListItemText classes={{
                 primary: classes.channelText
-              }} />
+              }}>
+                Direct Messages
+                <Icon
+                  color="action"
+                  className={classes.icon}
+                  onClick={this.handleDirectMessageModal}>
+                    add_circle
+                </Icon>
+              </ListItemText>
             </ListItem>
             {users.map(this.renderUser)}
           </List>
@@ -109,6 +125,7 @@ class ChannelsContainer extends React.Component {
         </div>
         <CreateChannelModal isOpen={createChannelModalVisible} handleModalVisiblity={this.handleModalVisiblity} teamId={team.id}/>
         <InvitePeopleModal isOpen={invitePeopleModalVisible} handleModalVisiblity={this.handleInvitePeopleModal} teamId={team.id}/>
+        <DirectMessageModal isOpen={directMessageModalVisible} handleModalVisiblity={this.handleDirectMessageModal} />
       </React.Fragment>
     )
   }
