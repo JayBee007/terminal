@@ -20,6 +20,13 @@ export default {
   //     },
   //   ), { raw: true }),
   // },
+  Query: {
+    getTeamMembers: requiresAuth.createResolver(async (parent, { teamId }, { models }) => models.sequelize.query('select * from users as u join members as member on u.id = member.user_id where member.team_id =?', {
+      replacements: [teamId],
+      model: models.Team,
+      raw: true,
+    })),
+  },
   Mutation: {
     createTeam: requiresAuth.createResolver(async (parent, args, { models, user }) => {
       try {
