@@ -47,14 +47,14 @@ class ChannelsContainer extends React.Component {
     </ListItem>
   )
 
-  renderUser = ({id, name, status}) => {
+  renderUser = ({id, username, status}) => {
     const { team, currentChannel } = this.props;
     return (
       <Link to={`/team/view-team/${team.id}/${currentChannel.id}/user/${id}`} key={`user-${id}`}>
         <ListItem  button className={this.props.classes.listItem}>
 
           <ListItemText classes={{ primary: this.props.classes.listText }}>
-            <span className={`${this.props.classes.status} ${status === 'online' ? this.props.classes.online : this.props.classes.offline}`}></span> {name}
+            <span className={`${this.props.classes.status} ${status === 'online' ? this.props.classes.online : this.props.classes.offline}`}></span> {username}
           </ListItemText>
         </ListItem>
       </Link>

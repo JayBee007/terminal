@@ -54,7 +54,7 @@ const ViewTeam = (props) => (
                 user={user}
                 owner ={team.admin}
                 currentTeamId={props.match.params.teamId}
-                users={[{id:1, name: 'slackbot', status: 'online'},  {id:2, name: 'bob', status: 'offline'}]}
+                users={team.directMessageMembers}
               />
             </FullHeightRow>
               <Switch>
