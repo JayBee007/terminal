@@ -11,6 +11,7 @@ export default `
   type Query {
     getUser: User!
     allUsers: [User!]!
+    getUserById(userId: Int!): User
   }
 
   type AccessToken {
