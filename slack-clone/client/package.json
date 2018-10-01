@@ -24,13 +24,16 @@
     "subscriptions-transport-ws": "^0.9.14"
   },
   "devDependencies": {
+    "eslint-config-prettier": "^3.1.0",
     "eslint-plugin-prettier": "^2.6.2",
+    "prettier": "^1.14.3",
     "react-scripts": "^1.1.5"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "eslint:fix": "eslint --ext .js --ext .js --fix src"
   }
 }
