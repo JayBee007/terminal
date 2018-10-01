@@ -22,3 +22,16 @@ export const GET_DIRECT_MESSAGES = gql`
     }
   }
 `;
+
+export const SUBSCRIBE_DIRECT_MESSAGE = gql`
+  subscription($teamId: Int!, $userId: Int!) {
+    newDirectMessage(teamId: $teamId, userId: $userId) {
+      id
+      sender {
+        username
+      }
+      text
+      created_at
+    }
+  }
+`;

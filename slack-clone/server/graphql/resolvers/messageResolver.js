@@ -1,8 +1,9 @@
 /* eslint max-len: 0 */
-import { PubSub, withFilter } from 'graphql-subscriptions';
+import { withFilter } from 'graphql-subscriptions';
 import requiresAuth, { requiresTeamAccess } from '../permissions';
 
-const pubsub = new PubSub();
+import pubsub from '../pubsub';
+
 const NEW_MESSAGE = 'NEW_MESSAGE';
 
 export default {

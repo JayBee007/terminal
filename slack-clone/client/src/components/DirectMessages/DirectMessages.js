@@ -5,6 +5,24 @@ import { withStyles } from "@material-ui/core/styles";
 import DirectMessage from "./DirectMessage";
 
 class DirectMessages extends React.Component {
+  componentDidMount() {
+    this.unsubscribe = this.props.subscribeToDirectMessages();
+  }
+
+  componentDidUpdate({ teamId, userId }) {
+    if( this.props.teamId !== teamId || this.props.userId !== userId) {
+      if (this.unsubscribe) {
+        this.unsubscribe();
+      }
+
+      this.unsubscribe = this.props.subscribeToDirectMessages();
+    }
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
+
   render() {
     const { messages, classes } = this.props;
     return (
