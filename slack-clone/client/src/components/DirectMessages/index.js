@@ -25,7 +25,12 @@ const DirectMessagesContainer = ({ receiverId, team, ...props }) => (
           query={GET_USER_BY_ID}
           variables={{ userId: parseInt(receiverId, 10) }}
         >
-          {() => {
+          {({loading, error, data: { getUserById }}) => {
+
+            if (loading) return <Loader />;
+            if (error) return <p>Error: {JSON.stringify(error)}</p>;
+
+
             return (
               <Grid
                 container
@@ -33,11 +38,12 @@ const DirectMessagesContainer = ({ receiverId, team, ...props }) => (
                 className={props.classes.container}
               >
                 <Typography className={props.classes.channelName}>
-                  Name of receiver
+                  #{getUserById.username}
                 </Typography>
                 <DirectMessages messages={directMessages} />
                 <SendDirectMessage
                   receiverId={receiverId}
+                  receiverName={getUserById.username}
                   team={team}
                   className={props.classes.sendMessage}
                 />
@@ -57,7 +63,9 @@ const styles = {
     flexWrap: "nowrap"
   },
   channelName: {
-    flexShrink: 0
+    flexShrink: 0,
+    fontSize: '1.5rem',
+    textAlign: 'center'
   },
   sendMessage: {
     flexShrink: 0,

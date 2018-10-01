@@ -22,7 +22,7 @@ class SendDirectMessage extends React.Component {
   };
 
   render() {
-    const { classes, receiverId, team, className } = this.props;
+    const { classes, receiverId, receiverName, team, className } = this.props;
     const { text } = this.state;
     return (
       <Mutation
@@ -43,7 +43,7 @@ class SendDirectMessage extends React.Component {
               data.getUser.teams[teamIdx].directMessageMembers.push({
                 __typename: "User",
                 id: receiverId,
-                username: "someuser"
+                username: receiverName
               });
               cache.writeQuery({
                 query: GET_USER,
@@ -81,7 +81,7 @@ class SendDirectMessage extends React.Component {
                     disableUnderline
                     id="send-message"
                     className={classes.input}
-                    placeholder={`Message #${receiverId}`}
+                    placeholder={`Message #${receiverName}`}
                     value={text}
                   />
                 </FormControl>
