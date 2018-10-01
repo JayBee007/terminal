@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import gql from "graphql-tag";
 
 export const CREATE_CHANNEL = gql`
   mutation createChannel($teamId: Int!, $name: String!) {

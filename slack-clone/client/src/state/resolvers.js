@@ -7,15 +7,14 @@ const resolvers = {
         id,
         token,
         username,
-        __typename: 'AuthUser'
-      }
+        __typename: "AuthUser"
+      };
 
-      cache.writeData({ data: {authUser}});
+      cache.writeData({ data: { authUser } });
 
       return authUser;
     }
   }
-}
-
+};
 
 export default resolvers;

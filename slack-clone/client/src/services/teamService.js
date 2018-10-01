@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import gql from "graphql-tag";
 
 export const GET_TEAM_MEMBERS = gql`
   query getTeamMembers($teamId: Int!) {
@@ -21,39 +21,40 @@ export const CREATE_TEAM = gql`
         message
       }
     }
-
   }
 `;
 
 export const GET_ALL_TEAMS = gql`
-{
-  allTeams {
-    id
-    name
+  {
+    allTeams {
+      id
+      name
+    }
   }
-}`;
+`;
 
 export const GET_ALL_TEAMS_AND_CHANNELS = gql`
-{
-  allTeams {
-    id
-    name
-    owner
-    channels {
+  {
+    allTeams {
       id
       name
+      owner
+      channels {
+        id
+        name
+      }
     }
-  }
-  inviteTeams {
-    id
-    name
-    owner
-    channels {
+    inviteTeams {
       id
       name
+      owner
+      channels {
+        id
+        name
+      }
     }
   }
-}`;
+`;
 
 export const ADD_TEAM_MEMBER = gql`
   mutation addTeamMember($email: String!, $teamId: Int!) {

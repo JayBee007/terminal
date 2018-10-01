@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import gql from "graphql-tag";
 
 export const REGISTER = gql`
   mutation register($username: String!, $email: String!, $password: String!) {
@@ -32,18 +32,18 @@ export const SET_USER = gql`
   mutation setUser($id: Int!, $token: String!, $username: String!) {
     setUser(id: $id, token: $token, username: $username) @client
   }
-`
+`;
 export const setUserToLocalStorage = (id, token, username) => {
-  const user = window.localStorage.getItem('user');
-  if(user) return;
-  const data = JSON.stringify({id, token, username});
-  window.localStorage.setItem('user',data);
-}
+  const user = window.localStorage.getItem("user");
+  if (user) return;
+  const data = JSON.stringify({ id, token, username });
+  window.localStorage.setItem("user", data);
+};
 
 export const unsetUserFromLocalStorage = () => {
-  window.localStorage.removeItem('user');
-}
+  window.localStorage.removeItem("user");
+};
 
 export const getUserFromLocalStorage = () => {
-  return window.localStorage.getItem('user') || undefined;
-}
+  return window.localStorage.getItem("user") || undefined;
+};
