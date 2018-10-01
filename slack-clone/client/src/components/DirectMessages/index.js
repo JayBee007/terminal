@@ -9,6 +9,7 @@ import SendDirectMessage from "./SendDirectMessage";
 import Loader from "../Loader";
 
 import { GET_DIRECT_MESSAGES } from "../../services/directMessageService";
+import { GET_USER_BY_ID } from "../../services/userService";
 
 const DirectMessagesContainer = ({ receiverId, team, ...props }) => (
   <Query
@@ -20,18 +21,37 @@ const DirectMessagesContainer = ({ receiverId, team, ...props }) => (
       if (loading) return <Loader />;
       if (error) return <p>Error: {JSON.stringify(error)}</p>;
       return (
-        <Grid container direction="column" className={props.classes.container}>
-          <Typography className={props.classes.channelName}>
-            Name of receiver
-          </Typography>
-          <DirectMessages messages={directMessages} />
-          <SendDirectMessage
-            receiverId={receiverId}
-            team={team}
-            className={props.classes.sendMessage}
-          />
-        </Grid>
-      );
+        <Query
+          query={GET_USER_BY_ID}
+          variables={{ userId: parseInt(receiverId, 10) }}
+        >
+          {({loading, error, data: { getUserById }}) => {
+
+            if (loading) return <Loader />;
+            if (error) return <p>Error: {JSON.stringify(error)}</p>;
+
+
+            return (
+              <Grid
+                container
+                direction="column"
+                className={props.classes.container}
+              >
+                <Typography className={props.classes.channelName}>
+                  #{getUserById.username}
+                </Typography>
+                <DirectMessages messages={directMessages} />
+                <SendDirectMessage
+                  receiverId={receiverId}
+                  receiverName={getUserById.username}
+                  team={team}
+                  className={props.classes.sendMessage}
+                />
+              </Grid>
+            );
+          }}
+        </Query>
+      )
     }}
   </Query>
 );
@@ -43,7 +63,9 @@ const styles = {
     flexWrap: "nowrap"
   },
   channelName: {
-    flexShrink: 0
+    flexShrink: 0,
+    fontSize: '1.5rem',
+    textAlign: 'center'
   },
   sendMessage: {
     flexShrink: 0,

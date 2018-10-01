@@ -21,3 +21,12 @@ export const GET_USER = gql`
     }
   }
 `;
+
+export const GET_USER_BY_ID = gql`
+query getUserById($userId: Int!) {
+  getUserById(userId: $userId) {
+    id
+    username
+  }
+}
+`;
