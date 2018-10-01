@@ -1,24 +1,23 @@
-import React from 'react';
-import { Mutation } from 'react-apollo';
-import FormControl from '@material-ui/core/FormControl';
-import Input from '@material-ui/core/Input';
-import Grid from '@material-ui/core/Grid';
-import { withStyles } from '@material-ui/core/styles';
+import React from "react";
+import { Mutation } from "react-apollo";
+import FormControl from "@material-ui/core/FormControl";
+import Input from "@material-ui/core/Input";
+import Grid from "@material-ui/core/Grid";
+import { withStyles } from "@material-ui/core/styles";
 
-import { CREATE_MESSAGE } from '../../services/messageService';
+import { CREATE_MESSAGE } from "../../services/messageService";
 
 class SendMessage extends React.Component {
-
   state = {
-    text: ''
+    text: ""
   };
 
-  handleChange = (e) => {
+  handleChange = e => {
     const value = e.target.value;
     this.setState({
       text: value
     });
-  }
+  };
 
   render() {
     const { classes, channelName, channelId, className } = this.props;
@@ -26,15 +25,15 @@ class SendMessage extends React.Component {
     return (
       <Mutation
         mutation={CREATE_MESSAGE}
-        update={(_, {data: { createMessage }}) => {
-          if(createMessage) {
+        update={(_, { data: { createMessage } }) => {
+          if (createMessage) {
             this.setState({
-              text: ''
-            })
+              text: ""
+            });
           }
         }}
       >
-        {(createMessage) => {
+        {createMessage => {
           return (
             <Grid item className={className}>
               <form
@@ -42,7 +41,7 @@ class SendMessage extends React.Component {
                 onSubmit={e => {
                   e.preventDefault();
 
-                  if(text.length > 0) {
+                  if (text.length > 0) {
                     createMessage({
                       variables: {
                         channelId,
@@ -56,7 +55,7 @@ class SendMessage extends React.Component {
                   <Input
                     onChange={this.handleChange}
                     classes={{
-                      focused:classes.focused
+                      focused: classes.focused
                     }}
                     disableUnderline
                     id="send-message"
@@ -70,24 +69,23 @@ class SendMessage extends React.Component {
           );
         }}
       </Mutation>
-    )
+    );
   }
-};
-
+}
 
 const styles = {
   control: {
-    width: '100%'
+    width: "100%"
   },
   input: {
-    border: '1px solid lightgray',
+    border: "1px solid lightgray",
     borderRadius: 4,
-    paddingLeft: '0.5rem',
+    paddingLeft: "0.5rem"
   },
   focused: {
-    borderColor: '#80bdff',
-    boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
+    borderColor: "#80bdff",
+    boxShadow: "0 0 0 0.2rem rgba(0,123,255,.25)"
   }
-}
+};
 
 export default withStyles(styles)(SendMessage);
