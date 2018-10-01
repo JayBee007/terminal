@@ -8,7 +8,7 @@ import DirectMessages from "./DirectMessages";
 import SendDirectMessage from "./SendDirectMessage";
 import Loader from "../Loader";
 
-import { GET_DIRECT_MESSAGES } from "../../services/directMessageService";
+import { GET_DIRECT_MESSAGES, SUBSCRIBE_DIRECT_MESSAGE } from "../../services/directMessageService";
 import { GET_USER_BY_ID } from "../../services/userService";
 
 const DirectMessagesContainer = ({ receiverId, team, ...props }) => (
@@ -17,7 +17,7 @@ const DirectMessagesContainer = ({ receiverId, team, ...props }) => (
     variables={{ teamId: team.id, userId: receiverId }}
     fetchPolicy="network-only"
   >
-    {({ loading, error, data: { directMessages } }) => {
+    {({ subscribeToMore, loading, error, data: { directMessages } }) => {
       if (loading) return <Loader />;
       if (error) return <p>Error: {JSON.stringify(error)}</p>;
       return (
@@ -40,7 +40,27 @@ const DirectMessagesContainer = ({ receiverId, team, ...props }) => (
                 <Typography className={props.classes.channelName}>
                   #{getUserById.username}
                 </Typography>
-                <DirectMessages messages={directMessages} />
+                <DirectMessages
+                  messages={directMessages}
+                  teamId={team.id}
+                  userId ={parseInt(receiverId, 10)}
+                  subscribeToDirectMessages={() =>
+                    subscribeToMore({
+                      document: SUBSCRIBE_DIRECT_MESSAGE,
+                      variables: {teamId:team.id, userId: parseInt(receiverId, 10) },
+                      updateQuery: (prev, { subscriptionData }) => {
+                        if (!subscriptionData.data) {
+                          return prev;
+                        }
+
+                        const newDirectMessage = subscriptionData.data.newDirectMessage;
+                        return {
+                          ...prev,
+                          directMessages: [...prev.directMessages, newDirectMessage]
+                        }
+                      }
+                    })
+                  }/>
                 <SendDirectMessage
                   receiverId={receiverId}
                   receiverName={getUserById.username}

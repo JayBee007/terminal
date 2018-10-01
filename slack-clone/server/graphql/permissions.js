@@ -32,5 +32,22 @@ export const requiresTeamAccess = createResolver(async (parent, { channelId }, {
   }
 });
 
+export const directMessageAccess = createResolver(async (parent, { teamId, userId }, { user, models }) => {
+  if (!user || !user.id) {
+    throw new Error('Not Authenticated');
+  }
+
+  const members = await models.Member.findAll({
+    where: {
+      teamId,
+      [models.sequelize.Op.or]: [{ userId }, { userId: user.id }],
+    },
+  });
+
+  if (members.length !== 2) {
+    throw new Error('Didn\'t find two members for direct messaging');
+  }
+});
+
 
 export default requiresAuth;
