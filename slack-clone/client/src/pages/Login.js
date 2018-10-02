@@ -142,19 +142,6 @@ class Login extends React.Component {
     );
   }
 }
-// export default graphql(gql`
-//   mutation ($text: String!) {
-//     createTodo(text: $text) { ... }
-//   }
-// `, {
-//   options: {
-//     update: (proxy, { data: { createTodo } }) => {
-//       const data = proxy.readQuery({ query });
-//       data.todos.push(createTodo);
-//       proxy.writeQuery({ query, data });
-//     },
-//   },
-// })(MyComponent);
 
 const styles = {
   root: {
@@ -173,7 +160,7 @@ export default compose(
   withStyles(styles),
   graphql(SET_USER, {
     options: props => ({
-      update: () => {
+      update: ({ data }) => {
         props.history.push("/team/view-team");
       }
     })

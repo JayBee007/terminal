@@ -25,10 +25,6 @@ class Register extends React.Component {
     usernameError: ""
   };
 
-  login = () => {
-    this.props.history.push("/");
-  };
-
   handleOnChange = e => {
     const { id, value } = e.target;
 
@@ -94,6 +90,8 @@ class Register extends React.Component {
             this.handleSubmitErrors(errors);
             return;
           }
+
+          setUserToLocalStorage(id, token, username);
           mutate({
             variables: {
               id,
@@ -101,8 +99,7 @@ class Register extends React.Component {
               username
             }
           });
-          setUserToLocalStorage(id, token, username);
-          this.login();
+
         }}
       >
         {register => (
@@ -191,5 +188,11 @@ const styles = {
 
 export default compose(
   withStyles(styles),
-  graphql(SET_USER)
+  graphql(SET_USER, {
+    options: props => ({
+      update: () => {
+        props.history.push("/team/view-team");
+      }
+    })
+  })
 )(Register);
