@@ -13,8 +13,8 @@ import defaults from "./state/defaults";
 import resolvers from "./state/resolvers";
 import typeDefs from "./state/typeDefs";
 
-const user = getUserFromLocalStorage();
-const token = user && JSON.parse(user).token;
+// const user = getUserFromLocalStorage();
+// const token = user && JSON.parse(user).token;
 
 const cache = new InMemoryCache();
 
@@ -27,7 +27,7 @@ const wsLink = new WebSocketLink({
   options: {
     reconnect: true,
     connectionParams: {
-      "x-token": token
+      "x-token": getUserFromLocalStorage() && JSON.parse(getUserFromLocalStorage()).token,
     }
   }
 });
@@ -44,9 +44,10 @@ const link = split(
 
 const request = operation => {
   let headers;
+  const user = getUserFromLocalStorage();
   if (user) {
     headers = {
-      "x-token": token
+      "x-token": JSON.parse(user).token,
     };
     operation.setContext({ headers });
   }
