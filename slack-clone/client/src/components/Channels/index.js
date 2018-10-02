@@ -1,5 +1,6 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
+import { compose } from "react-apollo";
 import Typography from "@material-ui/core/Typography";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -7,10 +8,15 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Divider from "@material-ui/core/Divider";
 import Icon from "@material-ui/core/Icon";
 import { withStyles } from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
+import Button from '@material-ui/core/Button';
+import ExitToApp from '@material-ui/icons/ExitToApp';
 
 import CreateChannelModal from "./CreateChannelModal";
 import InvitePeopleModal from "./InvitePeopleModal";
 import DirectMessageModal from "./DirectMessageModal";
+
+import { unsetUserFromLocalStorage } from "../../services/authService";
 
 class ChannelsContainer extends React.Component {
   state = {
@@ -18,6 +24,17 @@ class ChannelsContainer extends React.Component {
     invitePeopleModalVisible: false,
     directMessageModalVisible: false
   };
+
+  handleLogout = () => {
+    try {
+      unsetUserFromLocalStorage();
+      this.props.history.push('/login');
+    }catch (e) {
+      console.log('unable to unset user ', e);
+    }
+
+
+  }
 
   handleModalVisiblity = () => {
     this.setState(prevState => ({
@@ -89,7 +106,7 @@ class ChannelsContainer extends React.Component {
     } = this.state;
 
     return (
-      <React.Fragment>
+      <Grid container direction="column" style={{height: "100%"}}>
         <div>
           <Typography variant="headline" className={classes.teamName}>
             {team.name}
@@ -158,6 +175,12 @@ class ChannelsContainer extends React.Component {
             </Link>
           )}
         </div>
+        <div style={{ marginRight: "-1rem", marginLeft: "-1rem", marginTop: "auto", textAlign: "center" }}>
+          <Button variant="outlined" onClick={this.handleLogout}>
+            Logout
+            <ExitToApp />
+          </Button>
+        </div>
         <CreateChannelModal
           isOpen={createChannelModalVisible}
           handleModalVisiblity={this.handleModalVisiblity}
@@ -174,7 +197,7 @@ class ChannelsContainer extends React.Component {
           teamId={team.id}
           channelId={currentChannel.id}
         />
-      </React.Fragment>
+      </Grid>
     );
   }
 }
@@ -215,4 +238,7 @@ const styles = {
   }
 };
 
-export default withStyles(styles)(ChannelsContainer);
+export default compose(
+  withStyles(styles),
+  withRouter,
+)(ChannelsContainer);

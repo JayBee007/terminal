@@ -23,10 +23,6 @@ class Login extends React.Component {
     passwordError: ""
   };
 
-  login = () => {
-    this.props.history.push("/");
-  };
-
   handleOnChange = e => {
     const { id, value } = e.target;
 
@@ -77,6 +73,7 @@ class Login extends React.Component {
             this.handleSubmitErrors(errors);
             return;
           }
+          setUserToLocalStorage(id, token, username);
           mutate({
             variables: {
               id,
@@ -84,8 +81,6 @@ class Login extends React.Component {
               username
             }
           });
-          setUserToLocalStorage(id, token, username);
-          this.login();
         }}
       >
         {login => (
@@ -163,5 +158,11 @@ const styles = {
 
 export default compose(
   withStyles(styles),
-  graphql(SET_USER)
+  graphql(SET_USER, {
+    options: props => ({
+      update: ({ data }) => {
+        props.history.push("/team/view-team");
+      }
+    })
+  })
 )(Login);
