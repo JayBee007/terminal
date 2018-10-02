@@ -24,7 +24,7 @@ class Login extends React.Component {
   };
 
   login = () => {
-    this.props.history.push("/");
+    this.props.history.push("/team/view-team");
   };
 
   handleOnChange = e => {
@@ -77,6 +77,7 @@ class Login extends React.Component {
             this.handleSubmitErrors(errors);
             return;
           }
+          setUserToLocalStorage(id, token, username);
           mutate({
             variables: {
               id,
@@ -84,7 +85,6 @@ class Login extends React.Component {
               username
             }
           });
-          setUserToLocalStorage(id, token, username);
           this.login();
         }}
       >
