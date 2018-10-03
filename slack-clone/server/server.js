@@ -51,19 +51,20 @@ models.sequelize.sync({ force: FORCE }).then(() => {
     console.log(`Apollo Server is now running on http://localhost:${PORT}`);
     // Set up the WebSocket for handling GraphQL subscriptions
     new SubscriptionServer({
-      onConnect: (connectionParams, webSocket, context) => {
-        console.log('new ws connection', connectionParams);
-        const token = connectionParams['x-token'];
+      onConnect: (connectionParams, webSocket, context) => ({ models }),
+      onOperation: (message, params, webSocket) => {
+        const token = message.payload.authToken;
+
         if (token) {
           const { id, email } = jwt.verify(token, process.env.JWT_KEY);
-          // TODO: refactor use user object form verification
-          return { models, user: { id, email } };
+          return {
+            ...params,
+            context: {
+              ...params.context,
+              user: { id, email },
+            },
+          };
         }
-
-        return { models };
-      },
-      onOperation: (message, params, webSocket) => {
-        console.log('onOperation from Client.....');
         return params;
       },
       onOperationComplete: () => {

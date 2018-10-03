@@ -13,9 +13,6 @@ import defaults from "./state/defaults";
 import resolvers from "./state/resolvers";
 import typeDefs from "./state/typeDefs";
 
-// const user = getUserFromLocalStorage();
-// const token = user && JSON.parse(user).token;
-
 const cache = new InMemoryCache();
 
 const httpLink = new HttpLink({
@@ -31,6 +28,18 @@ const wsLink = new WebSocketLink({
     }
   }
 });
+
+
+const subscriptionMiddleware = {
+  applyMiddleware: async (options, next) => {
+    const user = getUserFromLocalStorage();
+    const token = user && JSON.parse(user).token;
+    options.authToken = token;
+    next()
+  },
+}
+
+wsLink.subscriptionClient.use([subscriptionMiddleware])
 
 const link = split(
   // split based on operation type
