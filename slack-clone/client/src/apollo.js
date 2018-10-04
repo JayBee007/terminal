@@ -6,6 +6,7 @@ import { getMainDefinition } from "apollo-utilities";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { withClientState } from "apollo-link-state";
 import { ApolloLink, Observable } from "apollo-link";
+import { createUploadLink } from "apollo-upload-client";
 
 import { getUserFromLocalStorage } from "./services/authService";
 
@@ -15,33 +16,39 @@ import typeDefs from "./state/typeDefs";
 
 const cache = new InMemoryCache();
 
+const isFile = value =>
+  (typeof File !== "undefined" && value instanceof File) ||
+  (typeof Blob !== "undefined" && value instanceof Blob);
+
+const isUpload = ({ variables }) => Object.values(variables).some(isFile);
+
 const httpLink = new HttpLink({
+  uri: "http://localhost:4000/graphql"
+});
+
+const fileUploadLink = createUploadLink({
   uri: "http://localhost:4000/graphql"
 });
 
 const wsLink = new WebSocketLink({
   uri: `ws://localhost:4000/subscriptions`,
   options: {
-    reconnect: true,
-    connectionParams: {
-      "x-token": getUserFromLocalStorage() && JSON.parse(getUserFromLocalStorage()).token,
-    }
+    reconnect: true
   }
 });
-
 
 const subscriptionMiddleware = {
   applyMiddleware: async (options, next) => {
     const user = getUserFromLocalStorage();
     const token = user && JSON.parse(user).token;
     options.authToken = token;
-    next()
-  },
-}
+    next();
+  }
+};
 
-wsLink.subscriptionClient.use([subscriptionMiddleware])
+wsLink.subscriptionClient.use([subscriptionMiddleware]);
 
-const link = split(
+const subscriptionSplit = split(
   // split based on operation type
   ({ query }) => {
     const { kind, operation } = getMainDefinition(query);
@@ -51,12 +58,14 @@ const link = split(
   httpLink
 );
 
+const link = split(isUpload, fileUploadLink, subscriptionSplit);
+
 const request = operation => {
   let headers;
   const user = getUserFromLocalStorage();
   if (user) {
     headers = {
-      "x-token": JSON.parse(user).token,
+      "x-token": JSON.parse(user).token
     };
     operation.setContext({ headers });
   }
