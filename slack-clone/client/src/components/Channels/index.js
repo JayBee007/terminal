@@ -9,8 +9,8 @@ import Divider from "@material-ui/core/Divider";
 import Icon from "@material-ui/core/Icon";
 import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-import Button from '@material-ui/core/Button';
-import ExitToApp from '@material-ui/icons/ExitToApp';
+import Button from "@material-ui/core/Button";
+import ExitToApp from "@material-ui/icons/ExitToApp";
 
 import CreateChannelModal from "./CreateChannelModal";
 import InvitePeopleModal from "./InvitePeopleModal";
@@ -28,13 +28,11 @@ class ChannelsContainer extends React.Component {
   handleLogout = () => {
     try {
       unsetUserFromLocalStorage();
-      this.props.history.push('/login');
-    }catch (e) {
-      console.log('unable to unset user ', e);
+      this.props.history.push("/login");
+    } catch (e) {
+      console.log("unable to unset user ", e);
     }
-
-
-  }
+  };
 
   handleModalVisiblity = () => {
     this.setState(prevState => ({
@@ -106,7 +104,7 @@ class ChannelsContainer extends React.Component {
     } = this.state;
 
     return (
-      <Grid container direction="column" style={{height: "100%"}}>
+      <Grid container direction="column" style={{ height: "100%" }}>
         <div>
           <Typography variant="headline" className={classes.teamName}>
             {team.name}
@@ -175,7 +173,14 @@ class ChannelsContainer extends React.Component {
             </Link>
           )}
         </div>
-        <div style={{ marginRight: "-1rem", marginLeft: "-1rem", marginTop: "auto", textAlign: "center" }}>
+        <div
+          style={{
+            marginRight: "-1rem",
+            marginLeft: "-1rem",
+            marginTop: "auto",
+            textAlign: "center"
+          }}
+        >
           <Button variant="outlined" onClick={this.handleLogout}>
             Logout
             <ExitToApp />
@@ -240,5 +245,5 @@ const styles = {
 
 export default compose(
   withStyles(styles),
-  withRouter,
+  withRouter
 )(ChannelsContainer);

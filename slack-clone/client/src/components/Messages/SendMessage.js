@@ -5,6 +5,7 @@ import Input from "@material-ui/core/Input";
 import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core/styles";
 
+import FileUpload from "../FileUpload";
 import { CREATE_MESSAGE } from "../../services/messageService";
 
 class SendMessage extends React.Component {
@@ -35,36 +36,41 @@ class SendMessage extends React.Component {
       >
         {createMessage => {
           return (
-            <Grid item className={className}>
-              <form
-                autoComplete="off"
-                onSubmit={e => {
-                  e.preventDefault();
+            <Grid item className={className} container>
+              <Grid item>
+                <FileUpload />
+              </Grid>
+              <Grid item xs>
+                <form
+                  autoComplete="off"
+                  onSubmit={e => {
+                    e.preventDefault();
 
-                  if (text.length > 0) {
-                    createMessage({
-                      variables: {
-                        channelId,
-                        text
-                      }
-                    });
-                  }
-                }}
-              >
-                <FormControl className={classes.control}>
-                  <Input
-                    onChange={this.handleChange}
-                    classes={{
-                      focused: classes.focused
-                    }}
-                    disableUnderline
-                    id="send-message"
-                    className={classes.input}
-                    placeholder={`Message #${channelName}`}
-                    value={text}
-                  />
-                </FormControl>
-              </form>
+                    if (text.length > 0) {
+                      createMessage({
+                        variables: {
+                          channelId,
+                          text
+                        }
+                      });
+                    }
+                  }}
+                >
+                  <FormControl className={classes.control}>
+                    <Input
+                      onChange={this.handleChange}
+                      classes={{
+                        focused: classes.focused
+                      }}
+                      disableUnderline
+                      id="send-message"
+                      className={classes.input}
+                      placeholder={`Message #${channelName}`}
+                      value={text}
+                    />
+                  </FormControl>
+                </form>
+              </Grid>
             </Grid>
           );
         }}
@@ -75,7 +81,8 @@ class SendMessage extends React.Component {
 
 const styles = {
   control: {
-    width: "100%"
+    width: "100%",
+    marginLeft: "5px"
   },
   input: {
     border: "1px solid lightgray",
