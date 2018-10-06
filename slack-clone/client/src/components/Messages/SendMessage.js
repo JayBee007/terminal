@@ -38,7 +38,7 @@ class SendMessage extends React.Component {
           return (
             <Grid item className={className} container>
               <Grid item>
-                <FileUpload />
+                <FileUpload channelId={channelId} />
               </Grid>
               <Grid item xs>
                 <form

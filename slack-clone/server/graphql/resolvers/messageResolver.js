@@ -4,11 +4,12 @@ import requiresAuth, { requiresTeamAccess } from '../permissions';
 
 import pubsub from '../pubsub';
 
-const NEW_MESSAGE = 'NEW_MESSAGE';
+export const NEW_MESSAGE = 'NEW_MESSAGE';
 
 export default {
   Message: {
     user: requiresAuth.createResolver(async ({ userId }, args, { models, user }) => models.User.findOne({ where: { id: userId } })),
+    file: requiresAuth.createResolver(async ({ id }, args, { models }) => models.File.findOne({ where: { message_id: id } }, { raw: true })),
   },
   Subscription: {
     messageAdded: {

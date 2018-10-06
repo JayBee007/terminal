@@ -24,6 +24,7 @@ const resolvers = mergeResolvers(fileLoader(path.join(__dirname, './graphql/reso
 const schema = makeExecutableSchema({ typeDefs, resolvers });
 
 const app = express();
+app.use('/uploads', express.static('uploads'));
 const ws = createServer(app);
 
 app.use(morgan('dev'));

@@ -7,14 +7,16 @@ import DropZone from "react-dropzone";
 
 import { UPLOAD_FILE } from "../services/fileService";
 
-const FileUpload = ({ classes }) => {
+const FileUpload = ({ classes, channelId }) => {
   return (
     <Mutation mutation={UPLOAD_FILE}>
       {singleUpload => {
         return (
           <DropZone
             className="ignore"
-            onDrop={([file]) => singleUpload({ variables: { file } })}
+            onDrop={([file]) =>
+              singleUpload({ variables: { channelId, file } })
+            }
             // onDrop={({
             //   target: {
             //     validity,

@@ -5,6 +5,7 @@ export default `
     user: User!
     channel: Channel!
     created_at: String!
+    file: File
   }
 
   type Subscription {
