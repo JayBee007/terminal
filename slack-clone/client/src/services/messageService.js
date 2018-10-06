@@ -14,6 +14,11 @@ export const GET_MESSAGES = gql`
       user {
         username
       }
+      file {
+        type
+        filepath
+        filename
+      }
       created_at
     }
   }
@@ -38,6 +43,11 @@ export const SUBSCRIBE_MESSAGE = gql`
       text
       user {
         username
+      }
+      file {
+        type
+        filepath
+        filename
       }
       created_at
     }

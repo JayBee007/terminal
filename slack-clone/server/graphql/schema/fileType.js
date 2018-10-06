@@ -1,12 +1,12 @@
 export default `
   scalar Upload
   type File {
-    filename: String!
-    mimetype: String!
-    encoding: String!
+    type: String
+    filepath: String
+    filename: String
   }
 
   type Mutation {
-    singleUpload(file: Upload!): File!
+    singleUpload(channelId: Int!, file: Upload!): Boolean!
   }
 `;
