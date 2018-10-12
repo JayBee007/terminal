@@ -6,12 +6,15 @@ import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 
+import MessageMedia from "./MessageMedia";
+
 const Message = props => {
   const {
     text,
     user: { username },
     created_at,
-    classes
+    classes,
+    file
   } = props;
   const { header, content, root, paragraph } = classes;
   return (
@@ -30,6 +33,7 @@ const Message = props => {
         <Typography paragraph className={paragraph}>
           {text}
         </Typography>
+        <MessageMedia file={file} />
       </CardContent>
     </Card>
   );

@@ -8,6 +8,8 @@ import requiresAuth from '../permissions';
 import pubsub from '../pubsub';
 import { NEW_MESSAGE } from './messageResolver';
 
+import { fileResize } from '../../utils';
+
 const UPLOAD_DIR = path.join(__dirname, '../../uploads');
 
 export default {
@@ -25,7 +27,7 @@ export default {
           throw new Error({ message: 'No files attached' });
         }
 
-        stream.pipe(fs.createWriteStream(filePath));
+        stream.pipe(fileResize).pipe(fs.createWriteStream(filePath));
 
         models.sequelize.transaction(async (transaction) => {
           const message = await models.Message.create({
