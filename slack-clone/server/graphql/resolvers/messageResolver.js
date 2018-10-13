@@ -20,7 +20,21 @@ export default {
     },
   },
   Query: {
-    getMessages: requiresAuth.createResolver(async (parent, { channelId }, { models, user }) => models.Message.findAll({ where: { channel_id: channelId } }, { raw: true })),
+    getMessages: requiresAuth.createResolver(async (parent, { channelId }, { models, user }) => {
+      const channel = await models.Channel.findOne({ raw: true, where: { id: channelId } });
+
+      if (!channel.public) {
+        const member = await models.ChannelMember.findOne({
+          raw: true,
+          where: { channelId, userId: user.id },
+        });
+
+        if (!member) {
+          throw new Error('Not Authorized');
+        }
+      }
+      return models.Message.findAll({ where: { channel_id: channelId } }, { raw: true });
+    }),
   },
   Mutation: {
     createMessage: requiresAuth.createResolver(async (parent, args, { models, user }) => {
