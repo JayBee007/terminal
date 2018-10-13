@@ -7,14 +7,32 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { Mutation } from "react-apollo";
 import findIndex from "lodash/findIndex";
+import FormGroup from "@material-ui/core/FormGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Switch from "@material-ui/core/Switch";
+
+import SelectTeamMembers from "./SelectTeamMembers";
 
 import { CREATE_CHANNEL } from "../../services/channelService";
 import { GET_USER } from "../../services/userService";
 
 class CreateChannelModal extends React.Component {
   state = {
-    channelName: ""
+    channelName: "",
+    publicChannel: true,
+    member: []
   };
+
+  handleSelectTeamMembers = e => {
+    console.log("value", e.target.value);
+    this.setState({
+      member: e.target.value
+    });
+  };
+
+  // handleChange = event => {
+  //   this.setState({ name: event.target.value });
+  // };
 
   handleOnChange = e => {
     const { value } = e.target;
@@ -25,9 +43,15 @@ class CreateChannelModal extends React.Component {
     }));
   };
 
+  togglePublicChannel = () => {
+    this.setState(prevState => ({
+      publicChannel: !prevState.publicChannel
+    }));
+  };
+
   render() {
-    const { isOpen, handleModalVisiblity, teamId } = this.props;
-    const { channelName } = this.state;
+    const { isOpen, handleModalVisiblity, teamId, teamMembers } = this.props;
+    const { channelName, publicChannel, member } = this.state;
 
     return (
       <Mutation
@@ -65,7 +89,9 @@ class CreateChannelModal extends React.Component {
                       createChannel({
                         variables: {
                           teamId,
-                          name: channelName
+                          name: channelName,
+                          public: publicChannel,
+                          members: member
                         },
                         optimisticResponse: {
                           __typename: "Mutation",
@@ -97,6 +123,26 @@ class CreateChannelModal extends React.Component {
                     fullWidth
                     onChange={this.handleOnChange}
                   />
+                  <FormGroup row>
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          checked={publicChannel}
+                          onChange={this.togglePublicChannel}
+                          value="Public"
+                          color="primary"
+                        />
+                      }
+                      label="Public"
+                    />
+                  </FormGroup>
+                  {!publicChannel && (
+                    <SelectTeamMembers
+                      members={teamMembers}
+                      member={member}
+                      handleSelectTeamMembers={this.handleSelectTeamMembers}
+                    />
+                  )}
                   <DialogActions>
                     <Button onClick={handleModalVisiblity} color="primary">
                       Cancel

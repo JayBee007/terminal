@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, withRouter } from "react-router-dom";
-import { compose } from "react-apollo";
+import { compose, Query } from "react-apollo";
 import Typography from "@material-ui/core/Typography";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -17,7 +17,7 @@ import InvitePeopleModal from "./InvitePeopleModal";
 import DirectMessageModal from "./DirectMessageModal";
 
 import { unsetUserFromLocalStorage } from "../../services/authService";
-
+import { GET_TEAM_MEMBERS } from "../../services/teamService";
 class ChannelsContainer extends React.Component {
   state = {
     createChannelModalVisible: false,
@@ -186,21 +186,35 @@ class ChannelsContainer extends React.Component {
             <ExitToApp />
           </Button>
         </div>
-        <CreateChannelModal
-          isOpen={createChannelModalVisible}
-          handleModalVisiblity={this.handleModalVisiblity}
-          teamId={team.id}
-        />
+        <Query query={GET_TEAM_MEMBERS} variables={{ teamId: team.id }}>
+          {({ loading, error, data: { getTeamMembers } }) => {
+            // if (loading) return <Loader />;
+            // if (error) return <p>Error: {JSON.stringify(error)}</p>;
+
+            return (
+              <React.Fragment>
+                <CreateChannelModal
+                  isOpen={createChannelModalVisible}
+                  handleModalVisiblity={this.handleModalVisiblity}
+                  teamId={team.id}
+                  teamMembers={getTeamMembers}
+                />
+                <DirectMessageModal
+                  isOpen={directMessageModalVisible}
+                  handleModalVisiblity={this.handleDirectMessageModal}
+                  teamId={team.id}
+                  channelId={currentChannel.id}
+                  teamMembers={getTeamMembers}
+                />
+              </React.Fragment>
+            );
+          }}
+        </Query>
+
         <InvitePeopleModal
           isOpen={invitePeopleModalVisible}
           handleModalVisiblity={this.handleInvitePeopleModal}
           teamId={team.id}
-        />
-        <DirectMessageModal
-          isOpen={directMessageModalVisible}
-          handleModalVisiblity={this.handleDirectMessageModal}
-          teamId={team.id}
-          channelId={currentChannel.id}
         />
       </Grid>
     );
