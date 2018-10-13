@@ -16,6 +16,7 @@ const models = {
   Member: sequelize.import('./member'),
   DirectMessage: sequelize.import('./directMessage'),
   File: sequelize.import('./file'),
+  ChannelMember: sequelize.import('./channelMember'),
 };
 
 Object.keys(models).forEach((model) => {

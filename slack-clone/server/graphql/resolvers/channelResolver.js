@@ -7,7 +7,7 @@ export default {
     createChannel: requiresAuth.createResolver(async (parent, args, { models, user }) => {
       try {
         const member = await models.Member.findOne({ where: { teamId: args.teamId, userId: user.id } }, { raw: true });
-        if (!member) {
+        if (!member.admin) {
           return {
             ok: false,
             errors: [
@@ -15,16 +15,29 @@ export default {
                 path: 'name',
                 message: 'Not team owner',
               },
+
             ],
           };
         }
-        const channel = await models.Channel.create(args);
+
+        const response = await models.sequelize.transaction(async (transaction) => {
+          const channel = await models.Channel.create(args, { transaction });
+
+          if (!args.public) {
+            const members = args.members.filter(m => m !== user.id);
+            members.push(user.id);
+            const channelMembers = members.map(m => ({ userId: m, channelId: channel.dataValues.id }));
+            await models.ChannelMember.bulkCreate(channelMembers, { transaction });
+          }
+
+          return channel;
+        });
+
         return {
           ok: true,
-          channel,
+          channel: response,
         };
       } catch (error) {
-        // console.log(error);
         return {
           ok: false,
           errors: formatErrors(error),
