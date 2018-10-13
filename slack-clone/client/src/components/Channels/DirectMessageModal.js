@@ -10,12 +10,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Paper from "@material-ui/core/Paper";
 import deburr from "lodash/deburr";
 import { withStyles } from "@material-ui/core/styles";
-import { Query, compose } from "react-apollo";
+import { compose } from "react-apollo";
 import { withRouter } from "react-router-dom";
-
-import { GET_TEAM_MEMBERS } from "../../services/teamService";
-
-import Loader from "../Loader";
 
 class DirectMessageModal extends React.Component {
   handleChange = value => {
@@ -91,78 +87,67 @@ class DirectMessageModal extends React.Component {
   };
 
   render() {
-    const { isOpen, handleModalVisiblity, classes, teamId } = this.props;
+    const { isOpen, handleModalVisiblity, classes, teamMembers } = this.props;
 
     return (
-      <Query query={GET_TEAM_MEMBERS} variables={{ teamId }}>
-        {({ loading, error, data: { getTeamMembers } }) => {
-          if (loading) return <Loader />;
-          if (error) return <p>Error: {JSON.stringify(error)}</p>;
-
-          return (
-            <React.Fragment>
-              <Dialog
-                open={isOpen}
-                onClose={handleModalVisiblity}
-                aria-labelledby="form-dialog-title"
-              >
-                <DialogTitle id="form-dialog-title">
-                  Find Team Member
-                </DialogTitle>
-                <DialogContent>
-                  <Downshift
-                    onChange={this.handleChange}
-                    itemToString={this.handleItemToString}
-                  >
-                    {({
-                      getInputProps,
-                      getItemProps,
-                      getMenuProps,
-                      highlightedIndex,
-                      inputValue,
-                      isOpen,
-                      selectedItem
-                    }) => (
-                      <div className={classes.container}>
-                        {this.renderInput({
-                          fullWidth: true,
-                          classes,
-                          InputProps: getInputProps({
-                            placeholder: "Search Team Members"
-                          })
-                        })}
-                        <div {...getMenuProps()}>
-                          {isOpen ? (
-                            <Paper className={classes.paper} square>
-                              {this.getSuggestions(
-                                inputValue,
-                                getTeamMembers
-                              ).map((suggestion, index) =>
-                                this.renderSuggestion({
-                                  suggestion,
-                                  index,
-                                  itemProps: getItemProps({ item: suggestion }),
-                                  highlightedIndex,
-                                  selectedItem
-                                })
-                              )}
-                            </Paper>
-                          ) : null}
-                        </div>
-                      </div>
-                    )}
-                  </Downshift>
-                  <DialogActions>
-                    <Button onClick={handleModalVisiblity} color="primary">
-                      Cancel
-                    </Button>
-                  </DialogActions>
-                </DialogContent>
-              </Dialog>
-            </React.Fragment>
-          );
-        }}
-      </Query>
+      <React.Fragment>
+        <Dialog
+          open={isOpen}
+          onClose={handleModalVisiblity}
+          aria-labelledby="form-dialog-title"
+        >
+          <DialogTitle id="form-dialog-title">Find Team Member</DialogTitle>
+          <DialogContent>
+            <Downshift
+              onChange={this.handleChange}
+              itemToString={this.handleItemToString}
+            >
+              {({
+                getInputProps,
+                getItemProps,
+                getMenuProps,
+                highlightedIndex,
+                inputValue,
+                isOpen,
+                selectedItem
+              }) => (
+                <div className={classes.container}>
+                  {this.renderInput({
+                    fullWidth: true,
+                    classes,
+                    InputProps: getInputProps({
+                      placeholder: "Search Team Members"
+                    })
+                  })}
+                  <div {...getMenuProps()}>
+                    {isOpen ? (
+                      <Paper className={classes.paper} square>
+                        {this.getSuggestions(inputValue, teamMembers).map(
+                          (suggestion, index) =>
+                            this.renderSuggestion({
+                              suggestion,
+                              index,
+                              itemProps: getItemProps({
+                                item: suggestion
+                              }),
+                              highlightedIndex,
+                              selectedItem
+                            })
+                        )}
+                      </Paper>
+                    ) : null}
+                  </div>
+                </div>
+              )}
+            </Downshift>
+            <DialogActions>
+              <Button onClick={handleModalVisiblity} color="primary">
+                Cancel
+              </Button>
+            </DialogActions>
+          </DialogContent>
+        </Dialog>
+      </React.Fragment>
     );
   }
 }
