@@ -24,9 +24,9 @@ export default {
           const channel = await models.Channel.create(args, { transaction });
 
           if (!args.public) {
-            const members = args.members.filter(m => m !== user.id);
-            members.push(user.id);
-            const channelMembers = members.map(m => ({ userId: m, channelId: channel.dataValues.id }));
+            const members = args.members.filter(m => m.id !== user.id);
+            members.push({ id: user.id, username: user.username });
+            const channelMembers = members.map(m => ({ userId: m.id, channelId: channel.dataValues.id }));
             await models.ChannelMember.bulkCreate(channelMembers, { transaction });
           }
 

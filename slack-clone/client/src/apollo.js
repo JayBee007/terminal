@@ -14,7 +14,9 @@ import defaults from "./state/defaults";
 import resolvers from "./state/resolvers";
 import typeDefs from "./state/typeDefs";
 
-const cache = new InMemoryCache();
+const cache = new InMemoryCache({
+  addTypename: false
+});
 
 const isFile = value =>
   (typeof File !== "undefined" && value instanceof File) ||

@@ -1,4 +1,9 @@
 export default `
+  input UserInput {
+    id: Int
+    username: String
+  }
+
   type Channel {
     id: Int!
     name: String!
@@ -14,6 +19,6 @@ export default `
   }
 
   type Mutation {
-    createChannel(teamId: Int!, name: String!, public: Boolean=true, members:[Int!]): ChannelResponse!
+    createChannel(teamId: Int!, name: String!, public: Boolean=true, members:[UserInput]): ChannelResponse!
   }
 `;
