@@ -85,7 +85,7 @@ export default {
     }),
   },
   Team: {
-    channels: ({ id }, args, { models, user }) => models.sequelize.query('select distinct on (id) * from channels as channel, channel_members as channelMember where channel.team_id = :teamId and (channel.public = true or (channelMember.user_id = :userId and channel.id = channelMember.channel_id)) ', {
+    channels: ({ id }, args, { models, user }) => models.sequelize.query('select distinct on (id) * from channels as channel left outer join channel_members as channelMember on channel.id = channelMember.channel_id  where channel.team_id = :teamId and (channel.public = true or channelMember.user_id = :userId ) ', {
       replacements: { teamId: id, userId: user.id },
       model: models.Channel,
       raw: true,
